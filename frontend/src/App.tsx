@@ -1,9 +1,13 @@
-import SearchBar from "./assets/SearchBar";
+import WelcomePanel from "./assets/WelcomePanel";
+import InfoPanel from "./assets/InfoPanel";
+import Menu from "./assets/Menu";
 
 function App() {
   return (
     <div>
-      <SearchBar />
+      <Menu />
+      <WelcomePanel />
+      <InfoPanel />
     </div>
   );
 }

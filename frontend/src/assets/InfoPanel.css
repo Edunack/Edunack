@@ -1,0 +1,22 @@
+.sect {
+  flex: 1;
+  padding: 5%;
+  width: 40%;
+}
+#container {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+}
+#left {
+  font-size: 40px;
+  font-weight: bold;
+}
+#right {
+  font-size: 40px;
+}
+#right > ul {
+  font-size: 24px;
+}
