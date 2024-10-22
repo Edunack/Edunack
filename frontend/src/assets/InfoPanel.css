@@ -1,22 +1,37 @@
-.sect {
-  flex: 1;
-  padding: 5%;
-  width: 40%;
-}
-#container {
-  background-color: white;
+#infoPanel {
+  position: absolute;
+  top: 70vh;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; 
+  padding: 15%;
+  margin: 0;
+  height: 160vh;
+  z-index: 1;
+  background: linear-gradient(204.93deg, #252525 6.46%, #171717 84.16%);
+  background-size: cover;
+  clip-path: url(#roundedPoly);
+  -webkit-clip-path: url(#roundedPoly);
 }
-#left {
-  font-size: 40px;
+#catchphrase {
+  text-align: right;
+  font-size: 5vh;
   font-weight: bold;
+  color: #bbb8b8;
 }
-#right {
-  font-size: 40px;
+#catchphrase p > #wrapper {
+  color: #e9e9e9;
 }
-#right > ul {
-  font-size: 24px;
+#howTo {
+  text-align: left;
+  color: #d9d9d9;
+  font-size: 5vh;
+}
+#howTo > ul {
+  font-size: 3.3vh;
+}
+.sect {
+  flex: 1;
+  padding: 5%;
 }

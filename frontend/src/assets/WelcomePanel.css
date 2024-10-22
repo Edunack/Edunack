@@ -1,32 +1,27 @@
-body {
+#WelcomePanel {
   background: url(../img/background.png);
   background-size: cover;
+  background-repeat: no-repeat;
   margin: 0;
-}
-p {
-  font-weight: 400;
-}
-.WelcomePanel {
+  padding-top: 10vh;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+  position: relative;
 }
-#title {
-  font-size: 48px;
-  font-weight: bold;
+#WelcomePanel > p {
+  font-family: "Manrope", sans-serif;
+}
+#WelcomePanel > #title {
+  font-size: 7vh;
+  font-weight: 800;
   margin-bottom: 0px;
 }
-#subtext {
-  font-size: 1.5vw;
+#WelcomePanel > #subtext {
+  font-size: 2.5vh;
+  font-weight: 300;
   margin-top: 0px;
-}
-#start {
-  background-color: #1e1e1e;
-  color: white;
-  font-size: 20px;
-  border-radius: 13px;
-  padding: 10px 70px;
-  border: none;
 }

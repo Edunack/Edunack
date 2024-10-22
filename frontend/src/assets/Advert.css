@@ -1,0 +1,26 @@
+#advertContainer {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1350" preserveAspectRatio="none"><defs><linearGradient id="Gradient_bez_nazwy_2" x1="617.64" y1="1289.72" x2="617.64" y2="-19.94" gradientTransform="translate(102.36 1330.06) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="%23171717"/><stop offset="1" stop-color="%23252525"/></linearGradient></defs><path fill="url(%23Gradient_bez_nazwy_2)" d="m0,0l1440,386v964H0V0Z"/></svg>');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top, bottom;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 120vh;
+}
+
+#advertContainer > #title {
+  background: linear-gradient(to right, #5c61af, #8955c1, #d27aff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-size: 60px;
+  font-weight: 700;
+}
+
+#advertContainer > #tilesContainer {
+  display: flex;
+  justify-content: center;
+}

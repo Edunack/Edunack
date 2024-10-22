@@ -1,0 +1,56 @@
+#recommendationsContainer {
+  background-color: #37343d;
+  margin-top: 80vh;
+  padding-top: 20vh;
+}
+
+#recommendationsContainer > .onTop {
+  position: relative;
+  z-index: 12;
+}
+
+#recommendationsContainer > #title {
+  background: linear-gradient(to right, #6a38ff, #fa4cc0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  font-size: 6vh;
+  position: relative;
+  margin-bottom: 3%;
+}
+
+#recommendationsContainer > #content {
+  color: white;
+  font-size: 3.5vh;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10vh;
+}
+
+#mainElement {
+  font-weight: 400;
+}
+
+#courses {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8vh;
+  margin-top: 5vh;
+}
+
+#courseContainer:nth-child(1) {
+  transform: translateY(0);
+}
+
+#courseContainer:nth-child(2) {
+  transform: translateY(-20%);
+}
+
+#courseContainer:nth-child(3) {
+  transform: translateY(-40%);
+}
