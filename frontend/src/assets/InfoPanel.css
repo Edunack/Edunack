@@ -8,7 +8,7 @@
   padding: 15%;
   margin: 0;
   height: 160vh;
-  z-index: 1;
+  z-index: 3;
   background: linear-gradient(204.93deg, #252525 6.46%, #171717 84.16%);
   background-size: cover;
   clip-path: url(#roundedPoly);

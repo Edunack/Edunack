@@ -1,26 +1,46 @@
 #advertContainer {
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1350" preserveAspectRatio="none"><defs><linearGradient id="Gradient_bez_nazwy_2" x1="617.64" y1="1289.72" x2="617.64" y2="-19.94" gradientTransform="translate(102.36 1330.06) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="%23171717"/><stop offset="1" stop-color="%23252525"/></linearGradient></defs><path fill="url(%23Gradient_bez_nazwy_2)" d="m0,0l1440,386v964H0V0Z"/></svg>');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top, bottom;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 120vh;
+  transform: translateY(-40%);
+  background: linear-gradient(180deg, #171717 2.99%, #252525 100%);
+  background-size: cover;
+  clip-path: url(#bg);
+  -webkit-clip-path: url(#bg);
+  z-index: 1;
+  padding: 20% 0%;
 }
 
-#advertContainer > #title {
-  background: linear-gradient(to right, #5c61af, #8955c1, #d27aff);
+#advertContainer > #maintainSpace > #title {
+  background: linear-gradient(
+    91.65deg,
+    #5c61af -1.32%,
+    #8955c1 46.15%,
+    #ee4bc5 100.77%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-  font-size: 60px;
+  font-size: 10vh;
   font-weight: 700;
+  width: 100%;
 }
 
-#advertContainer > #tilesContainer {
+#tilesContainer {
   display: flex;
   justify-content: center;
+}
+
+.titles {
+  font-weight: 900;
+  font-size: 5vh;
+}
+
+#maintainSpace {
+  display: flex;
+  transform: translateY(20%);
+  flex-direction: column;
 }

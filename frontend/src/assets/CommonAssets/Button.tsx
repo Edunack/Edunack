@@ -6,9 +6,17 @@ interface Props {
   color: string;
   fontSize: string;
   fontWeight: number;
+  zIndex: number;
 }
 
-function Button({ children, bgColor, color, fontSize, fontWeight }: Props) {
+function Button({
+  children,
+  bgColor,
+  color,
+  fontSize,
+  fontWeight,
+  zIndex,
+}: Props) {
   return (
     <>
       <button
@@ -17,6 +25,7 @@ function Button({ children, bgColor, color, fontSize, fontWeight }: Props) {
           backgroundColor: bgColor,
           fontSize: fontSize,
           fontWeight: fontWeight,
+          zIndex: zIndex,
         }}
         id="customBtn"
       >

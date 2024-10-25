@@ -87,7 +87,13 @@ function Recommendations() {
           image="../img/codeSeg.jpg"
         />
       </div>
-      <Button bgColor="CECECE" color="#1E1E1E" fontSize="20px" fontWeight={500}>
+      <Button
+        bgColor="CECECE"
+        color="#1E1E1E"
+        fontSize="20px"
+        fontWeight={500}
+        zIndex={4}
+      >
         START NOW
       </Button>
     </div>

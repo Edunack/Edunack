@@ -1,6 +1,13 @@
 #tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border-radius: 26px;
-  height: 40vh;
-  width: 35vh;
+  height: 60vh;
+  width: 55vh;
   margin: 5vh;
+  text-align: center;
+  padding: 5%;
+  margin: 5%;
 }

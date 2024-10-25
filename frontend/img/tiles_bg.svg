@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Warstwa_1" data-name="Warstwa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 1350">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Gradient_bez_nazwy_2);
+      }
+    </style>
+    <linearGradient id="Gradient_bez_nazwy_2" data-name="Gradient bez nazwy 2" x1="617.64" y1="1289.72" x2="617.64" y2="-19.94" gradientTransform="translate(102.36 1330.06) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#171717"/>
+      <stop offset="1" stop-color="#252525"/>
+    </linearGradient>
+  </defs>
+  <path class="cls-1" d="m0,0l1440,386v964H0V0Z"/>
+</svg>

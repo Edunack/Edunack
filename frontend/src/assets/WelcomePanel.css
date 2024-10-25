@@ -12,9 +12,6 @@
   box-sizing: border-box;
   position: relative;
 }
-#WelcomePanel > p {
-  font-family: "Manrope", sans-serif;
-}
 #WelcomePanel > #title {
   font-size: 7vh;
   font-weight: 800;

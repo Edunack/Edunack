@@ -14,7 +14,7 @@ function Tile({ children, bgColor, color, shadow }: Props) {
       style={{
         backgroundColor: bgColor,
         color: color,
-        boxShadow: `0 0 57px ${shadow}`,
+        boxShadow: `0 0 50px ${shadow}`,
       }}
       id="tile"
     >
