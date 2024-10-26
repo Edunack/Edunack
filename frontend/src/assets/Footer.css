@@ -1,0 +1,33 @@
+#footer {
+  background-color: #151517;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  gap: 10vh;
+}
+
+.footerLists {
+  list-style-type: none;
+  text-align: left;
+  padding: 0;
+}
+
+#logoMotto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 25vh;
+}
+
+#motto {
+  font-weight: 300;
+  font-size: 1.5vh;
+  text-align: right;
+  margin-top: -10%;
+}
+
+#line {
+  margin: 0 5vh;
+}

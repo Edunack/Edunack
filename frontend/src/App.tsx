@@ -3,6 +3,7 @@ import InfoPanel from "./assets/InfoPanel";
 import Menu from "./assets/Menu";
 import Recommendations from "./assets/Recommendations";
 import Advert from "./assets/Advert";
+import Footer from "./assets/Footer";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <InfoPanel />
       <Recommendations />
       <Advert />
+      <Footer />
     </div>
   );
 }
