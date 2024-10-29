@@ -1,12 +1,12 @@
 #containerMenu {
   background-color: #1e1e1e;
   height: 10vh;
-  width: 100%;
+  width: 98%;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 1%;
   position: fixed;
   z-index: 10;
 }

@@ -3,8 +3,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0;
-  padding-top: 10vh;
-  height: 100vh;
+  height: 110vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,7 +14,7 @@
 #WelcomePanel > #title {
   font-size: 7vh;
   font-weight: 800;
-  margin-bottom: 0px;
+  margin: 0;
 }
 #WelcomePanel > #subtext {
   font-size: 2.5vh;

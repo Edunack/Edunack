@@ -1,8 +1,8 @@
 #courseContainer {
   background-color: #1e1e1e;
   border-radius: 15px;
-  width: 20vh;
-  height: 30vh;
+  width: 22vh;
+  height: 35vh;
   margin: 5% 0;
   box-shadow: 0 0 20px #1e1e1e;
 }
@@ -24,27 +24,28 @@
 }
 
 #courseContainer > #info {
+  margin: auto;
   position: relative;
+  width: 80%;
   height: 40%;
   top: -40%;
 }
 
 #info > p {
   text-align: center;
-  padding: 5%;
-  font-weight: 100;
+  font-weight: 300;
   font-size: 1.3vh;
 }
 
 #info > p > #title {
-  padding: 0 2%;
   font-weight: 500;
   font-size: 3vh;
   margin-bottom: 1.5vh;
 }
 
 #info > p > #author {
-  padding: 0 4%;
+  padding: 0 2%;
   font-weight: 700;
   font-size: 2vh;
+  margin-top: 1vh;
 }
