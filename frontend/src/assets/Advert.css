@@ -10,7 +10,7 @@
   clip-path: url(#bg);
   -webkit-clip-path: url(#bg);
   z-index: 1;
-  padding: 25% 0%;
+  padding: 30% 0% 10% 0%;
 }
 
 #advertContainer > #maintainSpace > #title {
@@ -41,6 +41,6 @@
 
 #maintainSpace {
   display: flex;
-  transform: translateY(10%);
+  transform: translateY(5%);
   flex-direction: column;
 }
