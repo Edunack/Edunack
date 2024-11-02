@@ -1,7 +1,7 @@
 import "./Recommendations.css";
-import "./RecommendationsAssets/Course";
-import Course from "./RecommendationsAssets/Course";
-import Button from "./CommonAssets/Button";
+import "./AdditionalAssets/Course";
+import Course from "./AdditionalAssets/Course";
+import Button from "../../CommonAssets/Button";
 
 function Recommendations() {
   return (

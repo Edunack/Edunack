@@ -1,5 +1,5 @@
 import "./WelcomePanel.css";
-import Button from "./CommonAssets/Button";
+import Button from "../../CommonAssets/Button";
 
 function WelcomePanel() {
   return (

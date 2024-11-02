@@ -1,5 +1,5 @@
 import "./Advert.css";
-import Tile from "./CommonAssets/Tile";
+import Tile from "./AdditionalAssets/Tile";
 
 function Advert() {
   return (
