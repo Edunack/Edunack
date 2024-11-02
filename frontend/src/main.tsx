@@ -2,16 +2,23 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import MainPage from "./routes/MainPage.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Menu from "./routes/Menu.tsx";
+import Menu from "./Menu.tsx";
+import Login from "./routes/Login.tsx";
+import Error from "./routes/Error.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Menu />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
         element: <MainPage />,
+      },
+      {
+        path: "/Login",
+        element: <Login />,
       },
     ],
   },

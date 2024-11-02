@@ -8,6 +8,8 @@
   justify-content: space-between;
   padding: 0 1%;
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 10;
 }
 #containerMenu > #logoContainer > span {
@@ -30,4 +32,9 @@
   font-size: 3vh;
   display: inline;
   padding: 15px;
+}
+
+.menuLink {
+  color: white;
+  text-decoration: none;
 }
