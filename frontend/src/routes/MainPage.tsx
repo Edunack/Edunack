@@ -7,7 +7,7 @@ import "./MainPage.css";
 
 function App() {
   return (
-    <div>
+    <div id="MainPage">
       <WelcomePanel />
       <InfoPanel />
       <Recommendations />

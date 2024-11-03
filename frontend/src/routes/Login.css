@@ -1,0 +1,93 @@
+#Login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(10vh);
+  height: 90vh;
+  text-align: left;
+}
+
+#LoginPanel {
+  display: flex;
+  justify-content: center;
+  height: 75vh;
+  width: 120vh;
+  border-radius: 22px;
+}
+#LoginPanel > #Left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  gap: 2vh;
+  width: 40%;
+  height: 100%;
+  padding: 0 5%;
+  background-color: #202020;
+  border-radius: 22px 0 0 22px;
+}
+
+#LoginPanel > #Left > #Form {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+#LoginPanel > #Right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5vh;
+  width: 35%;
+  height: 100%;
+  padding: 0 10% 0 5%;
+  background-color: #90429c;
+  border-radius: 0 22px 22px 0;
+}
+
+#LoginPanel > #Right > p {
+  margin: 0;
+}
+
+#LoginPanel > #Right > #WelcomeBack {
+  font-weight: 900;
+  font-size: 4vh;
+}
+
+#LoginPanel > #Right > #Register {
+  font-weight: 400;
+  font-size: 3vh;
+}
+
+#AlternateLoginText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+}
+
+#AlternateLoginText > span {
+  margin: 0;
+  text-align: center;
+}
+
+.LoginPanelLinks {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#LoginText {
+  margin: 0;
+  font-weight: 700;
+  font-size: 3vh;
+}
+
+#LoginSubtext {
+  font-weight: 400;
+  font-size: 2vh;
+}
+
+#AlternateLoginMethods {
+  display: flex;
+}

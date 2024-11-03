@@ -1,5 +1,5 @@
 import "./Advert.css";
-import Tile from "./AdditionalAssets/Tile";
+import Tile from "../../CommonAssets/Tile";
 
 function Advert() {
   return (
@@ -14,7 +14,14 @@ function Advert() {
       <div id="maintainSpace">
         <p id="title">FIND THE BEST COURSE FOR YOU</p>
         <div id="tilesContainer">
-          <Tile color="white" bgColor="#60316C" shadow="#3A2E65">
+          <Tile
+            color="white"
+            bgColor="#60316C"
+            shadow="0 0 50px #3A2E65"
+            width="40vh"
+            height="45vh"
+            borderRadius="26px"
+          >
             <p className="titles">
               THE
               <br />
@@ -28,7 +35,14 @@ function Advert() {
               silli
             </span>
           </Tile>
-          <Tile color="white" bgColor="#3A2E65" shadow="#60316C">
+          <Tile
+            color="white"
+            bgColor="#3A2E65"
+            shadow="0 0 50px #60316C"
+            width="40vh"
+            height="45vh"
+            borderRadius="26px"
+          >
             <p className="titles">THE IDEA</p>
             <span className="content">
               We are dedicated to popularizing courses of good quality to the

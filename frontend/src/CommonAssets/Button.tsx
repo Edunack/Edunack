@@ -3,19 +3,27 @@ import "./Button.css";
 interface Props {
   children: string;
   bgColor: string;
-  color: string;
-  fontSize: string;
+  color?: string;
+  fontSize?: string;
   fontWeight: number;
-  zIndex: number;
+  zIndex?: number;
+  width?: string;
+  padding?: string;
+  borderRadius?: string;
+  margin?: string;
 }
 
 function Button({
   children,
   bgColor,
-  color,
+  color = "white",
   fontSize,
   fontWeight,
-  zIndex,
+  zIndex = 0,
+  width = "",
+  borderRadius,
+  padding,
+  margin,
 }: Props) {
   return (
     <>
@@ -26,6 +34,10 @@ function Button({
           fontSize: fontSize,
           fontWeight: fontWeight,
           zIndex: zIndex,
+          width: width,
+          padding: padding,
+          borderRadius: borderRadius,
+          margin: margin,
         }}
         id="customBtn"
       >

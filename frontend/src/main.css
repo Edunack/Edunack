@@ -1,7 +1,7 @@
 body {
-  text-align: center;
+  background: linear-gradient(249.93deg, #382c63 33.97%, #5f306b 65.48%);
   color: white;
-  background-color: #37343d;
   font-family: "Lato", sans-serif;
+  text-align: center;
   margin: 0;
 }
