@@ -5,12 +5,14 @@ interface Props {
   bgColor: string;
   color?: string;
   fontSize?: string;
-  fontWeight: number;
+  fontWeight?: number;
   zIndex?: number;
   width?: string;
   padding?: string;
   borderRadius?: string;
   margin?: string;
+  alignSelf?: string;
+  type?: "button" | "submit" | "reset";
 }
 
 function Button({
@@ -24,6 +26,8 @@ function Button({
   borderRadius,
   padding,
   margin,
+  type,
+  alignSelf,
 }: Props) {
   return (
     <>
@@ -38,7 +42,9 @@ function Button({
           padding: padding,
           borderRadius: borderRadius,
           margin: margin,
+          alignSelf: alignSelf,
         }}
+        type={type}
         id="customBtn"
       >
         {children}

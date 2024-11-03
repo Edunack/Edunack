@@ -1,41 +1,56 @@
-import "./Login.css";
+import "./Register.css";
 import { Form, Link } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 
-function Login() {
+function Register() {
   return (
-    <div id="Login">
-      <div id="LoginPanel">
+    <div id="Register">
+      <div id="RegisterPanel">
         <div id="Left">
-          <div id="MainText">
-            <p id="LoginText">LOG IN</p>
-            <span id="LoginSubtext">
-              If you do not have an account, click{" "}
-              <Link to={`/Register`} className="LoginPanelLinks">
+          <p id="Welcome">WE ARE SO EXCITED TO HAVE YOU!</p>
+          <p id="LoginText">
+            ALREADY HAVE AN ACCOUNT
+            <br />
+            CLICK{" "}
+            <Link to={`/Login`} className="RegisterPanelLinks">
+              HERE
+            </Link>
+          </p>
+          <img src="../../img/logo.svg" alt="" id="Logo" />
+        </div>
+        <div id="Right">
+          <div id="RegisterText">
+            <p id="MainText">SIGN UP</p>
+            <span id="RegisterSubtext">
+              If you already have an account, click{" "}
+              <Link to={`/Login`} className="RegisterPanelLinks">
                 here
               </Link>{" "}
               to create one
             </span>
           </div>
           <Form id="Form">
-            <Input label="EMAIL" type="text" />
-            <Input label="PASSWORD" type="password" margin="2% 0 1.5vh 0" />
+            <Input label="NAME" type="text" padding="1.5vh" />
+            <Input label="EMAIL" type="text" padding="1.5vh" />
+            <Input label="PASSWORD" type="password" padding="1.5vh" />
+            <Input label="REPEAT PASSWORD" type="password" padding="1.5vh" />
             <Button
+              type="submit"
               bgColor="#90429C"
               color="white"
               fontWeight={700}
-              width="100%"
+              width="80%"
               padding="3%"
               borderRadius="10px"
-              margin="1.5vh 0 2vh 0 "
-              type="submit"
+              alignSelf="center"
+              margin="4.5vh 0 0 0"
             >
-              LOG IN
+              SIGN UP
             </Button>
           </Form>
-          <div id="AlternateLoginText">
+          <div id="AlternateRegisterText">
             <svg
               width="94"
               height="1"
@@ -56,45 +71,39 @@ function Login() {
               <line y1="0.5" x2="94" y2="0.5" stroke="#454545" />
             </svg>
           </div>
-          <div id="AlternateLoginMethods">
+          <div id="AlternateRegisterMethods">
             <Tile
               bgColor="#D9D9D9"
               shadow="0 0 5px #D9D9D9"
-              width="6vh"
-              height="2vh"
+              width="10%"
+              height="2%"
               borderRadius="7px"
+              margin="0"
+              padding="3.5vh"
             ></Tile>
             <Tile
               bgColor="#D9D9D9"
               shadow="0 0 5px #D9D9D9"
-              width="6vh"
-              height="2vh"
+              width="10%"
+              height="2%"
               borderRadius="7px"
+              margin="0"
+              padding="3.5vh"
             ></Tile>
             <Tile
               bgColor="#D9D9D9"
               shadow="0 0 5px #D9D9D9"
-              width="6vh"
-              height="2vh"
+              width="10%"
+              height="2%"
               borderRadius="7px"
+              margin="0"
+              padding="3.5vh"
             ></Tile>
           </div>
-        </div>
-        <div id="Right">
-          <p id="WelcomeBack">WE ARE SO EXCITED TO SEE YOU AGAIN!</p>
-          <p id="RegisterText">
-            FIRST TIME HERE?
-            <br />
-            CLICK{" "}
-            <Link to={`/Register`} className="LoginPanelLinks">
-              HERE
-            </Link>
-          </p>
-          <img src="../../img/logo.svg" alt="" id="Logo" />
         </div>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default Register;

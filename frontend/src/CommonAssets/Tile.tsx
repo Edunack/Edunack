@@ -9,6 +9,8 @@ interface Props {
   width?: string;
   height?: string;
   borderRadius?: string;
+  margin?: string;
+  padding?: string;
 }
 
 function Tile({
@@ -19,6 +21,8 @@ function Tile({
   width,
   height,
   borderRadius,
+  margin,
+  padding,
 }: Props) {
   return (
     <div
@@ -29,6 +33,8 @@ function Tile({
         height: height,
         width: width,
         borderRadius: borderRadius,
+        margin: margin,
+        padding: padding,
       }}
       id="tile"
     >

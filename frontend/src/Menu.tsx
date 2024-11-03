@@ -11,7 +11,11 @@ function Menu() {
             alt="Edunack logo"
             style={{ width: "3vh", height: "3vh", margin: "0px 8px" }}
           />
-          <span>EDUNACK</span>
+          <span>
+            <Link to={``} className="menuLink">
+              EDUNACK
+            </Link>
+          </span>
         </div>
         <ul id="menu">
           <li className="menuItem" style={{ fontWeight: 700 }}>

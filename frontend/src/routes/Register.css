@@ -1,0 +1,112 @@
+#Register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(10vh);
+  height: 90vh;
+  background: linear-gradient(249.93deg, #60316c 33.97%, #392d64 65.48%);
+}
+
+#RegisterPanel {
+  display: flex;
+  justify-content: center;
+  height: 80vh;
+  width: 130vh;
+}
+
+#RegisterPanel > #Left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5vh;
+  background-color: #90429c;
+  text-align: right;
+  height: 100%;
+  width: 25%;
+  padding: 0 5% 0 10%;
+  border-radius: 22px 0 0 22px;
+}
+
+#RegisterPanel > #Right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2vh;
+  background-color: #202020;
+  text-align: left;
+  height: 100%;
+  width: 60%;
+  padding: 0 5%;
+  border-radius: 0 22px 22px 0;
+}
+
+#RegisterPanel > #Left > #Welcome {
+  font-weight: 900;
+  font-size: 4vh;
+}
+
+#RegisterPanel > #Left > #LoginText {
+  font-weight: 400;
+  font-size: 3vh;
+}
+
+#RegisterPanel > #Left > #Logo {
+  transform: scaleX(-1);
+  position: absolute;
+  width: 12vh;
+  bottom: -2%;
+  left: -7.5%;
+}
+
+#RegisterPanel > #Left > p {
+  margin: 0;
+}
+
+#RegisterPanel > #Right > p {
+  margin: 0;
+}
+
+#RegisterPanel > #Right > #RegisterText > #MainText {
+  margin: 0;
+  font-weight: 700;
+  font-size: 3vh;
+}
+
+#RegisterPanel > #Right > #RegisterText > #RegisterSubtext {
+  font-weight: 400;
+  font-size: 2vh;
+}
+
+#RegisterPanel > #Right > #Form {
+  display: flex;
+  flex-direction: column;
+}
+
+#RegisterPanel > #Right > #AlternateRegisterText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+  width: 80%;
+  align-self: center;
+}
+
+#RegisterPanel > #Right > #AlternateRegisterText > span {
+  margin: 0;
+  text-align: center;
+}
+
+#RegisterPanel > #Right > #AlternateRegisterMethods {
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.RegisterPanelLinks {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
