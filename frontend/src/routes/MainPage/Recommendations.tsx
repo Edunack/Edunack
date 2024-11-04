@@ -12,8 +12,8 @@ function Recommendations() {
       <p id="content" className="onTop">
         <span className="toCenter">
           <svg
-            width="11"
-            height="26"
+            width="3vh"
+            height="4vh"
             viewBox="0 0 11 26"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -24,8 +24,8 @@ function Recommendations() {
         Sports{" "}
         <span className="toCenter">
           <svg
-            width="1"
-            height="36"
+            width="1vh"
+            height="5vh"
             viewBox="0 0 1 36"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -42,8 +42,8 @@ function Recommendations() {
         <span id="mainElement">PHP Programming</span>{" "}
         <span className="toCenter">
           <svg
-            width="1"
-            height="36"
+            width="1vh"
+            height="5vh"
             viewBox="0 0 1 36"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -60,8 +60,8 @@ function Recommendations() {
         Ebroidery{" "}
         <span className="toCenter">
           <svg
-            width="11"
-            height="26"
+            width="3vh"
+            height="4vh"
             viewBox="0 0 11 26"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -90,9 +90,10 @@ function Recommendations() {
       <Button
         bgColor="CECECE"
         color="#1E1E1E"
-        fontSize="20px"
+        fontSize="2.75vh"
         fontWeight={500}
         zIndex={4}
+        borderRadius="2vh"
       >
         START NOW
       </Button>

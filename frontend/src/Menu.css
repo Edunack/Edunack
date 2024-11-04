@@ -23,6 +23,7 @@
   align-items: center;
 }
 #menu {
+  display: flex;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -30,8 +31,7 @@
 #menu > .menuItem {
   font-weight: 500;
   font-size: 3vh;
-  display: inline;
-  padding: 15px;
+  padding: 2.5vh;
 }
 
 .menuLink {

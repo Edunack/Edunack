@@ -17,17 +17,17 @@ function Advert() {
           <Tile
             color="white"
             bgColor="#60316C"
-            shadow="0 0 50px #3A2E65"
+            shadow="0 0 7.5vh #3A2E65"
             width="40vh"
             height="45vh"
-            borderRadius="26px"
+            borderRadius="4vh"
           >
             <p className="titles">
               THE
               <br />
               INNOVATION
             </p>
-            <span className="content">
+            <span className="TileContent">
               We are veri silli We are veri silli We are verrrri silli We are
               veri silli We are veri silli We are verrrri silli We are verrrrri
               silli We are verrri silli We are veri silli We are vei silli We
@@ -38,13 +38,13 @@ function Advert() {
           <Tile
             color="white"
             bgColor="#3A2E65"
-            shadow="0 0 50px #60316C"
+            shadow="0 0 7.5vh #60316C"
             width="40vh"
             height="45vh"
-            borderRadius="26px"
+            borderRadius="4vh"
           >
             <p className="titles">THE IDEA</p>
-            <span className="content">
+            <span className="TileContent">
               We are dedicated to popularizing courses of good quality to the
               public. We strongly believe that education should be free, and
               those who create amazing courses, especially those who do it with

@@ -9,7 +9,7 @@ function Menu() {
           <img
             src="../img/logo.svg"
             alt="Edunack logo"
-            style={{ width: "3vh", height: "3vh", margin: "0px 8px" }}
+            style={{ width: "3vh", height: "3vh", margin: "0 1vh" }}
           />
           <span>
             <Link to={``} className="menuLink">

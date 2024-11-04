@@ -31,3 +31,7 @@
 #line {
   margin: 0 5vh;
 }
+
+#FooterLists > ul{
+  font-size: 2.5vh;
+}

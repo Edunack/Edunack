@@ -1,4 +1,4 @@
-import "./footer.css";
+import "./Footer.css";
 
 function Footer() {
   return (
@@ -8,8 +8,8 @@ function Footer() {
         <span id="motto">BECAUSE EVERYONE DESERVES A CHANCE TO GROW</span>
       </div>
       <svg
-        width="1"
-        height="50vh"
+        width="1vh"
+        height="35vh"
         viewBox="0 0 1 272"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@ function Footer() {
       >
         <line x1="0.5" x2="0.5" y2="272" stroke="white" />
       </svg>
-      <div>
+      <div id="FooterLists">
         <ul className="footerLists">
           <li>Return to top</li>
           <li>Ranking</li>

@@ -9,13 +9,14 @@ function WelcomePanel() {
         LEARN TODAY?
       </p>
       <p id="subtext">Focus on your work - let us do the searching</p>
-      <br />
       <Button
         bgColor="#1e1e1e"
         color="white"
-        fontSize="20px"
+        fontSize="2.75vh"
         fontWeight={400}
         zIndex={1}
+        borderRadius="2vh"
+        margin="5vh 0 0 0"
       >
         START NOW
       </Button>

@@ -30,6 +30,7 @@
   align-items: center;
   justify-content: center;
   gap: 10vh;
+  margin-bottom: 10vh;
 }
 
 #mainElement {
