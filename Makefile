@@ -6,4 +6,4 @@ run: build
 	cd ./backend && cargo run
 
 shell:
-	nix develop --command "zellij" "--layout" "programming"
+	nix develop --command "zellij" "--layout" "programming" "options" "--default-shell=zsh"
