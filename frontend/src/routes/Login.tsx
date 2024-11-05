@@ -4,6 +4,11 @@ import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 
+/*export async function action() {
+  //navigate("/Error", { state: { message: "unexpected error" } });
+  throw new Error("Simple error");
+}*/
+
 function Login() {
   return (
     <div id="Login">

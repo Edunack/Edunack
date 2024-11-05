@@ -30,7 +30,7 @@ function Input({
           margin: margin,
           padding: padding,
         }}
-        id="CustomInput"
+        className="CustomInput"
       />
     </div>
   );

@@ -6,6 +6,7 @@ import Menu from "./Menu.tsx";
 import Login from "./routes/Login.tsx";
 import Error from "./routes/Error.tsx";
 import Register from "./routes/Register.tsx";
+//import { action as loginAction } from "./routes/Login.tsx";
 import "./main.css";
 
 const router = createBrowserRouter([
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       {
         path: "Login",
         element: <Login />,
+        //action: loginAction,
       },
       {
         path: "Register",

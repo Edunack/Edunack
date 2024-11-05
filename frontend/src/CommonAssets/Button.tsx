@@ -4,7 +4,7 @@ interface Props {
   children: string;
   bgColor: string;
   color?: string;
-  fontSize: string;
+  fontSize?: string;
   fontWeight?: number;
   zIndex?: number;
   width?: string;
@@ -13,6 +13,7 @@ interface Props {
   margin?: string;
   alignSelf?: string;
   type?: "button" | "submit" | "reset";
+  onClick?: () => void;
 }
 
 function Button({
@@ -28,6 +29,7 @@ function Button({
   margin,
   type,
   alignSelf,
+  onClick,
 }: Props) {
   return (
     <>
@@ -46,6 +48,7 @@ function Button({
         }}
         type={type}
         id="customBtn"
+        onClick={onClick}
       >
         {children}
       </button>
