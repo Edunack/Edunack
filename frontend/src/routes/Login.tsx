@@ -19,7 +19,7 @@ function Login() {
               to create one
             </span>
           </div>
-          <form id="Form" method="POST" action="/api/login">
+          <form id="Form" action="/api/login">
             <Input label="EMAIL" type="text" name="login"/>
             <Input label="PASSWORD" type="password" name="password" margin="2% 0 1.5vh 0" />
             <Button

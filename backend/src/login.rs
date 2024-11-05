@@ -34,61 +34,68 @@ impl LoginRouter {
     pub async fn login(
         State(state): State<AppState>,
         Form(params): Form<LoginParams>,
-    ) -> Result<Response, StatusCode> {
+    ) -> Response {
         let db: RwLockReadGuard<Database> = state.database.read().await;
-        let user = match db.find_user_by_username(&params.login).await {
+        let user_db = db.user();
+        let user = match user_db.find_by_username(&params.login).await {
             Some(user) => user,
-            None => match db.find_user_by_email(&params.login).await {
+            None => match user_db.find_by_email(&params.login).await {
                 Some(user) => user,
-                None => return Err(StatusCode::UNAUTHORIZED),
+                None => return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response(),
             },
         };
 
-        if !bcrypt::verify(params.password, &user.password)
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+        match bcrypt::verify(params.password, &user.password)
         {
-            return Err(StatusCode::UNAUTHORIZED);
+            Ok(true) => (),
+            Ok(false) => return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response(),
+            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
 
-        let res = auth::encode_jwt(&user.email).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        let res = match auth::encode_jwt(&user.email) {
+            Ok(res) => res,
+            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        };
 
         let mut headers = HeaderMap::new();
-        headers.insert(http::header::LOCATION, HeaderValue::from_static("/"));
         headers.insert(
             http::header::SET_COOKIE,
             HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly", res).as_str())
                 .unwrap(),
         );
 
-        Ok((StatusCode::FOUND, headers).into_response())
+        (StatusCode::OK, headers).into_response()
     }
 
     pub async fn register(
         State(state): State<AppState>,
         Form(params): Form<RegisterParams>,
-    ) -> Result<impl IntoResponse, StatusCode> {
+    ) -> Response {
         let db: RwLockReadGuard<Database> = state.database.read().await;
-
-        if db.find_user_by_username(&params.username).await.is_some() {
-            return Err(StatusCode::BAD_REQUEST);
+        let user_db = db.user();
+        if user_db.exists_by_username(&params.username).await {
+            return (StatusCode::BAD_REQUEST, "Username already exists").into_response();
+        } else if user_db.exists_by_email(&params.email).await {
+            return (StatusCode::BAD_REQUEST, "Email already exists").into_response();
         }
         let id = Uuid::new_v4();
-        match db
-            .insert_user(&User {
+
+        let password = match bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST) {
+            Ok(pass) => pass,
+            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response()
+        };
+
+        match user_db
+            .insert(&User {
                 id,
                 username: params.username.clone(),
                 email: params.email.clone(),
-                password: bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST)
-                    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+                password,
             })
             .await
         {
-            Ok(_) => {
-                let mut headers = HeaderMap::new();
-                headers.insert(http::header::LOCATION, HeaderValue::from_static("/login"));
-                Ok((StatusCode::FOUND, headers).into_response())
-            }
-            Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+            Ok(_) => StatusCode::CREATED.into_response(),
+            Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
     }
 }
