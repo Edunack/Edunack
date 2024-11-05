@@ -1,5 +1,5 @@
 import "./Register.css";
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
@@ -31,10 +31,10 @@ function Register() {
               to create one
             </span>
           </div>
-          <Form id="Form">
-            <Input label="NAME" type="text" padding="1.5vh" />
-            <Input label="EMAIL" type="text" padding="1.5vh" />
-            <Input label="PASSWORD" type="password" padding="1.5vh" />
+          <form id="Form" method="POST" action="/api/register">
+            <Input label="NAME" type="text" name="username" padding="1.5vh" />
+            <Input label="EMAIL" type="text" name="email" padding="1.5vh" />
+            <Input label="PASSWORD" type="password" name="password" padding="1.5vh" />
             <Input label="REPEAT PASSWORD" type="password" padding="1.5vh" />
             <Button
               type="submit"
@@ -49,7 +49,7 @@ function Register() {
             >
               SIGN UP
             </Button>
-          </Form>
+          </form>
           <div id="AlternateRegisterText">
             <svg
               width="94"

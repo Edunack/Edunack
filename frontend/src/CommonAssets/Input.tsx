@@ -7,6 +7,7 @@ interface Props {
   color?: string;
   margin?: string;
   padding?: string;
+  name?: string;
 }
 
 function Input({
@@ -16,6 +17,7 @@ function Input({
   color = "#202020",
   margin,
   padding,
+  name,
 }: Props) {
   return (
     <div style={{ textAlign: "left" }}>
@@ -24,6 +26,7 @@ function Input({
       </label>
       <input
         type={type}
+        name={name}
         style={{
           backgroundColor: bgColor,
           color: color,
