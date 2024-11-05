@@ -3,8 +3,36 @@ import { Link } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
+import { useState } from "react";
 
 function Register() {
+  const [response, setResponse] = useState("");
+
+  function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData);
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((data) => {
+      console.log(data);
+      if (data.status == 400 && data.statusText == "Username already exists") {
+        setResponse(data.statusText);
+      } else if (
+        data.status == 400 &&
+        data.statusText == "Email already exists"
+      ) {
+        setResponse(data.statusText);
+      } else if (data.status == 200) {
+        setResponse("");
+      }
+    });
+  }
+
   return (
     <div id="Register">
       <div id="RegisterPanel">
@@ -31,11 +59,17 @@ function Register() {
               to create one
             </span>
           </div>
-          <form id="Form" method="POST" action="/api/register">
+          <form id="Form" onSubmit={handleSubmit}>
             <Input label="NAME" type="text" name="username" padding="1.5vh" />
             <Input label="EMAIL" type="text" name="email" padding="1.5vh" />
-            <Input label="PASSWORD" type="password" name="password" padding="1.5vh" />
+            <Input
+              label="PASSWORD"
+              type="password"
+              name="password"
+              padding="1.5vh"
+            />
             <Input label="REPEAT PASSWORD" type="password" padding="1.5vh" />
+            <p id="RegisterResponse">{response}</p>
             <Button
               type="submit"
               bgColor="#90429C"

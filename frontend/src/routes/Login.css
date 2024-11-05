@@ -102,3 +102,8 @@
   bottom: -2%;
   right: -7%;
 }
+
+#LoginResponse {
+  margin: 0;
+  padding: 0;
+}

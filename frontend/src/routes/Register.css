@@ -105,6 +105,11 @@
   align-self: center;
 }
 
+#RegisterResponse {
+  margin: 0;
+  padding: 0;
+}
+
 .RegisterPanelLinks {
   color: white;
   font-weight: bold;

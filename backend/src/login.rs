@@ -70,7 +70,7 @@ impl LoginRouter {
 
     pub async fn register(
         State(state): State<AppState>,
-        Form(params): Form<RegisterParams>,
+        Json(params): Json<RegisterParams>,
     ) -> Response {
         let db: RwLockReadGuard<Database> = state.database.read().await;
         let user_db = db.user();

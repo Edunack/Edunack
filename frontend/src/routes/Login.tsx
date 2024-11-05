@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
+import { useState } from "react";
 
 /*export async function action() {
   //navigate("/Error", { state: { message: "unexpected error" } });
@@ -10,18 +11,28 @@ import Tile from "../CommonAssets/Tile";
 }*/
 
 function Login() {
+  const [response, setResponse] = useState("");
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
-      event.preventDefault();
-      const formData = new FormData(event.currentTarget);
-      const data = Object.fromEntries(formData);
-      fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }).then(data => console.log(data));
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData);
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((data) => {
+      console.log(data);
+      if (data.status === 401) {
+        setResponse("Incorrect login or password");
+      } else if (data.status === 500) {
+        setResponse("Internal server error");
+      } else if (data.status === 200) {
+        setResponse("");
+      }
+    });
   }
 
   return (
@@ -39,8 +50,14 @@ function Login() {
             </span>
           </div>
           <form id="Form" onSubmit={handleSubmit}>
-            <Input label="EMAIL" type="text" name="login"/>
-            <Input label="PASSWORD" type="password" name="password" margin="2% 0 1.5vh 0" />
+            <Input label="EMAIL" type="text" name="login" />
+            <Input
+              label="PASSWORD"
+              type="password"
+              name="password"
+              margin="2% 0 1.5vh 0"
+            />
+            <p id="LoginResponse">{response}</p>
             <Button
               bgColor="#90429C"
               color="white"
