@@ -1,5 +1,5 @@
 import "./Login.css";
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
@@ -19,9 +19,9 @@ function Login() {
               to create one
             </span>
           </div>
-          <Form id="Form">
-            <Input label="EMAIL" type="text" />
-            <Input label="PASSWORD" type="password" margin="2% 0 1.5vh 0" />
+          <form id="Form" method="POST" action="/api/login">
+            <Input label="EMAIL" type="text" name="login"/>
+            <Input label="PASSWORD" type="password" name="password" margin="2% 0 1.5vh 0" />
             <Button
               bgColor="#90429C"
               color="white"
@@ -34,7 +34,7 @@ function Login() {
             >
               LOG IN
             </Button>
-          </Form>
+          </form>
           <div id="AlternateLoginText">
             <svg
               width="94"

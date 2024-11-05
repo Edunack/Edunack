@@ -45,6 +45,6 @@ pub fn decode_jwt(token: &str) -> Result<TokenData<Claims>, ()> {
 pub async fn authorize(request: Request, next: Next) -> Result<Response, StatusCode> {
     println!("{}", request.uri());
 
-    Err(StatusCode::IM_A_TEAPOT)
-//    Ok(next.run(request).await)
+//    Err(StatusCode::IM_A_TEAPOT)
+    Ok(next.run(request).await)
 }

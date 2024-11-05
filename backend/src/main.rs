@@ -11,7 +11,7 @@ use tower::ServiceBuilder;
 use tower_http::{
     cors::{Any, CorsLayer},
     normalize_path::NormalizePath,
-    services::ServeDir,
+    services::{ServeDir, ServeFile},
 };
 mod auth;
 mod db;
@@ -57,7 +57,8 @@ async fn main() {
                 .nest("/", LoginRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize))
         )
-        .nest_service("/", ServeDir::new("../frontend/dist"))
+        .nest_service("/", ServeFile::new("../frontend/dist/index.html"))
+        .nest_service("/assets", ServeDir::new("../frontend/dist/assets"))
         .nest_service("/img", ServeDir::new("../frontend/img"))
         .with_state(state)
         .layer(

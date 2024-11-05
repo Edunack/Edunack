@@ -1,4 +1,13 @@
-use axum::{extract::State, http::StatusCode, response::IntoResponse, routing::post, Json, Router};
+use std::collections::HashMap;
+
+use axum::{
+    extract::State,
+    http::{HeaderMap, HeaderName, HeaderValue, StatusCode},
+    response::{IntoResponse, Response},
+    routing::post,
+    Form, Json, Router,
+};
+use jsonwebtoken::Header;
 use serde::{Deserialize, Serialize};
 use tokio::sync::RwLockReadGuard;
 use uuid::Uuid;
@@ -24,8 +33,8 @@ pub struct RegisterParams {
 impl LoginRouter {
     pub async fn login(
         State(state): State<AppState>,
-        Json(params): Json<LoginParams>,
-    ) -> Result<Json<String>, StatusCode> {
+        Form(params): Form<LoginParams>,
+    ) -> Result<Response, StatusCode> {
         let db: RwLockReadGuard<Database> = state.database.read().await;
         let user = match db.find_user_by_username(&params.login).await {
             Some(user) => user,
@@ -41,27 +50,45 @@ impl LoginRouter {
             return Err(StatusCode::UNAUTHORIZED);
         }
 
-        let res = auth::encode_jwt(&user.email)
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        let res = auth::encode_jwt(&user.email).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-        Ok(Json(res))
+        let mut headers = HeaderMap::new();
+        headers.insert(http::header::LOCATION, HeaderValue::from_static("/"));
+        headers.insert(
+            http::header::SET_COOKIE,
+            HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly", res).as_str())
+                .unwrap(),
+        );
+
+        Ok((StatusCode::FOUND, headers).into_response())
     }
 
-    pub async fn register(State(state): State<AppState>, Json(params): Json<RegisterParams>) -> Result<impl IntoResponse, StatusCode> {
+    pub async fn register(
+        State(state): State<AppState>,
+        Form(params): Form<RegisterParams>,
+    ) -> Result<impl IntoResponse, StatusCode> {
         let db: RwLockReadGuard<Database> = state.database.read().await;
 
         if db.find_user_by_username(&params.username).await.is_some() {
             return Err(StatusCode::BAD_REQUEST);
         }
         let id = Uuid::new_v4();
-        match db.insert_user(&User {
-            id,
-            username: params.username.clone(),
-            email: params.email.clone(),
-            password: bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
-        }).await {
-            Ok(_) => {Ok(StatusCode::CREATED)},
-            Err(_) => {Err(StatusCode::INTERNAL_SERVER_ERROR)}
+        match db
+            .insert_user(&User {
+                id,
+                username: params.username.clone(),
+                email: params.email.clone(),
+                password: bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST)
+                    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+            })
+            .await
+        {
+            Ok(_) => {
+                let mut headers = HeaderMap::new();
+                headers.insert(http::header::LOCATION, HeaderValue::from_static("/login"));
+                Ok((StatusCode::FOUND, headers).into_response())
+            }
+            Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
         }
     }
 }
