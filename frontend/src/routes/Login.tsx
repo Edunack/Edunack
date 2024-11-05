@@ -5,6 +5,20 @@ import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 
 function Login() {
+
+  function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const data = Object.fromEntries(formData);
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(data => console.log(data));
+  }
+
   return (
     <div id="Login">
       <div id="LoginPanel">
@@ -19,7 +33,7 @@ function Login() {
               to create one
             </span>
           </div>
-          <form id="Form" action="/api/login">
+          <form id="Form" onSubmit={handleSubmit}>
             <Input label="EMAIL" type="text" name="login"/>
             <Input label="PASSWORD" type="password" name="password" margin="2% 0 1.5vh 0" />
             <Button

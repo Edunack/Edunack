@@ -1,13 +1,12 @@
 use std::collections::HashMap;
 
 use axum::{
-    extract::State,
+    extract::{FromRef, State},
     http::{HeaderMap, HeaderName, HeaderValue, StatusCode},
     response::{IntoResponse, Response},
     routing::post,
     Form, Json, Router,
 };
-use jsonwebtoken::Header;
 use serde::{Deserialize, Serialize};
 use tokio::sync::RwLockReadGuard;
 use uuid::Uuid;
@@ -31,24 +30,24 @@ pub struct RegisterParams {
 }
 
 impl LoginRouter {
-    pub async fn login(
-        State(state): State<AppState>,
-        Form(params): Form<LoginParams>,
-    ) -> Response {
+    pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
         let db: RwLockReadGuard<Database> = state.database.read().await;
         let user_db = db.user();
         let user = match user_db.find_by_username(&params.login).await {
             Some(user) => user,
             None => match user_db.find_by_email(&params.login).await {
                 Some(user) => user,
-                None => return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response(),
+                None => {
+                    return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()
+                }
             },
         };
 
-        match bcrypt::verify(params.password, &user.password)
-        {
+        match bcrypt::verify(params.password, &user.password) {
             Ok(true) => (),
-            Ok(false) => return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response(),
+            Ok(false) => {
+                return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()
+            }
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
 
@@ -57,14 +56,16 @@ impl LoginRouter {
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
 
-        let mut headers = HeaderMap::new();
-        headers.insert(
-            http::header::SET_COOKIE,
-            HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly", res).as_str())
-                .unwrap(),
-        );
-
-        (StatusCode::OK, headers).into_response()
+        (
+            StatusCode::OK,
+            HeaderMap::try_from(&HashMap::from([(
+                http::header::SET_COOKIE,
+                HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly", res).as_str())
+                    .unwrap(),
+            )]))
+            .unwrap(),
+        )
+            .into_response()
     }
 
     pub async fn register(
@@ -82,7 +83,7 @@ impl LoginRouter {
 
         let password = match bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST) {
             Ok(pass) => pass,
-            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response()
+            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
 
         match user_db
@@ -97,6 +98,18 @@ impl LoginRouter {
             Ok(_) => StatusCode::CREATED.into_response(),
             Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
+    }
+
+    pub async fn logout() -> Response {
+        (
+            StatusCode::OK,
+            HeaderMap::try_from(&HashMap::from([(
+                http::header::SET_COOKIE,
+                HeaderValue::from_static(r#"Authorization="";"#),
+            )]))
+            .unwrap(),
+        )
+            .into_response()
     }
 }
 
