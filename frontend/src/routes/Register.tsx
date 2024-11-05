@@ -12,21 +12,23 @@ function Register() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
-    fetch("/api/login", {
+    fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+    }).then(async (data) => {
+        return { status: data.status, body: await data.text() };
     }).then((data) => {
       console.log(data);
-      if (data.status == 400 && data.statusText == "Username already exists") {
-        setResponse(data.statusText);
+      if (data.status == 400 && data.body == "Username") {
+        setResponse("Username already taken");
       } else if (
         data.status == 400 &&
-        data.statusText == "Email already exists"
+        data.body == "Email"
       ) {
-        setResponse(data.statusText);
+        setResponse("Email already taken");
       } else if (data.status == 200) {
         setResponse("");
       }
