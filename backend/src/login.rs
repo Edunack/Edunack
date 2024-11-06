@@ -74,10 +74,10 @@ impl LoginRouter {
     ) -> Response {
         let db: RwLockReadGuard<Database> = state.database.read().await;
         let user_db = db.user();
-        if user_db.exists_by_username(&params.username).await {
-            return (StatusCode::BAD_REQUEST, "Username already exists").into_response();
-        } else if user_db.exists_by_email(&params.email).await {
-            return (StatusCode::BAD_REQUEST, "Email already exists").into_response();
+        if user_db.exists_by_username_or_email(&params.username).await {
+            return (StatusCode::BAD_REQUEST, "Username").into_response();
+        } else if user_db.exists_by_username_or_email(&params.email).await {
+            return (StatusCode::BAD_REQUEST, "Email").into_response();
         }
         let id = Uuid::new_v4();
 

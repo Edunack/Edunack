@@ -94,4 +94,17 @@ impl UserDatabase {
             Err(_) => false,
         }
     }
+
+    pub async fn exists_by_username_or_email(&self, target: &str) -> bool {
+        match sqlx::query!(
+            "SELECT * FROM users WHERE username = ?1 OR email = ?1",
+            target,
+        )
+        .fetch_optional(&self.0)
+        .await
+        {
+            Ok(res) => res.is_some(),
+            Err(_) => false,
+        }
+    }
 }
