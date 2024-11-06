@@ -12,7 +12,7 @@ function Register() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
-    fetch("/api/login", {
+    fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
