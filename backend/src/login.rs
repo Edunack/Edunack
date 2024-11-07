@@ -79,12 +79,14 @@ impl LoginRouter {
         } else if user_db.exists_by_username_or_email(&params.email).await {
             return (StatusCode::BAD_REQUEST, "Email").into_response();
         }
+        println!("1");
         let id = Uuid::new_v4();
-
+        println!("2");
         let password = match bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST) {
             Ok(pass) => pass,
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
+        println!("3");
 
         match user_db
             .insert(&User {

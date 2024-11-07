@@ -18,21 +18,20 @@ function Register() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then(async (data) => {
+    })
+      .then(async (data) => {
         return { status: data.status, body: await data.text() };
-    }).then((data) => {
-      console.log(data);
-      if (data.status == 400 && data.body == "Username") {
-        setResponse("Username already taken");
-      } else if (
-        data.status == 400 &&
-        data.body == "Email"
-      ) {
-        setResponse("Email already taken");
-      } else if (data.status == 200) {
-        setResponse("");
-      }
-    });
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.status == 400 && data.body == "Username") {
+          setResponse("Username already taken");
+        } else if (data.status == 400 && data.body == "Email") {
+          setResponse("Email already taken");
+        } else if (data.status == 201) {
+          setResponse("");
+        }
+      });
   }
 
   return (

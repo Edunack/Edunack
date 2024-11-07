@@ -10,12 +10,20 @@ switch ($command) {
     }
     "run" {
         Make-Env
-        cd ./frontend && npm run build && cd ..
-        cd ./backend && cargo run && cd ..
+        cd ./frontend 
+        npm run build
+        cd ..
+        cd ./backend
+        cargo run
+        cd ..
     }
     "build" {
         Make-Env
-        cd ./frontend && npm run build && cd ..
-        cd ./backend && cargo build && cd ..
+        cd ./frontend
+        npm run build
+        cd ..
+        cd ./backend
+        cargo build
+        cd ..
     }
 }
