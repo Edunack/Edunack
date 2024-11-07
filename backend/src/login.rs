@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use axum::{
     extract::{FromRef, State},
     http::{HeaderMap, HeaderName, HeaderValue, StatusCode},
@@ -7,6 +8,7 @@ use axum::{
     routing::post,
     Form, Json, Router,
 };
+use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
 use tokio::sync::RwLockReadGuard;
 use uuid::Uuid;
@@ -43,12 +45,14 @@ impl LoginRouter {
             },
         };
 
-        match bcrypt::verify(params.password, &user.password) {
-            Ok(true) => (),
-            Ok(false) => {
+        match Argon2::default().verify_password(
+            params.password.as_bytes(),
+            &PasswordHash::new(&user.password).unwrap(),
+        ) {
+            Ok(_) => {}
+            Err(_) => {
                 return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()
             }
-            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
 
         let res = match auth::encode_jwt(&user.email) {
@@ -81,9 +85,11 @@ impl LoginRouter {
         }
         println!("1");
         let id = Uuid::new_v4();
-        println!("2");
-        let password = match bcrypt::hash(params.password.clone(), bcrypt::DEFAULT_COST) {
-            Ok(pass) => pass,
+
+        let salt = SaltString::generate(&mut OsRng);
+
+        let password = match Argon2::default().hash_password(params.password.as_bytes(), &salt) {
+            Ok(pass) => pass.to_string(),
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
         println!("3");

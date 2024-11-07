@@ -10,7 +10,7 @@
         {
           devShells.default = pkgs.mkShell {
             DATABASE_URL = "sqlite://db.sqlite";
-            packages = with pkgs; [ nodejs_20 typescript ];
+            packages = with pkgs; [ nodejs_20 typescript sqlite-interactive ];
           };
         }
       );
