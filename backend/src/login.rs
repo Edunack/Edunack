@@ -83,16 +83,16 @@ impl LoginRouter {
         } else if user_db.exists_by_username_or_email(&params.email).await {
             return (StatusCode::BAD_REQUEST, "Email").into_response();
         }
-        println!("1");
         let id = Uuid::new_v4();
 
         let salt = SaltString::generate(&mut OsRng);
-
         let password = match Argon2::default().hash_password(params.password.as_bytes(), &salt) {
             Ok(pass) => pass.to_string(),
-            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+            Err(error) => {
+                println!("{error:?}");
+                return StatusCode::INTERNAL_SERVER_ERROR.into_response()
+            }
         };
-        println!("3");
 
         match user_db
             .insert(&User {
@@ -104,7 +104,10 @@ impl LoginRouter {
             .await
         {
             Ok(_) => StatusCode::CREATED.into_response(),
-            Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+            Err(error) => {
+                println!("{error:?}");
+                StatusCode::INTERNAL_SERVER_ERROR.into_response()
+            }
         }
     }
 
