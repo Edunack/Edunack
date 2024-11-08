@@ -1,5 +1,4 @@
 @echo off
-set DATABASE_URL="sqlite://db.sqlite"
 
 if %~1=="" (
     echo "Missing argument: 'run' or 'build'"
