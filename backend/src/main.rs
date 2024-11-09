@@ -1,15 +1,11 @@
-use std::{str::FromStr, sync::Arc};
+use std::sync::Arc;
 
-use axum::{
-    extract::{FromRef, Request},
-    http::{Method, StatusCode, Uri},
-    middleware, Router, ServiceExt,
-};
+use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
 use db::Database;
 use login::LoginRouter;
 use rand::Rng;
 use router::{ExampleRouter, IntoRouter};
-use sqlx::{sqlite::SqliteConnectOptions, Executor, SqliteConnection, SqlitePool};
+use sqlx::{Executor, SqlitePool};
 use tokio::{net::TcpListener, sync::RwLock};
 use tower::ServiceBuilder;
 use tower_http::{
@@ -43,9 +39,10 @@ async fn main() {
             secret
         })
         .await;
-    let conn = SqlitePool::connect(dotenvy::var("DATABASE_URL").unwrap().as_str())
-        .await
-        .unwrap();
+    let conn =
+        SqlitePool::connect(&dotenvy::var("DATABASE").unwrap_or("sqlite://dev.sqlite".to_string()))
+            .await
+            .unwrap();
     conn.execute(
         format!(
             "PRAGMA key = '{}'",
