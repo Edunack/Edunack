@@ -1,8 +1,10 @@
-default: schema database
+default: sqlx
 
-schema:
-	sqlcipher dev.sqlite "PRAGMA key='$(shell sed -n -e 's/DATABASE_KEY=\(.*$\\)/\1/p' .env)';" ".output schema.sql" .schema
+# schema:
+# 	sqlcipher dev.sqlite "PRAGMA key='$(shell sed -n -e 's/DATABASE_KEY=\(.*$\\)/\1/p' .env)';" ".output schema.sql" .schema
 
-database:
+sqlx:
 	sqlite3 sqlx.sqlite ".read schema.sql"
 
+encrypted:
+	sqlcipher $(shell sed -n -e 's/DATABASE=sqlite:\/\/\(.*$\\)/\1/p' .env) "PRAGMA key='$(shell sed -n -e 's/DATABASE_KEY=\(.*$\\)/\1/p' .env)';" ".read schema.sql"
