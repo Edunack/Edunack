@@ -1,6 +1,7 @@
-use sqlx::{types::Uuid, Decode};
+use uuid::Uuid;
 
-#[derive(Debug, Decode)]
+
+#[derive(Debug)]
 pub struct User {
     pub id: Uuid,
     pub username: String,

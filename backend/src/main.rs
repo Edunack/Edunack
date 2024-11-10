@@ -1,12 +1,13 @@
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
-use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
+use axum::{extract::Request, http::Method, middleware, BoxError, Router, ServiceExt};
 use db::Database;
 use login::LoginRouter;
 use rand::Rng;
+use regex::Regex;
 use router::{ExampleRouter, IntoRouter};
-use sqlx::{Executor, SqlitePool};
-use tokio::{net::TcpListener, sync::RwLock};
+use rusqlite::Connection;
+use tokio::net::TcpListener;
 use tower::ServiceBuilder;
 use tower_http::{
     cors::{Any, CorsLayer},
@@ -21,8 +22,12 @@ mod user;
 
 #[derive(Clone)]
 pub struct AppState {
-    database: Arc<RwLock<Database>>,
+    database: Database,
 }
+
+unsafe impl Send for AppState {}
+
+unsafe impl Sync for AppState {}
 
 #[tokio::main]
 async fn main() {
@@ -40,21 +45,49 @@ async fn main() {
         })
         .await;
     let conn =
-        SqlitePool::connect(&dotenvy::var("DATABASE").unwrap_or("sqlite://dev.sqlite".to_string()))
-            .await
-            .unwrap();
-    conn.execute(
-        format!(
-            "PRAGMA key = '{}'",
-            dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string())
-        )
-        .as_str(),
-    )
-    .await
-    .unwrap();
+        Connection::open(dotenvy::var("DATABASE").unwrap_or("dev.sqlite".to_string())).unwrap();
+    //SqlitePool::connect(&dotenvy::var("DATABASE").unwrap_or("sqlite://dev.sqlite".to_string()))
+    //    .await
+    //    .unwrap();
+    let _ = conn.pragma_update(
+        None,
+        "key",
+        dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
+    );
+    let _ = conn.create_scalar_function(
+        "regexp",
+        2,
+        rusqlite::functions::FunctionFlags::SQLITE_UTF8
+            | rusqlite::functions::FunctionFlags::SQLITE_DETERMINISTIC,
+        move |ctx| {
+            assert_eq!(ctx.len(), 2, "called with unexpected number of arguments");
+            let regexp: Arc<Regex> = ctx.get_or_create_aux(0, |vr| -> Result<_, BoxError> {
+                Ok(Regex::new(vr.as_str()?)?)
+            })?;
+            let is_match = {
+                let text = ctx
+                    .get_raw(1)
+                    .as_str()
+                    .map_err(|e| rusqlite::Error::UserFunctionError(e.into()))?;
+
+                regexp.is_match(text)
+            };
+
+            Ok(is_match)
+        },
+    ).unwrap();
+    //conn.execute(
+    //    format!(
+    //        "PRAGMA key = '{}'",
+    //        dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string())
+    //    )
+    //    .as_str(),
+    //)
+    //.await
+    //.unwrap();
 
     let state = AppState {
-        database: Arc::new(RwLock::new(Database::new(conn))),
+        database: Database::new(Arc::new(RwLock::new(conn))),
     };
 
     let app = Router::new()
@@ -64,8 +97,8 @@ async fn main() {
         .nest(
             "/api",
             Router::new()
-                .nest("/sth", ExampleRouter.into_router())
-                .nest("/sth2", ExampleRouter.into_router())
+                //                .nest("/sth", ExampleRouter.into_router())
+                //                .nest("/sth2", ExampleRouter.into_router())
                 .nest("/", LoginRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize)),
         )

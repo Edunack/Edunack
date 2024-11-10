@@ -33,11 +33,10 @@ pub struct RegisterParams {
 
 impl LoginRouter {
     pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
-        let db: RwLockReadGuard<Database> = state.database.read().await;
-        let user_db = db.user();
-        let user = match user_db.find_by_username(&params.login).await {
+        let user_db = state.database.user();
+        let user = match user_db.find_by_username(&params.login) {
             Some(user) => user,
-            None => match user_db.find_by_email(&params.login).await {
+            None => match user_db.find_by_email(&params.login) {
                 Some(user) => user,
                 None => {
                     return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()
@@ -72,15 +71,16 @@ impl LoginRouter {
             .into_response()
     }
 
+    //#[axum_macros::debug_handler]
     pub async fn register(
         State(state): State<AppState>,
         Json(params): Json<RegisterParams>,
     ) -> Response {
-        let db: RwLockReadGuard<Database> = state.database.read().await;
-        let user_db = db.user();
-        if user_db.exists_by_username_or_email(&params.username).await {
-            return (StatusCode::BAD_REQUEST, "Username").into_response();
-        } else if user_db.exists_by_username_or_email(&params.email).await {
+        let user_db = state.database.user();
+        if let Some(user) = user_db.find_by_username_or_email(&params.username, &params.email) {
+            if user.username == params.username || user.username == params.email {
+                return (StatusCode::BAD_REQUEST, "Username").into_response();
+            }
             return (StatusCode::BAD_REQUEST, "Email").into_response();
         }
         let id = Uuid::new_v4();
@@ -90,19 +90,16 @@ impl LoginRouter {
             Ok(pass) => pass.to_string(),
             Err(error) => {
                 println!("{error:?}");
-                return StatusCode::INTERNAL_SERVER_ERROR.into_response()
+                return StatusCode::INTERNAL_SERVER_ERROR.into_response();
             }
         };
 
-        match user_db
-            .insert(&User {
-                id,
-                username: params.username.clone(),
-                email: params.email.clone(),
-                password,
-            })
-            .await
-        {
+        match user_db.insert(&User {
+            id,
+            username: params.username.clone(),
+            email: params.email.clone(),
+            password,
+        }) {
             Ok(_) => StatusCode::CREATED.into_response(),
             Err(error) => {
                 println!("{error:?}");
