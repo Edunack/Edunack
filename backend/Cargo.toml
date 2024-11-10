@@ -19,9 +19,22 @@ tower = "0.5.1"
 tower-http = { version = "0.6.1", features = ["normalize-path", "fs", "cors"] }
 uuid = { version = "1.10.0", features = ["v4"] }
 libsqlite3-sys = { version = "0.30.1", optional = true, default-features = false, features = [
-     "bundled"
+    "bundled"
 ] }
 
-[features]
-linkssl = ["dep:libsqlite3-sys", "libsqlite3-sys/bundled-sqlcipher"]
-bundledssl = ["dep:libsqlite3-sys", "libsqlite3-sys/bundled-sqlcipher-vendored-openssl"]
+[target.'cfg(unix)'.dependencies.libsqlite3-sys]
+version = "0.30.1"
+default-features = false
+features = [
+     "bundled-sqlcipher"
+]
+
+[target.'cfg(windows)'.dependencies.libsqlite3-sys]
+version = "0.30.1"
+default-features = false
+features = [
+     "bundled-sqlcipher-vendored-openssl"
+]
+
+
+

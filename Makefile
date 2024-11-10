@@ -1,9 +1,9 @@
 build:
-	cd ./backend && cargo build -F linkssl
+	cd ./backend && cargo build
 	cd ./frontend && npm run build
 
 run: build
-	cd ./backend && cargo run -F linkssl
+	cd ./backend && cargo run
 
 env:
 	nix develop --command "zsh"
