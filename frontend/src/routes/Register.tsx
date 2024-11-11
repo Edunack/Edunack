@@ -12,6 +12,24 @@ function Register() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
+
+    const password = data["password"];
+    const repeatedPassword = data["repeatPassword"];
+
+    const email = data["email"] as string;
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
+    if (!emailRegex.test(email)) {
+      setResponse("Email is not valid");
+      console.log("invalid email");
+      return;
+    }
+
+    if (password !== repeatedPassword) {
+      setResponse("Passwords do not match");
+      return;
+    }
+
     fetch("/api/register", {
       method: "POST",
       headers: {
@@ -69,7 +87,12 @@ function Register() {
               name="password"
               padding="1.5vh"
             />
-            <Input label="REPEAT PASSWORD" type="password" padding="1.5vh" />
+            <Input
+              label="REPEAT PASSWORD"
+              type="password"
+              name="repeatPassword"
+              padding="1.5vh"
+            />
             <p id="RegisterResponse">{response}</p>
             <Button
               type="submit"
