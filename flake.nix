@@ -15,6 +15,7 @@
               sqlite-interactive
               sqlcipher
               openssl.dev
+              pkg-config
             ];
           };
         }

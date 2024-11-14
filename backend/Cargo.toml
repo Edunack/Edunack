@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 argon2 = "0.5.3"
-axum = "0.7.5"
+axum = { version = "0.7.5", features = ["ws"] }
 chrono = { version = "0.4.38", features = ["serde"] }
 dotenvy = "0.15.7"
 http = "1.1.0"
@@ -19,12 +19,14 @@ rusqlite = { version = "0.32.1", features = ["functions", "uuid"] }
 tokio = { version = "1.40.0", features = ["rt-multi-thread"] }
 tower = "0.5.1"
 tower-http = { version = "0.6.1", features = ["normalize-path", "fs", "cors"] }
-uuid = { version = "1.10.0", features = ["v4"] }
+uuid = { version = "1.10.0", features = ["serde", "v4"] }
 libsqlite3-sys = { version = "0.30.1", optional = true, default-features = false, features = [
     "bundled"
 ] }
 axum-macros = "0.4.2"
 regex = "1.11.1"
+reqwest = "0.12.9"
+scraper = "0.21.0"
 
 [target.'cfg(unix)'.dependencies.libsqlite3-sys]
 version = "0.30.1"

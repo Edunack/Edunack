@@ -9,4 +9,4 @@ env:
 	nix develop --command "zsh"
 
 shell:
-	nix develop --command "zellij" "--layout" "programming" "options" "--default-shell=zsh"
+	nix develop --command "launch-zellij" "--layout" "programming" "options" "--default-shell=zsh"

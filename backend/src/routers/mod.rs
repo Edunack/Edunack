@@ -1,4 +1,6 @@
 use axum::{routing::get, Router};
+pub mod login;
+pub mod search;
 
 use crate::AppState;
 
@@ -19,5 +21,4 @@ impl IntoRouter for ExampleRouter {
 pub trait IntoRouter {
     fn into_router(self) -> axum::Router<AppState>;
 }
-
 

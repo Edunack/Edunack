@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script async src="https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f">
+</script>
+<style>
+#google_search, div.gsc-results-wrapper-overlay {
+    visibility: hidden !important;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+</style>
+</head>
+<body>
+<div>Element Two-Column Layout Demo</div>
+
+<input type="text" name="search" id="search_bar">
+
+<div id="search_results"></div>
+<div id="captcha"></div>
+<div id="google_search">
+<div class="gcse-searchbox"></div>
+<div class="gcse-searchresults"></div>
+</div>
+<script>
+function removeHash() {
+  history.replaceState(null, "", window.location.pathname + window.location.search);
+}
+
+window.__gcse || (window.__gcse = {});
+window.__gcse = {
+  initializationCallback: removeHash,
+  searchCallbacks: {
+    web: {
+      starting: () => {
+        //append query
+        removeHash();
+      },
+      rendered: resultsRenderdCallback,
+    },
+  },
+};
+
+function resultsRenderdCallback() {
+    console.log(document.querySelector("div.gsc-expansionArea").HTML);
+    fetch("/api/search", {
+      method: "POST",
+      body: document.querySelector("div.gsc-expansionArea").innerHTML
+    }).then((data) => data.json()).then((data) => {
+      document.querySelector("#search_results").innerHTML = JSON.stringify(data);
+    });
+}
+
+window.onload = () => {
+  // Options for the observer (which mutations to observe)
+  const config = { attributes: true, childList: true, subtree: true };
+
+  // Callback function to execute when mutations are observed
+  const callback = (mutationList, observer) => {
+    let correctMutation = false;
+    for (const mutation of mutationList) {
+      correctMutation |= (mutation.type === "childList");
+    }
+    if (correctMutation) {
+        let captcha = document.querySelector("#recaptcha-wrapper");
+        if (captcha == null) {
+            return;
+        }
+        document.querySelector("#captcha").appendChild(captcha);
+    }
+  };
+  const observer = new MutationObserver(callback);
+  const target = document.getElementsByClassName("gsc-wrapper")[0].parentElement;
+  observer.observe(target, config);
+};
+
+document.querySelector("#search_bar").addEventListener("keyup", (event) => {
+  if (event.key === "Enter") {
+    let ___gcse_0 = document.querySelector("#google_search").querySelector("#___gcse_0");
+    let input = ___gcse_0.querySelector("input.gsc-input");
+    input.value = event.target.value;
+    ___gcse_0.querySelector("button.gsc-search-button").click();
+  }
+});
+
+</script>
+</body>
+</html>

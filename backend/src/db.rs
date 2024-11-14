@@ -18,6 +18,10 @@ impl Database {
     pub fn user(&self) -> UserDatabase {
         UserDatabase(self.0.clone())
     }
+
+    pub fn course(&self) -> CourseDatabase {
+        CourseDatabase(self.0.clone())
+    }
 }
 
 pub struct UserDatabase(Arc<RwLock<Connection>>);
@@ -124,9 +128,9 @@ impl UserDatabase {
                 //println!("{:?}", row);
                 Ok(User {
                     id: row.get("id")?,
-                    username: row.get("username")?,
-                    email: row.get("email")?,
-                    password: row.get("password")?,
+                    username: row.get(1)?,
+                    email: row.get(2)?,
+                    password: row.get(3)?,
                 })
             },
         ) {
@@ -134,4 +138,12 @@ impl UserDatabase {
             Err(_) => None
         }
     }
+}
+
+pub struct CourseDatabase(Arc<RwLock<Connection>>);
+
+impl CourseDatabase {
+    //pub async fn insert(&self, course: &Course) -> Result<(), rusqlite::Error> {
+    //
+    //}
 }

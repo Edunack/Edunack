@@ -13,7 +13,8 @@ use serde::{Deserialize, Serialize};
 use tokio::sync::RwLockReadGuard;
 use uuid::Uuid;
 
-use crate::{auth, db::Database, router::IntoRouter, user::User, AppState};
+use super::IntoRouter;
+use crate::{auth, db::Database, user::User, AppState};
 
 pub struct LoginRouter;
 
@@ -126,5 +127,6 @@ impl IntoRouter for LoginRouter {
         Router::new()
             .route("/login", post(Self::login))
             .route("/register", post(Self::register))
+            .route("/logout", post(Self::logout))
     }
 }

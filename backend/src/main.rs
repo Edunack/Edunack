@@ -2,10 +2,9 @@ use std::sync::{Arc, RwLock};
 
 use axum::{extract::Request, http::Method, middleware, BoxError, Router, ServiceExt};
 use db::Database;
-use login::LoginRouter;
 use rand::Rng;
 use regex::Regex;
-use router::{ExampleRouter, IntoRouter};
+use routers::{login::LoginRouter, search::SearchRouter, IntoRouter};
 use rusqlite::Connection;
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
@@ -16,9 +15,8 @@ use tower_http::{
 };
 mod auth;
 mod db;
-mod login;
-mod router;
 mod user;
+mod routers;
 
 #[derive(Clone)]
 pub struct AppState {
@@ -100,9 +98,11 @@ async fn main() {
                 //                .nest("/sth", ExampleRouter.into_router())
                 //                .nest("/sth2", ExampleRouter.into_router())
                 .nest("/", LoginRouter.into_router())
+                .nest("/search", SearchRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize)),
         )
         .nest_service("/", ServeFile::new("../frontend/dist/index.html"))
+        .nest_service("/google", ServeFile::new("./index.html"))
         .nest_service("/assets", ServeDir::new("../frontend/dist/assets"))
         .nest_service("/img", ServeDir::new("../frontend/img"))
         .with_state(state)
