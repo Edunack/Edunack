@@ -1,6 +1,6 @@
 import "./Recommendations.css";
-import "./AdditionalAssets/Course";
-import Course from "./AdditionalAssets/Course";
+import "../../CommonAssets/Course";
+import Course from "../../CommonAssets/Course";
 import Button from "../../CommonAssets/Button";
 
 function Recommendations() {

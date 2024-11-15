@@ -1,0 +1,18 @@
+#outside {
+  /*clip-path: polygon(0 0, 100% 50%, 100% 100%, 0% 100%);
+  background: linear-gradient(7.12deg, #1e1e1e 52.89%, #90429c 81.59%);*/
+  background-color: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 2vh;
+  padding-top: 5vh;
+}
+
+#outside > .line {
+  height: 1px;
+  width: 48%;
+  transform: translateX(8vh);
+  border-bottom: 1px solid #ac57ab;
+}

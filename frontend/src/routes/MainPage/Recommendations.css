@@ -49,14 +49,14 @@
   z-index: 2;
 }
 
-#courseContainer:nth-child(1) {
+#courses > #courseContainer:nth-child(1) {
   transform: translateY(0);
 }
 
-#courseContainer:nth-child(2) {
+#courses > #courseContainer:nth-child(2) {
   transform: translateY(-20%);
 }
 
-#courseContainer:nth-child(3) {
+#courses > #courseContainer:nth-child(3) {
   transform: translateY(-40%);
 }

@@ -1,0 +1,23 @@
+#top3 {
+  margin-top: 10vh;
+  display: flex;
+  gap: 25vh;
+  margin-bottom: 5vh;
+}
+
+.top3Courses {
+  display: flex;
+  flex-direction: column;
+}
+
+#top3 > .top3Courses:nth-child(1) {
+  margin-top: 10vh;
+}
+
+#top3 > .top3Courses:nth-child(2) {
+  margin-top: 0vh;
+}
+
+#top3 > .top3Courses:nth-child(3) {
+  margin-top: 20vh;
+}

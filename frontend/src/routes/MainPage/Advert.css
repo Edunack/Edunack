@@ -35,12 +35,12 @@
 }
 
 .TileContent {
-  font-size: 2.5vh;
+  font-size: clamp(2.5vh, 2.5vh, 5vh) !important;
 }
 
 .titles {
   font-weight: 900;
-  font-size: 5vh;
+  font-size: clamp(5vh, 5vh, 10vh) !important;
 }
 
 #maintainSpace {
