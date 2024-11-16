@@ -3,18 +3,15 @@ import "./InfoPanel.css";
 function InfoPanel() {
   return (
     <div id="infoPanel">
-      <svg width="0" height="0">
+      <svg
+        width={0}
+        height={0}
+        preserveAspectRatio="none"
+        viewBox="0 0 1440 1920"
+      >
         <defs>
-          <clipPath id="roundedPoly" clipPathUnits="objectBoundingBox">
-            <path
-              d="
-            M 1 0.997 
-            L 0 0.691 
-            V 0.00015 
-            C 0.066 0.0038, 0.375 0.166, 0.515 0.161 
-            C 0.664 0.158, 0.884 0.0197, 1 0.00015 
-            L 1 0.997 Z"
-            />
+          <clipPath id="rankWave" clipPathUnits="userSpaceOnUse">
+            <path d="m0,333.42S700.74-168.28,938,59.16c364.67,349.56,982,274.27,982,274.27v1087.58H0V333.42Z" />
           </clipPath>
         </defs>
       </svg>

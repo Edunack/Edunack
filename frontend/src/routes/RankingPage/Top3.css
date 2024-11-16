@@ -1,7 +1,7 @@
 #top3 {
   margin-top: 10vh;
   display: flex;
-  gap: 25vh;
+  gap: 35vh;
   margin-bottom: 5vh;
 }
 
@@ -11,7 +11,7 @@
 }
 
 #top3 > .top3Courses:nth-child(1) {
-  margin-top: 10vh;
+  margin-top: 15vh;
 }
 
 #top3 > .top3Courses:nth-child(2) {
@@ -19,5 +19,5 @@
 }
 
 #top3 > .top3Courses:nth-child(3) {
-  margin-top: 20vh;
+  margin-top: 30vh;
 }

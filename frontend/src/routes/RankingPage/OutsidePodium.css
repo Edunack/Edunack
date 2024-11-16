@@ -1,18 +1,28 @@
 #outside {
-  /*clip-path: polygon(0 0, 100% 50%, 100% 100%, 0% 100%);
-  background: linear-gradient(7.12deg, #1e1e1e 52.89%, #90429c 81.59%);*/
-  background-color: #1e1e1e;
+  background-size: cover;
+  clip-path: url(#rankWave);
+  -webkit-clip-path: url(#rankWave);
+  width: 100%;
+  padding-top: 50vh;
+  margin-top: -85vh;
+  position: relative;
+  overflow: hidden;
+}
+
+#outside > #courses > .line {
+  height: 1px;
+  width: 48%;
+  transform: translateX(8vh);
+  border-bottom: 1px solid #ac57ab;
+}
+
+#outside > #courses {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   gap: 2vh;
-  padding-top: 5vh;
-}
-
-#outside > .line {
-  height: 1px;
-  width: 48%;
-  transform: translateX(8vh);
-  border-bottom: 1px solid #ac57ab;
+  position: relative;
+  padding: 10vh 0;
+  margin-top: 35vh;
 }
