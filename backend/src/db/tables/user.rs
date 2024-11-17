@@ -1,32 +1,12 @@
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
-use std::sync::RwLock;
-
+use crate::db::models::user::User;
 use rusqlite::{types::ToSqlOutput, Connection, ToSql};
 use uuid::Uuid;
 
-use crate::user::User;
+use super::Table;
 
-#[derive(Clone)]
-pub struct Database(Arc<RwLock<Connection>>);
-
-impl Database {
-    pub fn new(conn: Arc<RwLock<Connection>>) -> Self {
-        Self(conn)
-    }
-
-    pub fn user(&self) -> UserDatabase {
-        UserDatabase(self.0.clone())
-    }
-
-    pub fn course(&self) -> CourseDatabase {
-        CourseDatabase(self.0.clone())
-    }
-}
-
-pub struct UserDatabase(Arc<RwLock<Connection>>);
-
-impl UserDatabase {
+impl Table<User> {
     pub fn insert(&self, user: &User) -> Result<(), rusqlite::Error> {
         self.0
             .write()
@@ -44,18 +24,18 @@ impl UserDatabase {
     }
 
     pub fn find_by_id(&self, id: Uuid) -> Option<User> {
-        match self.0.read().unwrap().query_row(
-            "SELECT * FROM users WHERE id = ?1",
-            [id],
-            |row| {
+        match self
+            .0
+            .read()
+            .unwrap()
+            .query_row("SELECT * FROM users WHERE id = ?1", [id], |row| {
                 Ok(User {
                     id: row.get("id")?,
                     username: row.get("username")?,
                     email: row.get("email")?,
                     password: row.get("password")?,
                 })
-            },
-        ) {
+            }) {
             Ok(user) => Some(user),
             Err(_) => None,
         }
@@ -118,7 +98,7 @@ impl UserDatabase {
     //}
 
     pub fn find_by_username_or_email(&self, username: &str, email: &str) -> Option<User> {
-        match self.0.read().unwrap().query_row (
+        match self.0.read().unwrap().query_row(
             "SELECT * FROM users WHERE email regexp ?1 OR username regexp ?1 order by ?2",
             [
                 format!("^({})$|^({})$", username, email),
@@ -135,15 +115,7 @@ impl UserDatabase {
             },
         ) {
             Ok(user) => Some(user),
-            Err(_) => None
+            Err(_) => None,
         }
     }
-}
-
-pub struct CourseDatabase(Arc<RwLock<Connection>>);
-
-impl CourseDatabase {
-    //pub async fn insert(&self, course: &Course) -> Result<(), rusqlite::Error> {
-    //
-    //}
 }

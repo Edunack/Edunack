@@ -15,7 +15,6 @@ use tower_http::{
 };
 mod auth;
 mod db;
-mod user;
 mod routers;
 
 #[derive(Clone)]

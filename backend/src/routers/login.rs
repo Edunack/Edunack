@@ -14,7 +14,7 @@ use tokio::sync::RwLockReadGuard;
 use uuid::Uuid;
 
 use super::IntoRouter;
-use crate::{auth, db::Database, user::User, AppState};
+use crate::{auth, db::{models::user::User, Database}, AppState};
 
 pub struct LoginRouter;
 
@@ -34,10 +34,10 @@ pub struct RegisterParams {
 
 impl LoginRouter {
     pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
-        let user_db = state.database.user();
-        let user = match user_db.find_by_username(&params.login) {
+        let user_table = state.database.user();
+        let user = match user_table.find_by_username(&params.login) {
             Some(user) => user,
-            None => match user_db.find_by_email(&params.login) {
+            None => match user_table.find_by_email(&params.login) {
                 Some(user) => user,
                 None => {
                     return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()
@@ -77,8 +77,8 @@ impl LoginRouter {
         State(state): State<AppState>,
         Json(params): Json<RegisterParams>,
     ) -> Response {
-        let user_db = state.database.user();
-        if let Some(user) = user_db.find_by_username_or_email(&params.username, &params.email) {
+        let user_table = state.database.user();
+        if let Some(user) = user_table.find_by_username_or_email(&params.username, &params.email) {
             if user.username == params.username || user.username == params.email {
                 return (StatusCode::BAD_REQUEST, "Username").into_response();
             }
@@ -95,7 +95,7 @@ impl LoginRouter {
             }
         };
 
-        match user_db.insert(&User {
+        match user_table.insert(&User {
             id,
             username: params.username.clone(),
             email: params.email.clone(),

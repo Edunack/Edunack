@@ -1,0 +1,23 @@
+INSERT INTO categories VALUES
+(x'20f6a6bf0e1d4e84b92e2f2272ab0443', 'en', 'C++'),
+(x'0e3fd0a420c64c998a57a00feb819d41', 'en', 'PHP'),
+(x'46ff9a54349642e7943ae9aef2d1fb0f', 'en', 'Embroidery'),
+(x'46ff9a54349642e7943ae9aef2d1fb0f', 'pl', 'Haft');
+
+
+INSERT INTO course_mediums VALUES
+(0, 'en', 'web course'),
+(0, 'pl', 'kurs WWW'),
+(1, 'en', 'video'),
+(1, 'pl', 'wideo');
+
+INSERT INTO courses VALUES
+(x'aefb970ed2c440de92aebfa6908bde6e', x'20f6a6bf0e1d4e84b92e2f2272ab0443', 'w3schools', 0),
+(x'ae48110e5208446d946dbce1394091ab', x'20f6a6bf0e1d4e84b92e2f2272ab0443', 'learncpp', 0),
+(x'84bf4c652bcf4bc7aac66a567222cc67', x'0e3fd0a420c64c998a57a00feb819d41', 'w3schools', 0);
+
+INSERT INTO course_translations VALUES
+(x'aefb970ed2c440de92aebfa6908bde6e', 'en', 'Learn C++'),
+(x'ae48110e5208446d946dbce1394091ab', 'en', 'Learn C++'),
+(x'84bf4c652bcf4bc7aac66a567222cc67', 'en', 'Learn PHP'),
+(x'84bf4c652bcf4bc7aac66a567222cc67', 'pl', 'ucz PHP');
