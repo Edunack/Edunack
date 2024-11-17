@@ -1,8 +1,17 @@
+import { FormEvent } from "react";
 import "./Search.css";
 
-function Search() {
+interface Props {
+  onSearch: () => void;
+}
+
+function Search({ onSearch }: Props) {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onSearch();
+  };
   return (
-    <form id="search">
+    <form id="search" onSubmit={handleSubmit}>
       <label htmlFor="searchBar" id="searchLabel">
         TYPE IN THE CATEGORY/AUTHOR
       </label>
