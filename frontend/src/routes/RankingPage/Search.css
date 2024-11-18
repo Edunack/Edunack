@@ -30,6 +30,7 @@
   margin: 0;
   z-index: 3;
   box-shadow: -31px 0px 50px -10px rgba(18, 18, 18, 0.5);
+  color: #1e1e1e;
 }
 
 #searchBtn {
@@ -49,7 +50,8 @@
 
 #categoryList {
   list-style-type: none;
-  background-color: #1e1e1e;
+  background-color: white;
+  color: #1e1e1e;
   border-radius: 0 0 1vh 1vh;
   width: 66vh;
   margin: 0;
@@ -62,7 +64,7 @@
   font-size: 2vh;
   padding: 2vh 0;
   margin: 0;
-  border-bottom: 1px solid #2d2d2d;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 #categoryList > li:last-child {
