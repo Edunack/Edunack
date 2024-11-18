@@ -24,8 +24,7 @@ impl Table<User> {
     }
 
     pub fn find_by_id(&self, id: Uuid) -> Option<User> {
-        match self
-            .0
+        self.0
             .read()
             .unwrap()
             .query_row("SELECT * FROM users WHERE id = ?1", [id], |row| {
@@ -35,46 +34,42 @@ impl Table<User> {
                     email: row.get("email")?,
                     password: row.get("password")?,
                 })
-            }) {
-            Ok(user) => Some(user),
-            Err(_) => None,
-        }
+            })
+            .ok()
     }
 
     pub fn find_by_email(&self, email: &str) -> Option<User> {
-        match self.0.read().unwrap().query_row(
-            "SELECT * FROM users WHERE email = ?1",
-            [email],
-            |row| {
+        self.0
+            .read()
+            .unwrap()
+            .query_row("SELECT * FROM users WHERE email = ?1", [email], |row| {
                 Ok(User {
                     id: row.get("id")?,
                     username: row.get("username")?,
                     email: row.get("email")?,
                     password: row.get("password")?,
                 })
-            },
-        ) {
-            Ok(user) => Some(user),
-            Err(_) => None,
-        }
+            })
+            .ok()
     }
 
     pub fn find_by_username(&self, username: &str) -> Option<User> {
-        match self.0.read().unwrap().query_row(
-            "SELECT * FROM users WHERE username = ?1",
-            [username],
-            |row| {
-                Ok(User {
-                    id: row.get("id")?,
-                    username: row.get("username")?,
-                    email: row.get("email")?,
-                    password: row.get("password")?,
-                })
-            },
-        ) {
-            Ok(user) => Some(user),
-            Err(_) => None,
-        }
+        self.0
+            .read()
+            .unwrap()
+            .query_row(
+                "SELECT * FROM users WHERE username = ?1",
+                [username],
+                |row| {
+                    Ok(User {
+                        id: row.get("id")?,
+                        username: row.get("username")?,
+                        email: row.get("email")?,
+                        password: row.get("password")?,
+                    })
+                },
+            )
+            .ok()
     }
 
     //pub async fn exists_by_username(&self, username: &str) -> bool {
@@ -98,24 +93,25 @@ impl Table<User> {
     //}
 
     pub fn find_by_username_or_email(&self, username: &str, email: &str) -> Option<User> {
-        match self.0.read().unwrap().query_row(
-            "SELECT * FROM users WHERE email regexp ?1 OR username regexp ?1 order by ?2",
-            [
-                format!("^({})$|^({})$", username, email),
-                "username".min("email").to_string(),
-            ],
-            |row| {
-                //println!("{:?}", row);
-                Ok(User {
-                    id: row.get("id")?,
-                    username: row.get(1)?,
-                    email: row.get(2)?,
-                    password: row.get(3)?,
-                })
-            },
-        ) {
-            Ok(user) => Some(user),
-            Err(_) => None,
-        }
+        self.0
+            .read()
+            .unwrap()
+            .query_row(
+                "SELECT * FROM users WHERE email regexp ?1 OR username regexp ?1 order by ?2",
+                [
+                    format!("^({})$|^({})$", username, email),
+                    "username".min("email").to_string(),
+                ],
+                |row| {
+                    //println!("{:?}", row);
+                    Ok(User {
+                        id: row.get("id")?,
+                        username: row.get("username")?,
+                        email: row.get("email")?,
+                        password: row.get("password")?,
+                    })
+                },
+            )
+            .ok()
     }
 }

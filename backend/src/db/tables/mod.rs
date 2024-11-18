@@ -5,8 +5,6 @@ use std::{
 
 use rusqlite::Connection;
 
-use super::Database;
-
 pub mod user;
 pub mod course;
 pub mod category;

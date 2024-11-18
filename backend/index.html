@@ -49,7 +49,7 @@ window.__gcse = {
 
 function resultsRenderdCallback() {
     console.log(document.querySelector("div.gsc-expansionArea").HTML);
-    fetch("/api/search", {
+    fetch("/api/search/google/20f6a6bf-0e1d-4e84-b92e-2f2272ab0443", {
       method: "POST",
       body: document.querySelector("div.gsc-expansionArea").innerHTML
     }).then((data) => data.json()).then((data) => {

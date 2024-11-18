@@ -1,9 +1,8 @@
 use std::sync::{Arc, RwLock};
 
-use axum::{extract::Request, http::Method, middleware, BoxError, Router, ServiceExt};
-use db::Database;
+use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
+use db::{ConnectionExt, Database};
 use rand::Rng;
-use regex::Regex;
 use routers::{login::LoginRouter, search::SearchRouter, IntoRouter};
 use rusqlite::Connection;
 use tokio::net::TcpListener;
@@ -51,37 +50,7 @@ async fn main() {
         "key",
         dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
     );
-    let _ = conn.create_scalar_function(
-        "regexp",
-        2,
-        rusqlite::functions::FunctionFlags::SQLITE_UTF8
-            | rusqlite::functions::FunctionFlags::SQLITE_DETERMINISTIC,
-        move |ctx| {
-            assert_eq!(ctx.len(), 2, "called with unexpected number of arguments");
-            let regexp: Arc<Regex> = ctx.get_or_create_aux(0, |vr| -> Result<_, BoxError> {
-                Ok(Regex::new(vr.as_str()?)?)
-            })?;
-            let is_match = {
-                let text = ctx
-                    .get_raw(1)
-                    .as_str()
-                    .map_err(|e| rusqlite::Error::UserFunctionError(e.into()))?;
-
-                regexp.is_match(text)
-            };
-
-            Ok(is_match)
-        },
-    ).unwrap();
-    //conn.execute(
-    //    format!(
-    //        "PRAGMA key = '{}'",
-    //        dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string())
-    //    )
-    //    .as_str(),
-    //)
-    //.await
-    //.unwrap();
+    let _ = conn.register_all().unwrap();
 
     let state = AppState {
         database: Database::new(Arc::new(RwLock::new(conn))),

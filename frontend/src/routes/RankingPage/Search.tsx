@@ -35,7 +35,7 @@ function Search({ onSearch }: Props) {
 
     fetch(
       "api/search/categories?" +
-        new URLSearchParams({ lang: "en", startsWith: "" + data }),
+        new URLSearchParams({ lang: "en", name: "" + data }),
       {
         method: "GET",
       }
@@ -66,7 +66,7 @@ function Search({ onSearch }: Props) {
 
   return (
     <>
-      <form id="search" onSubmit={handleSubmit}>
+      <form id="search" onSubmit={handleSubmit} autoComplete="off">
         <label htmlFor="searchBar" id="searchLabel">
           TYPE IN THE CATEGORY/AUTHOR
         </label>

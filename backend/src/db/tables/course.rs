@@ -6,6 +6,27 @@ use crate::db::models::course::Course;
 use super::Table;
 
 impl Table<Course> {
+    pub fn insert(&self, course: Course) -> Result<(), rusqlite::Error> {
+        self.0
+            .write()
+            .unwrap()
+            .execute(
+                "INSERT INTO courses (id, category, author, medium, url, description, image, price) \
+                VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+                [
+                    course.id.to_sql().unwrap(),
+                    course.category.to_sql().unwrap(),
+                    course.author.to_sql().unwrap(),
+                    course.medium.to_sql().unwrap(),
+                    course.url.to_sql().unwrap(),
+                    course.description.to_sql().unwrap(),
+                    course.image.to_sql().unwrap(),
+                    course.price.to_sql().unwrap(),
+                ],
+            )
+            .map(|_| ())
+    }
+
     pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Course> {
         todo!()
     }
@@ -16,7 +37,7 @@ impl Table<Course> {
             .prepare(
                 format!(
                     "SELECT * FROM \
-                    (SELECT courses.id, category, author, name from courses \
+                    (SELECT courses.*, name from courses \
                     INNER JOIN course_translations ON courses.id = course_translations.course \
                     WHERE category = ?1 AND (language like ?2 or language like 'en') \
                     GROUP BY id, language ORDER BY language {}) GROUP BY id",
@@ -33,6 +54,12 @@ impl Table<Course> {
                     category: row.get("category")?,
                     name: row.get("name")?,
                     author: row.get("author")?,
+                    description: row.get("description")?,
+                    image: row.get("image")?,
+                    price: row.get("price")?,
+                    rating: 0.0,
+                    medium: row.get("medium")?,
+                    url: row.get("url")?,
                 })
             },
         );
@@ -48,7 +75,7 @@ impl Table<Course> {
             .prepare(
                 format!(
                     "SELECT * FROM \
-                    (SELECT courses.id, category, author, name from courses \
+                    (SELECT courses.*, name from courses \
                      INNER JOIN course_translations ON courses.id = course_translations.course \
                      WHERE author = ?1 AND (language like ?2 or language like 'en') \
                      GROUP BY id, language ORDER BY language {}) GROUP BY id",
@@ -63,6 +90,12 @@ impl Table<Course> {
                 category: row.get("category")?,
                 name: row.get("name")?,
                 author: row.get("author")?,
+                description: row.get("description")?,
+                image: row.get("image")?,
+                price: row.get("price")?,
+                rating: 0.0,
+                medium: row.get("medium")?,
+                url: row.get("url")?,
             })
         });
         match res {
@@ -77,7 +110,7 @@ impl Table<Course> {
             .prepare(
                 format!(
                     "SELECT * FROM \
-                    (SELECT courses.id, category, author, name from courses \
+                    (SELECT courses.*, name from courses \
                      INNER JOIN course_translations ON courses.id = course_translations.course \
                      WHERE course_translations.name LIKE ?1 AND (language like ?2 or language like 'en') \
                      GROUP BY id, language ORDER BY language {}) GROUP BY id",
@@ -93,11 +126,63 @@ impl Table<Course> {
                 category: row.get("category")?,
                 name: row.get("name")?,
                 author: row.get("author")?,
+                description: row.get("description")?,
+                image: row.get("image")?,
+                price: row.get("price")?,
+                rating: 0.0,
+                medium: row.get("medium")?,
+                url: row.get("url")?,
             })
         });
         match res {
             Ok(user) => user.filter_map(Result::ok).collect(),
             Err(_) => vec![],
         }
+    }
+
+    pub fn find_by_url(&self, name: &str, language: &str) -> Option<Course> {
+        let res = self.0.read().unwrap().query_row(
+            format!(
+                "SELECT * FROM \
+                    (SELECT courses.*, name from courses \
+                     INNER JOIN course_translations ON courses.id = course_translations.course \
+                     WHERE url LIKE ?1 AND (language like ?2 or language like 'en') \
+                     GROUP BY id, language ORDER BY language {}) GROUP BY id",
+                if language > "en" { "desc" } else { "asc" }
+            )
+            .as_str(),
+            [name, language],
+            |row| {
+                println!("{:?}", row);
+                Ok(Course {
+                    id: row.get("id")?,
+                    category: row.get("category")?,
+                    name: row.get("name")?,
+                    author: row.get("author")?,
+                    description: row.get("description")?,
+                    image: row.get("image")?,
+                    price: row.get("price")?,
+                    rating: 0.0,
+                    medium: row.get("medium")?,
+                    url: row.get("url")?,
+                })
+            },
+        );
+        match res {
+            Ok(user) => Some(user),
+            Err(_) => None,
+        }
+    }
+
+    pub fn exists_by_url(&self, url: &str) -> bool {
+        self.0
+            .read()
+            .unwrap()
+            .query_row(
+                "SELECT EXISTS(SELECT 1 FROM courses WHERE url = ?1)",
+                [url],
+                |row| row.get(0),
+            )
+            .unwrap()
     }
 }

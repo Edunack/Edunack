@@ -7,7 +7,7 @@ use super::Table;
 
 impl Table<Category> {
     pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Category> {
-        match self.0.read().unwrap().query_row(
+        self.0.read().unwrap().query_row(
             format!("SELECT * FROM categories WHERE id LIKE ?1 AND (language = ?2 OR language='en') order by language {}", if language > "en" {"desc"} else {"asc"}).as_str(),
             [id.to_sql().unwrap(), language.to_sql().unwrap()],
             |row| {
@@ -16,10 +16,7 @@ impl Table<Category> {
                     name: row.get("name")?,
                 })
             },
-        ) {
-            Ok(user) => Some(user),
-            Err(_) => None,
-        }
+        ).ok()
     }
 
     pub fn find_by_name(&self, name: &str, language: &str) -> Vec<Category> {
@@ -28,12 +25,12 @@ impl Table<Category> {
         let mut query = conn
             .prepare(
                 format!(
-                    "SELECT * from \
-                    (SELECT categories.*, count(courses.id) as count FROM \
-                    categories LEFT JOIN courses on categories.id = courses.category WHERE \
-                    name LIKE ?1 AND (language = ?2 OR language='en') \
+                    "SELECT *, all_index_of(?1, name) as aio from \
+                    (SELECT categories.*, count(courses.id) as count FROM categories \
+                    LEFT JOIN courses ON categories.id = courses.category WHERE \
+                    cimatch(?1, name) AND (language = ?2 OR language='en') \
                     group by categories.id, language order by count(courses.id) desc, language {}) \
-                    group by id order by count desc",
+                    group by id order by aio, count desc",
                     if language > "en" { "desc" } else { "asc" }
                 )
                 .as_str(),
@@ -50,4 +47,5 @@ impl Table<Category> {
             Err(_) => vec![],
         }
     }
+
 }

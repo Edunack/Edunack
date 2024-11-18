@@ -7,4 +7,11 @@ pub struct Course {
     pub author: String,
     pub category: Uuid,
     pub name: String,
+    pub description: String,
+    pub image: String,
+    pub price: String,
+    pub rating: f64,
+    pub medium: i32,
+    pub url: String,
 }
+
