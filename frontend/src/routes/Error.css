@@ -6,6 +6,7 @@
   flex-direction: column;
   height: 100vh;
   color: white;
+  text-align: center;
 }
 
 #Error > p {
