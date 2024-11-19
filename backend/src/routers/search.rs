@@ -29,27 +29,6 @@ pub struct SearchParams {
     language: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct SearchResponse {
-    id: Uuid,
-    name: String,
-    category: Uuid,
-    author: String,
-    rating: f64,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct GoogleSearchResponse {
-    id: Uuid,
-    name: String,
-    url: String,
-    image: String,
-    description: String,
-    author: String,
-    price: String,
-    rating: f64,
-}
-
 impl SearchRouter {
     pub async fn categories(
         State(state): State<AppState>,
@@ -99,30 +78,19 @@ impl SearchRouter {
         let db = state.database.clone();
         let courses_table = db.course();
 
-        let map = |course: &Course| SearchResponse {
-            id: course.id,
-            category: course.category,
-            name: course.name.clone(),
-            author: course.author.to_string(),
-            rating: 0.0,
-        };
-
         if let Some(name) = params.name {
             Json(
                 courses_table
                     .find_by_name(format!("%{}%", name).as_str(), lang.as_str())
                     .iter()
-                    .map(map)
                     .collect::<Vec<_>>(),
             )
             .into_response()
         } else if let Some(category) = params.category {
-            println!("{:?}", category);
             Json(
                 courses_table
                     .find_by_category(category, lang.as_str())
                     .iter()
-                    .map(map)
                     .collect::<Vec<_>>(),
             )
             .into_response()
