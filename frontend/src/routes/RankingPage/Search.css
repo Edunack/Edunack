@@ -70,3 +70,12 @@
 #categoryList > li:last-child {
   border: none;
 }
+
+#google_search,
+div.gsc-results-wrapper-overlay {
+  visibility: hidden !important;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}

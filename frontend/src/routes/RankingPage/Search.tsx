@@ -10,11 +10,68 @@ function Search({ onSearch }: Props) {
   const [categories, setCategories] = useState<string[]>([]);
   const [showList, setShowList] = useState(false);
 
+  function removeHash() {
+    history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search
+    );
+  }
+
+  (window as any).__gcse || ((window as any).__gcse = {});
+  (window as any).__gcse = {
+    initializationCallback: removeHash,
+    searchCallbacks: {
+      web: {
+        starting: () => {
+          //append query
+          removeHash();
+        },
+      },
+    },
+  };
+
+  window.onload = () => {
+    // Options for the observer (which mutations to observe)
+    const config = { attributes: true, childList: true, subtree: true };
+
+    // Callback function to execute when mutations are observed
+    const callback = (mutationList: any) => {
+      let correctMutation = false;
+      for (const mutation of mutationList) {
+        correctMutation ||= mutation.type === "childList";
+      }
+      if (correctMutation) {
+        let captcha = document.querySelector("#recaptcha-wrapper");
+        if (captcha == null) {
+          return;
+        }
+        document.querySelector("#captcha")?.appendChild(captcha);
+      }
+    };
+    const observer = new MutationObserver(callback);
+    const target =
+      document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
+    if (target) {
+      observer.observe(target, config);
+    }
+  };
+
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    let ___gcse_0 = document
+      .querySelector("#google_search")
+      ?.querySelector("#___gcse_0");
+    let input: HTMLInputElement | any =
+      ___gcse_0?.querySelector("input.gsc-input");
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
     console.log(data);
+
+    input!.value = data.searchBar;
+    (
+      ___gcse_0?.querySelector("button.gsc-search-button") as HTMLButtonElement
+    )?.click();
 
     fetch(
       "api/search/categories?" +
@@ -25,17 +82,22 @@ function Search({ onSearch }: Props) {
     )
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
-        fetch("api/search/", {
+        fetch("/api/search/google/" + data[0].id, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ category: data[0].id }),
-        })
-          .then((data) => data.json())
-          .then(async (data) => {
-            console.log(data);
-            onSearch();
-          });
+          body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
+        }).then(() => {
+          console.log(data);
+          fetch("api/search/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ category: data[0].id }),
+          })
+            .then((data) => data.json())
+            .then(async (data) => {
+              console.log(data);
+              onSearch();
+            });
+        });
       });
   };
 
@@ -64,6 +126,20 @@ function Search({ onSearch }: Props) {
   };
 
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f";
+    script.async = true;
+    script.onload = () => {
+      console.log("Google CSE script loaded");
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -75,6 +151,10 @@ function Search({ onSearch }: Props) {
 
   return (
     <>
+      <script
+        async
+        src="https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f"
+      ></script>
       <form id="search" onSubmit={handleSubmit} autoComplete="off">
         <label htmlFor="searchBar" id="searchLabel">
           TYPE IN THE CATEGORY/AUTHOR
@@ -97,6 +177,12 @@ function Search({ onSearch }: Props) {
           <button id="searchBtn" type="submit">
             SEARCH
           </button>
+          <div id="search_results"></div>
+          <div id="captcha"></div>
+          <div id="google_search">
+            <div className="gcse-searchbox"></div>
+            <div className="gcse-searchresults"></div>
+          </div>
         </div>
         {showList && <CategoryList categories={categories} />}{" "}
       </form>

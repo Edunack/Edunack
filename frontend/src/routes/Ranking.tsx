@@ -6,7 +6,6 @@ import { useState } from "react";
 
 function Ranking() {
   const [ShowResult, setShowResults] = useState(false);
-
   return (
     <div id="ranking">
       <Search onSearch={() => setShowResults(true)} />
