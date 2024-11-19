@@ -18,15 +18,24 @@ function Search({ onSearch }: Props) {
 
     fetch(
       "api/search/categories?" +
-        new URLSearchParams({ lang: "en", startsWith: "" + data.searchBar }),
+        new URLSearchParams({ lang: "en", name: "" + data.searchBar }),
       {
         method: "GET",
       }
     )
       .then((data) => data.json())
-      .then(async (data) => {
+      .then((data) => {
         console.log(data);
-        onSearch();
+        fetch("api/search/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category: data[0].id }),
+        })
+          .then((data) => data.json())
+          .then(async (data) => {
+            console.log(data);
+            onSearch();
+          });
       });
   };
 
@@ -50,7 +59,7 @@ function Search({ onSearch }: Props) {
 
   const handleClickOutside = (e: MouseEvent) => {
     if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-      setShowList(false); // Hide the list when clicking outside
+      setShowList(false);
     }
   };
 
@@ -79,8 +88,8 @@ function Search({ onSearch }: Props) {
             placeholder="Type in the category"
             onChange={handleChange}
             onClick={() => {
-              handleChange(); // Fetch categories when clicking
-              setShowList(true); // Show the list
+              handleChange();
+              setShowList(true);
             }}
             ref={searchRef}
             style={{ borderRadius }}
@@ -90,7 +99,6 @@ function Search({ onSearch }: Props) {
           </button>
         </div>
         {showList && <CategoryList categories={categories} />}{" "}
-        {/* Only show list if showList is true */}
       </form>
     </>
   );
