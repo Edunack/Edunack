@@ -94,7 +94,7 @@ function Search({ onSearch, onUpdateCourses }: Props) {
     const data = Object.fromEntries(formData);
     console.log(data);
 
-    input!.value = data.searchBar;
+    input!.value = data.searchBar + "courses";
     (
       ___gcse_0?.querySelector("button.gsc-search-button") as HTMLButtonElement
     )?.click();
