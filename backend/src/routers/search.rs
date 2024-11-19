@@ -117,6 +117,7 @@ impl SearchRouter {
             )
             .into_response()
         } else if let Some(category) = params.category {
+            println!("{:?}", category);
             Json(
                 courses_table
                     .find_by_category(category, lang.as_str())

@@ -24,7 +24,16 @@ impl Table<Course> {
                     course.price.to_sql().unwrap(),
                 ],
             )
-            .map(|_| ())
+            .map(|_| ())?;
+
+        self.0.write().unwrap().execute(
+            "INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)",
+            [
+                course.id.to_sql().unwrap(),
+                "en".to_sql().unwrap(),
+                course.name.to_sql().unwrap(),
+            ]
+        ).map(|_| ())
     }
 
     pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Course> {
@@ -49,6 +58,7 @@ impl Table<Course> {
         let res = query.query_map(
             [category.to_sql().unwrap(), language.to_sql().unwrap()],
             |row| {
+                println!("{:?}", row);
                 Ok(Course {
                     id: row.get("id")?,
                     category: row.get("category")?,
@@ -65,7 +75,10 @@ impl Table<Course> {
         );
         match res {
             Ok(user) => user.filter_map(Result::ok).collect(),
-            Err(_) => vec![],
+            Err(e) => {
+                println!("{:?}", e);
+                vec![]
+            },
         }
     }
 
