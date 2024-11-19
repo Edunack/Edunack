@@ -4,6 +4,7 @@ INSERT INTO users VALUES
 
 INSERT INTO categories VALUES
 (x'20f6a6bf0e1d4e84b92e2f2272ab0443', 'en', 'C++'),
+(x'417050bafddc4ea4a374038ed4139124', 'en', 'Rust'),
 (x'0e3fd0a420c64c998a57a00feb819d41', 'en', 'PHP'),
 (x'46ff9a54349642e7943ae9aef2d1fb0f', 'en', 'Embroidery'),
 (x'46ff9a54349642e7943ae9aef2d1fb0f', 'pl', 'Haft');
