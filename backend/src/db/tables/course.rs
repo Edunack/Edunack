@@ -6,6 +6,22 @@ use crate::db::models::course::Course;
 use super::Table;
 
 impl Table<Course> {
+    pub fn find_medium_name(&self, medium: i32, language: &str) -> Option<String> {
+        self.0
+            .write()
+            .unwrap()
+            .query_row(
+                format!(
+                    "SELECT name FROM course_mediums WHERE id = ?1 \
+            AND (language = ?2 OR language = 'en') ORDER BY language {}",
+                    if language > "en" { "desc" } else { "asc" }
+                )
+                .as_str(),
+                [medium.to_sql().unwrap(), language.to_sql().unwrap()],
+                |row| row.get(0),
+            )
+            .ok()
+    }
     pub fn insert(&self, course: Course) -> Result<(), rusqlite::Error> {
         self.0
             .write()
@@ -41,7 +57,7 @@ impl Table<Course> {
     }
 
     pub fn find_by_category(&self, category: uuid::Uuid, language: &str) -> Vec<Course> {
-        let conn = self.0.read().unwrap();
+        let conn = self.0.write().unwrap();
         let mut query = conn
             .prepare(
                 format!(
@@ -83,7 +99,7 @@ impl Table<Course> {
     }
 
     pub fn find_by_author(&self, author: &str, language: &str) -> Vec<Course> {
-        let conn = self.0.read().unwrap();
+        let conn = self.0.write().unwrap();
         let mut query = conn
             .prepare(
                 format!(
@@ -118,7 +134,7 @@ impl Table<Course> {
     }
 
     pub fn find_by_name(&self, name: &str, language: &str) -> Vec<Course> {
-        let conn = self.0.read().unwrap();
+        let conn = self.0.write().unwrap();
         let mut query = conn
             .prepare(
                 format!(
@@ -154,7 +170,7 @@ impl Table<Course> {
     }
 
     pub fn find_by_url(&self, name: &str, language: &str) -> Option<Course> {
-        let res = self.0.read().unwrap().query_row(
+        let res = self.0.write().unwrap().query_row(
             format!(
                 "SELECT * FROM \
                     (SELECT courses.*, name from courses \
@@ -189,7 +205,7 @@ impl Table<Course> {
 
     pub fn exists_by_url(&self, url: &str) -> bool {
         self.0
-            .read()
+            .write()
             .unwrap()
             .query_row(
                 "SELECT EXISTS(SELECT 1 FROM courses WHERE url = ?1)",

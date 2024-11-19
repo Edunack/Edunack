@@ -29,6 +29,20 @@ pub struct SearchParams {
     language: Option<String>,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct SearchResponse {
+    id: Uuid,
+    category: Uuid,
+    name: String,
+    url: String,
+    image: String,
+    description: String,
+    author: String,
+    price: String,
+    medium: String,
+    rating: f64,
+}
+
 impl SearchRouter {
     pub async fn categories(
         State(state): State<AppState>,
@@ -67,6 +81,7 @@ impl SearchRouter {
         }
     }
 
+    //#[axum::debug_handler]
     pub async fn search(
         State(state): State<AppState>,
         Json(params): Json<SearchParams>,
@@ -78,11 +93,25 @@ impl SearchRouter {
         let db = state.database.clone();
         let courses_table = db.course();
 
+        let map = |course: &Course| SearchResponse {
+            id: course.id,
+            category: course.category,
+            name: course.name.clone(),
+            author: course.author.to_string(),
+            price: course.price.to_string(),
+            url: course.url.clone(),
+            image: course.image.clone(),
+            medium: courses_table.find_medium_name(course.medium, lang.as_str()).unwrap(),
+            description: course.description.clone(),
+            rating: 0.0,
+        };
+
         if let Some(name) = params.name {
             Json(
                 courses_table
                     .find_by_name(format!("%{}%", name).as_str(), lang.as_str())
                     .iter()
+                    .map(map)
                     .collect::<Vec<_>>(),
             )
             .into_response()
@@ -91,6 +120,7 @@ impl SearchRouter {
                 courses_table
                     .find_by_category(category, lang.as_str())
                     .iter()
+                    .map(map)
                     .collect::<Vec<_>>(),
             )
             .into_response()

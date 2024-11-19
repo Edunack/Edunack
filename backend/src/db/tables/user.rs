@@ -25,7 +25,7 @@ impl Table<User> {
 
     pub fn find_by_id(&self, id: Uuid) -> Option<User> {
         self.0
-            .read()
+            .write()
             .unwrap()
             .query_row("SELECT * FROM users WHERE id = ?1", [id], |row| {
                 Ok(User {
@@ -40,7 +40,7 @@ impl Table<User> {
 
     pub fn find_by_email(&self, email: &str) -> Option<User> {
         self.0
-            .read()
+            .write()
             .unwrap()
             .query_row("SELECT * FROM users WHERE email = ?1", [email], |row| {
                 Ok(User {
@@ -55,7 +55,7 @@ impl Table<User> {
 
     pub fn find_by_username(&self, username: &str) -> Option<User> {
         self.0
-            .read()
+            .write()
             .unwrap()
             .query_row(
                 "SELECT * FROM users WHERE username = ?1",
@@ -94,7 +94,7 @@ impl Table<User> {
 
     pub fn find_by_username_or_email(&self, username: &str, email: &str) -> Option<User> {
         self.0
-            .read()
+            .write()
             .unwrap()
             .query_row(
                 "SELECT * FROM users WHERE email regexp ?1 OR username regexp ?1 order by ?2",

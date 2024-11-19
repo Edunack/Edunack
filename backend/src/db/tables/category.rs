@@ -7,7 +7,7 @@ use super::Table;
 
 impl Table<Category> {
     pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Category> {
-        self.0.read().unwrap().query_row(
+        self.0.write().unwrap().query_row(
             format!("SELECT * FROM categories WHERE id LIKE ?1 AND (language = ?2 OR language='en') order by language {}", if language > "en" {"desc"} else {"asc"}).as_str(),
             [id.to_sql().unwrap(), language.to_sql().unwrap()],
             |row| {
@@ -20,7 +20,7 @@ impl Table<Category> {
     }
 
     pub fn find_by_name(&self, name: &str, language: &str) -> Vec<Category> {
-        let conn = self.0.read().unwrap();
+        let conn = self.0.write().unwrap();
         // wtf is this query
         let mut query = conn
             .prepare(
