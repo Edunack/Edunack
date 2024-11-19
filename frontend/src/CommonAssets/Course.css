@@ -24,11 +24,14 @@
 }
 
 #courseContainer > #info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: auto;
   position: relative;
   width: 80%;
-  height: 40%;
-  top: -40%;
+  height: 100%;
+  top: -60%;
 }
 
 #info > p {

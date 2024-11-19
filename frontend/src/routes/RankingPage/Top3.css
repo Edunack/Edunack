@@ -3,6 +3,8 @@
   display: flex;
   gap: 20vw;
   margin-bottom: 5vh;
+  position: relative;
+  z-index: 5;
 }
 
 .top3Courses {
@@ -11,13 +13,13 @@
 }
 
 #top3 > .top3Courses:nth-child(1) {
-  margin-top: 15vh;
+  transform: translateY(20vh);
 }
 
 #top3 > .top3Courses:nth-child(2) {
-  margin-top: 0vh;
+  top: 0vh;
 }
 
 #top3 > .top3Courses:nth-child(3) {
-  margin-top: 30vh;
+  transform: translateY(40vh);
 }

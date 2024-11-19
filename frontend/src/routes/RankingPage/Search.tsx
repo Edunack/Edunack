@@ -3,14 +3,19 @@ import "./Search.css";
 
 interface Props {
   onSearch: () => void;
+  onUpdateCourses: (courses: Object[]) => void;
 }
 
+<<<<<<< Updated upstream
 interface Category {
     id: String,
     name: String
 }
 
 function Search({ onSearch }: Props) {
+=======
+function Search({ onSearch, onUpdateCourses }: Props) {
+>>>>>>> Stashed changes
   const searchRef = useRef<HTMLInputElement>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [showList, setShowList] = useState(false);
@@ -94,6 +99,37 @@ function Search({ onSearch }: Props) {
     (
       ___gcse_0?.querySelector("button.gsc-search-button") as HTMLButtonElement
     )?.click();
+<<<<<<< Updated upstream
+=======
+
+    fetch(
+      "api/search/categories?" +
+        new URLSearchParams({ lang: "en", name: "" + data.searchBar }),
+      {
+        method: "GET",
+      }
+    )
+      .then((data) => data.json())
+      .then((data) => {
+        fetch("/api/search/google/" + data[0].id, {
+          method: "POST",
+          body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
+        }).then(() => {
+          console.log(data);
+          fetch("api/search/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ category: data[0].id }),
+          })
+            .then((data) => data.json())
+            .then(async (data) => {
+              console.log(data);
+              onUpdateCourses(data);
+              onSearch();
+            });
+        });
+      });
+>>>>>>> Stashed changes
   };
 
   const handleChange = () => {
@@ -173,12 +209,12 @@ function Search({ onSearch }: Props) {
           <button id="searchBtn" type="submit">
             SEARCH
           </button>
-          <div id="search_results"></div>
-          <div id="captcha"></div>
-          <div id="google_search">
-            <div className="gcse-searchbox"></div>
-            <div className="gcse-searchresults"></div>
-          </div>
+        </div>
+        <div id="search_results"></div>
+        <div id="captcha"></div>
+        <div id="google_search">
+          <div className="gcse-searchbox"></div>
+          <div className="gcse-searchresults"></div>
         </div>
         {showList && <CategoryList categories={categories.map(c => c.name as string)} />}{" "}
       </form>

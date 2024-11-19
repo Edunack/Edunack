@@ -2,48 +2,60 @@ import Course from "../../CommonAssets/Course";
 import CourseRank from "../../CommonAssets/CourseRank";
 import "./Top3.css";
 
-function Top3() {
+interface Props {
+  courses: any[];
+}
+
+function Top3({ courses }: Props) {
   return (
     <div id="top3">
       <div className="top3Courses">
         <Course
-          title="PHP beginner"
-          author="TUTORIALER 3248"
+          title={courses[1].name.split("|")[0]}
+          author={courses[1].author}
           image="./img/codeSeg.jpg"
         />
         <CourseRank
           rank="2."
-          type="web course"
-          price="free"
-          opinion="very positive ratings"
+          type={(courses[1].medium = 0 ? "web course" : "other medium")}
+          price={courses[1].price}
+          opinion={
+            (courses[1].rating = 0
+              ? "very positive ratings"
+              : courses[1].rating)
+          }
           flexDirection="column"
         />
       </div>
       <div className="top3Courses">
         <Course
-          title="PHP beginner"
-          author="TUTORIALER 3248"
+          title={courses[0].name.split("|")[0]}
+          author={courses[0].author}
           image="./img/codeSeg.jpg"
         />
         <CourseRank
           rank="1."
-          type="web course"
-          price="free"
-          opinion="very positive ratings"
+          type={courses[0].type == 0 ? "web course" : "other medium"}
+          price={courses[0].price}
+          opinion={
+            courses[0].rating == 0 ? "very positive ratings" : "no ratings"
+          }
           flexDirection="column"
         />
       </div>
       <div className="top3Courses">
         <Course
-          title="PHP beginner"
-          author="TUTORIALER 3248"
+          title={courses[2].name.split("|")[0]}
+          author={courses[2].author}
           image="./img/codeSeg.jpg"
         />
         <CourseRank
           rank="3."
-          type="web course"
-          price="30$"
-          opinion="very positive ratings"
+          type={courses[2].type == 0 ? "web course" : "other medium"}
+          price={courses[2].price}
+          opinion={
+            courses[2].rating == 0 ? "very positive ratings" : "no ratings"
+          }
           flexDirection="column"
         />
       </div>
