@@ -20,9 +20,7 @@ function Top3({ courses }: Props) {
           type={(courses[1].medium = 0 ? "web course" : "other medium")}
           price={courses[1].price}
           opinion={
-            (courses[1].rating = 0
-              ? "very positive ratings"
-              : courses[1].rating)
+            courses[1].rating == 0 ? "very positive ratings" : "no ratings"
           }
           flexDirection="column"
         />
