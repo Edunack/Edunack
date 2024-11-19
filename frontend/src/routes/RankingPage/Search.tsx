@@ -5,9 +5,14 @@ interface Props {
   onSearch: () => void;
 }
 
+interface Category {
+    id: String,
+    name: String
+}
+
 function Search({ onSearch }: Props) {
   const searchRef = useRef<HTMLInputElement>(null);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [showList, setShowList] = useState(false);
 
   function removeHash() {
@@ -27,6 +32,23 @@ function Search({ onSearch }: Props) {
           //append query
           removeHash();
         },
+        rendered: () => setCategories((categories) => {
+        fetch("/api/search/google/" + categories[0].id, {
+                  method: "POST",
+                  body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
+                }).then(() => {
+                  fetch("api/search/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ category: categories[0].id }),
+                  })
+                    .then((data) => data.json())
+                    .then(async (data) => {
+                      console.log(data);
+                      onSearch();
+                    });
+                }); return categories;}
+                   ),
       },
     },
   };
@@ -72,33 +94,6 @@ function Search({ onSearch }: Props) {
     (
       ___gcse_0?.querySelector("button.gsc-search-button") as HTMLButtonElement
     )?.click();
-
-    fetch(
-      "api/search/categories?" +
-        new URLSearchParams({ lang: "en", name: "" + data.searchBar }),
-      {
-        method: "GET",
-      }
-    )
-      .then((data) => data.json())
-      .then((data) => {
-        fetch("/api/search/google/" + data[0].id, {
-          method: "POST",
-          body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
-        }).then(() => {
-          console.log(data);
-          fetch("api/search/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ category: data[0].id }),
-          })
-            .then((data) => data.json())
-            .then(async (data) => {
-              console.log(data);
-              onSearch();
-            });
-        });
-      });
   };
 
   const handleChange = () => {
@@ -114,7 +109,8 @@ function Search({ onSearch }: Props) {
       .then((data) => data.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setCategories(data.map((item: { name: string }) => item.name));
+            console.log(data);
+          setCategories(data);
         }
       });
   };
@@ -184,7 +180,7 @@ function Search({ onSearch }: Props) {
             <div className="gcse-searchresults"></div>
           </div>
         </div>
-        {showList && <CategoryList categories={categories} />}{" "}
+        {showList && <CategoryList categories={categories.map(c => c.name as string)} />}{" "}
       </form>
     </>
   );

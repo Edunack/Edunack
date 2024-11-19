@@ -148,24 +148,12 @@ impl SearchRouter {
             let desc = element.select(&description_selector).next().unwrap();
             let url = element.select(&url_selector).next().unwrap();
 
-            //courses.push(GoogleSearchResponse {
-            //    id: Uuid::new_v4(),
-            //    name: a.text().collect::<String>(),
-            //    url: a.attr("href").unwrap().to_string(),
-            //    image: match element.select(&image_selector).next() {
-            //        Some(img) => img.attr("src").unwrap().to_string(),
-            //        None => "".to_string(),
-            //    },
-            //    description: desc.text().collect::<String>(),
-            //    author: url.text().collect::<String>(),
-            //    price: "free".to_string(),
-            //    rating: 0.0,
-            //});
             if state
                 .database
                 .course()
                 .exists_by_url(a.attr("href").unwrap().to_string().as_str())
             {
+                println!("Skipping {}", a.text().collect::<String>());
                 continue;
             }
             let course = Course {

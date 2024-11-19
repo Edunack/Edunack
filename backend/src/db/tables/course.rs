@@ -1,3 +1,5 @@
+use std::fmt::write;
+
 use rusqlite::ToSql;
 use uuid::Uuid;
 
@@ -27,29 +29,32 @@ impl Table<Course> {
             .write()
             .unwrap()
             .execute(
-                "INSERT INTO courses (id, category, author, medium, url, description, image, price) \
-                VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+                "INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)",
                 [
                     course.id.to_sql().unwrap(),
-                    course.category.to_sql().unwrap(),
-                    course.author.to_sql().unwrap(),
-                    course.medium.to_sql().unwrap(),
-                    course.url.to_sql().unwrap(),
-                    course.description.to_sql().unwrap(),
-                    course.image.to_sql().unwrap(),
-                    course.price.to_sql().unwrap(),
+                    "en".to_sql().unwrap(),
+                    course.name.to_sql().unwrap(),
                 ],
             )
             .map(|_| ())?;
-
-        self.0.write().unwrap().execute(
-            "INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)",
-            [
+        self.0
+            .write()
+            .unwrap()
+            .execute(
+                "INSERT INTO courses (id, category, author, medium, url, description, image, price) \
+                VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+                [
                 course.id.to_sql().unwrap(),
-                "en".to_sql().unwrap(),
-                course.name.to_sql().unwrap(),
-            ]
-        ).map(|_| ())
+                course.category.to_sql().unwrap(),
+                course.author.to_sql().unwrap(),
+                course.medium.to_sql().unwrap(),
+                course.url.to_sql().unwrap(),
+                course.description.to_sql().unwrap(),
+                course.image.to_sql().unwrap(),
+                course.price.to_sql().unwrap(),
+                ],
+            )
+            .map(|_| ())
     }
 
     pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Course> {
@@ -74,7 +79,6 @@ impl Table<Course> {
         let res = query.query_map(
             [category.to_sql().unwrap(), language.to_sql().unwrap()],
             |row| {
-                println!("{:?}", row);
                 Ok(Course {
                     id: row.get("id")?,
                     category: row.get("category")?,
@@ -94,7 +98,7 @@ impl Table<Course> {
             Err(e) => {
                 println!("{:?}", e);
                 vec![]
-            },
+            }
         }
     }
 
