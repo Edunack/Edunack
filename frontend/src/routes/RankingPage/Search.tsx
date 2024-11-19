@@ -3,6 +3,7 @@ import "./Search.css";
 
 interface Props {
   onSearch: () => void;
+  onUpdateCourses: (courses: Object[]) => void;
 }
 
 interface Category {
@@ -10,7 +11,7 @@ interface Category {
     name: String
 }
 
-function Search({ onSearch }: Props) {
+function Search({ onSearch, onUpdateCourses }: Props) {
   const searchRef = useRef<HTMLInputElement>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [showList, setShowList] = useState(false);
@@ -173,12 +174,12 @@ function Search({ onSearch }: Props) {
           <button id="searchBtn" type="submit">
             SEARCH
           </button>
-          <div id="search_results"></div>
-          <div id="captcha"></div>
-          <div id="google_search">
-            <div className="gcse-searchbox"></div>
-            <div className="gcse-searchresults"></div>
-          </div>
+        </div>
+        <div id="search_results"></div>
+        <div id="captcha"></div>
+        <div id="google_search">
+          <div className="gcse-searchbox"></div>
+          <div className="gcse-searchresults"></div>
         </div>
         {showList && <CategoryList categories={categories.map(c => c.name as string)} />}{" "}
       </form>

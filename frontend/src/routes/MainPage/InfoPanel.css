@@ -36,7 +36,7 @@
   padding: 8vh;
 }
 
-#infoTransform{
+#infoTransform {
   display: flex;
   transform: translateY(25%);
   justify-items: center;

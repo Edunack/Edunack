@@ -1,7 +1,13 @@
+import React from "react";
 import InlineCourse from "../../CommonAssets/InlineCourse";
 import "./OutsidePodium.css";
 
-function OutsidePodium() {
+interface Props {
+  courses: any[];
+}
+
+function OutsidePodium({ courses }: Props) {
+  console.log(courses);
   return (
     <div id="outside">
       <svg
@@ -37,7 +43,8 @@ function OutsidePodium() {
           fill="url(#rankWave)"
         />
       </svg>
-      <div id="courses">
+      <GenerateList courses={courses} />
+      {/*<div id="courses">
         <InlineCourse
           title="Welcome to PHP"
           author="programming is lajf"
@@ -91,9 +98,36 @@ function OutsidePodium() {
           price="free"
           opinion="nice ratings"
         />
-      </div>
+      </div>*/}
     </div>
   );
 }
 
 export default OutsidePodium;
+
+interface ListProps {
+  courses: any[];
+}
+
+function GenerateList({ courses }: ListProps) {
+  const slicedCourses = courses.slice(3);
+  return (
+    <div id="courses">
+      {slicedCourses.map((course, index) => (
+        <React.Fragment key={index}>
+          <InlineCourse
+            title={course.name.split("|")[0]}
+            author={course.author}
+            rank={index + 4 + "."}
+            type={course.medium === 0 ? "web course" : "other medium"}
+            price={course.price}
+            opinion={
+              course.rating === 0 ? "very positive ratings" : course.rating
+            }
+          />
+          {index !== slicedCourses.length - 1 && <div className="line"></div>}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
