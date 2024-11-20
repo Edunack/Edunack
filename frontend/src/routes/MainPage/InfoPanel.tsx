@@ -30,11 +30,18 @@ function InfoPanel() {
         </div>
         <div id="catchphrase" className="sect">
           <p>
-            HAVE YOU EVER WANTED TO LEARN A SKILL AND THERE WERE JUST TOO MANY
-            COURSES
+            HAVE YOU EVER WANTED TO LEARN
+            <br />A SKILL AND THERE WERE JUST TOO
             <br />
-            /TUTORIALS?
-            <br /> <span id="wrapper">FIND THE BEST SUITED ONE ON EDUNACK</span>
+            MANY COURSES/
+            <br />
+            TUTORIALS?
+            <br />{" "}
+            <span id="wrapper">
+              FIND THE BEST
+              <br />
+              SUITED ONE ON EDUNACK
+            </span>
           </p>
         </div>
       </div>

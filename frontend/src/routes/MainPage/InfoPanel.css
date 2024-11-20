@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 25vh 25% 25vh;
+  padding: 0 25vh 20% 25vh;
   margin: 0;
   height: 130vh;
   z-index: 3;
@@ -16,7 +16,7 @@
 }
 #catchphrase {
   text-align: right;
-  font-size: 7vh;
+  font-size: 6vh;
   font-weight: bold;
   color: #bbb8b8;
 }
@@ -27,9 +27,11 @@
   text-align: left;
   color: #d9d9d9;
   font-size: 6vh;
+  font-weight: 700;
 }
 #howTo > ul {
-  font-size: 4vh;
+  font-size: 3.75vh;
+  font-weight: 300;
 }
 .sect {
   flex: 1;
