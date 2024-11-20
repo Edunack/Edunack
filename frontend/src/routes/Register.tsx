@@ -1,5 +1,5 @@
 import "./Register.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function Register() {
   const [response, setResponse] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,6 +49,7 @@ function Register() {
           setResponse("Email already taken");
         } else if (data.status == 201) {
           setResponse("");
+          navigate("/Login", { replace: true });
         }
       });
   }

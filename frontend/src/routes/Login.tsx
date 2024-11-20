@@ -1,17 +1,13 @@
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 import { useState } from "react";
 
-/*export async function action() {
-  //navigate("/Error", { state: { message: "unexpected error" } });
-  throw new Error("Simple error");
-}*/
-
 function Login() {
   const [response, setResponse] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -31,6 +27,7 @@ function Login() {
         setResponse("Internal server error");
       } else if (data.status === 200) {
         setResponse("");
+        navigate("/", { replace: true });
       }
     });
   }
