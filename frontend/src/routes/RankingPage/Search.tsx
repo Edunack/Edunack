@@ -13,6 +13,7 @@ interface Category {
 
 function Search({ onSearch, onUpdateCourses }: Props) {
   const searchRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLUListElement>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [showList, setShowList] = useState(false);
 
@@ -102,6 +103,7 @@ function Search({ onSearch, onUpdateCourses }: Props) {
 
   const handleChange = () => {
     const data = new String(searchRef.current?.value);
+    setShowList(true);
 
     fetch(
       "api/search/categories?" +
@@ -120,7 +122,12 @@ function Search({ onSearch, onUpdateCourses }: Props) {
   };
 
   const handleClickOutside = (e: MouseEvent) => {
-    if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(e.target as Node) &&
+      categoryRef.current &&
+      !categoryRef.current.contains(e.target as Node)
+    ) {
       setShowList(false);
     }
   };
@@ -148,6 +155,13 @@ function Search({ onSearch, onUpdateCourses }: Props) {
 
   const borderRadius =
     categories.length > 0 && showList ? "1vh 0 0 0" : "1vh 0 0 1vh";
+
+  const handleCategoryClick = (category: string) => {
+    if (searchRef.current) {
+      searchRef.current.value = category;
+    }
+    setShowList(false);
+  };
 
   return (
     <>
@@ -185,7 +199,11 @@ function Search({ onSearch, onUpdateCourses }: Props) {
           <div className="gcse-searchresults"></div>
         </div>
         {showList && (
-          <CategoryList categories={categories.map((c) => c.name as string)} />
+          <CategoryList
+            categories={categories.map((c) => c.name as string)}
+            categoryRef={categoryRef}
+            handleCategoryClick={handleCategoryClick}
+          />
         )}{" "}
       </form>
     </>
@@ -196,13 +214,21 @@ export default Search;
 
 interface categoryListProps {
   categories: string[];
+  categoryRef: React.RefObject<HTMLUListElement>;
+  handleCategoryClick: (category: string) => void;
 }
 
-function CategoryList({ categories }: categoryListProps) {
+function CategoryList({
+  categories,
+  categoryRef,
+  handleCategoryClick,
+}: categoryListProps) {
   return (
-    <ul id="categoryList">
+    <ul id="categoryList" ref={categoryRef}>
       {categories.map((category, index) => (
-        <li key={index}>{category}</li>
+        <li key={index} onClick={() => handleCategoryClick(category)}>
+          {category}
+        </li>
       ))}
     </ul>
   );
