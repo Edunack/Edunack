@@ -18,3 +18,8 @@
   flex: 2;
   text-align: left;
 }
+
+#inlineCourse > span > #link {
+  color: white;
+  text-decoration: none;
+}

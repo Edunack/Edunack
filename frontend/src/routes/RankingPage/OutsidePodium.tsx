@@ -119,8 +119,8 @@ function GenerateList({ courses }: ListProps) {
             title={course.name.split("|")[0]}
             author={course.author}
             rank={index + 4 + "."}
-            type={course.medium === 0 ? "web course" : "other medium"}
-            price={course.price}
+            type={course.medium}
+            link={course.url}
             opinion={
               course.rating === 0 ? "very positive ratings" : course.rating
             }

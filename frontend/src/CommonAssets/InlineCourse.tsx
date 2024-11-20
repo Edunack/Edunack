@@ -5,21 +5,25 @@ interface Props {
   author: string;
   rank: string;
   type: string;
-  price: string;
+  link: string;
   opinion: string;
 }
 
-function InlineCourse({ title, author, rank, type, price, opinion }: Props) {
+function InlineCourse({ title, author, rank, type, link, opinion }: Props) {
   return (
     <div id="inlineCourse">
-      <span style={{fontSize: "5vh"}}>{rank}</span>
+      <span style={{ fontSize: "5vh" }}>{rank}</span>
       <span>
         {title}
         <br />
         by {author}
       </span>
       <span>{type}</span>
-      <span>{price}</span>
+      <span>
+        <a href={link} id="link" target="_blank">
+          see course
+        </a>
+      </span>
       <span>{opinion}</span>
     </div>
   );

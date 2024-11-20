@@ -17,8 +17,8 @@ function Top3({ courses }: Props) {
         />
         <CourseRank
           rank="2."
-          type={(courses[1].medium = 0 ? "web course" : "other medium")}
-          price={courses[1].price}
+          type={courses[1].medium}
+          link={courses[1].url}
           opinion={
             courses[1].rating == 0 ? "very positive ratings" : "no ratings"
           }
@@ -33,8 +33,8 @@ function Top3({ courses }: Props) {
         />
         <CourseRank
           rank="1."
-          type={courses[0].type == 0 ? "web course" : "other medium"}
-          price={courses[0].price}
+          type={courses[0].medium}
+          link={courses[0].url}
           opinion={
             courses[0].rating == 0 ? "very positive ratings" : "no ratings"
           }
@@ -49,8 +49,8 @@ function Top3({ courses }: Props) {
         />
         <CourseRank
           rank="3."
-          type={courses[2].type == 0 ? "web course" : "other medium"}
-          price={courses[2].price}
+          type={courses[2].medium}
+          link={courses[2].url}
           opinion={
             courses[2].rating == 0 ? "very positive ratings" : "no ratings"
           }
