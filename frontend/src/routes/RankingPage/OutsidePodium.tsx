@@ -9,96 +9,36 @@ interface Props {
 function OutsidePodium({ courses }: Props) {
   console.log(courses);
   return (
-    <div id="outside">
+    <div id="rankContainer">
       <svg
+        id="Warstwa_1"
+        data-name="Warstwa 1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 1920 1421"
-        preserveAspectRatio="none"
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-          zIndex: -1,
-        }}
+        viewBox="0 0 1920 883.48"
       >
         <defs>
           <linearGradient
-            id="rankWave"
-            x1="881.62"
-            y1="550.04"
-            x2="938.28"
-            y2="1009.34"
-            gradientTransform="translate(102.36 1232.78) scale(1 -1)"
+            id="Gradient_bez_nazwy_2"
+            data-name="Gradient bez nazwy 2"
+            x1="952.46"
+            y1="735.22"
+            x2="991.01"
+            y2="294.63"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset=".19" stop-color="#1e1e1e" />
-            <stop offset="1" stop-color="#8c4493" />
+            <stop offset=".05" stopColor="#1e1e1e" />
+            <stop offset="1" stopColor="#8c4493" />
           </linearGradient>
         </defs>
         <path
-          d="m0,333.42S700.74-168.28,938,59.16c364.67,349.56,982,274.27,982,274.27v1087.58H0V333.42Z"
-          fill="url(#rankWave)"
+          fill="url(#Gradient_bez_nazwy_2)"
+          d="m938,73.56C700.74-209.25,0,414.6,0,414.6v468.88h1920v-468.88s-617.33,93.62-982-341.04Z"
         />
       </svg>
-      <GenerateList courses={courses} />
-      {/*<div id="courses">
-        <InlineCourse
-          title="Welcome to PHP"
-          author="programming is lajf"
-          rank="4."
-          type="video"
-          price="free"
-          opinion="very positive ratings"
-        />
-        <div className="line"></div>
-        <InlineCourse
-          title="Welcome to PHP"
-          author="programming is lajf"
-          rank="5."
-          type="video"
-          price="free"
-          opinion="no ratings"
-        />
-        <div className="line"></div>
-        <InlineCourse
-          title="Welcome to PHP"
-          author="programming is lajf"
-          rank="6."
-          type="video"
-          price="free"
-          opinion="nice ratings"
-        />
-        <div className="line"></div>
-        <InlineCourse
-          title="Welcome to PHP"
-          author="programming is lajf"
-          rank="7."
-          type="video"
-          price="free"
-          opinion="nice ratings"
-        />
-        <div className="line"></div>
-        <InlineCourse
-          title="Welcome to PHP"
-          author="programming is lajf"
-          rank="8."
-          type="video"
-          price="free"
-          opinion="nice ratings"
-        />
-        <div className="line"></div>
-        <InlineCourse
-          title="Welcome to PHP"
-          author="programming is lajf"
-          rank="9."
-          type="video"
-          price="free"
-          opinion="nice ratings"
-        />
-      </div>*/}
+      <div id="outside">
+        <GenerateList courses={courses} />
+      </div>
     </div>
   );
 }
