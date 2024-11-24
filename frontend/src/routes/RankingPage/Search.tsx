@@ -25,6 +25,20 @@ function Search({ onSearch, onUpdateCourses }: Props) {
     );
   }
 
+  function updateCategories(data: string) {
+    fetch("api/search/categories?" +
+    new URLSearchParams({ lang: "en", name: data }), {
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          console.log(data);
+          setCategories(data);
+        }
+      });
+  }
+
   (window as any).__gcse || ((window as any).__gcse = {});
   (window as any).__gcse = {
     initializationCallback: removeHash,
@@ -35,15 +49,16 @@ function Search({ onSearch, onUpdateCourses }: Props) {
           removeHash();
         },
         rendered: () =>
-          setCategories((categories) => {
-            fetch("/api/search/google/" + categories[0].id, {
+          setCategories((cat) => {
+            fetch("/api/search/google/" + cat[0].id, {
               method: "POST",
               body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
             }).then(() => {
+              console.log(cat[0].id);
               fetch("api/search/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ category: categories[0].id }),
+                body: JSON.stringify({ category: cat[0].id }),
               })
                 .then((data) => data.json())
                 .then(async (data) => {
@@ -52,7 +67,7 @@ function Search({ onSearch, onUpdateCourses }: Props) {
                   onSearch();
                 });
             });
-            return categories;
+            return cat;
           }),
       },
     },
@@ -105,20 +120,7 @@ function Search({ onSearch, onUpdateCourses }: Props) {
     const data = new String(searchRef.current?.value);
     setShowList(true);
 
-    fetch(
-      "api/search/categories?" +
-        new URLSearchParams({ lang: "en", name: "" + data }),
-      {
-        method: "GET",
-      }
-    )
-      .then((data) => data.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          console.log(data);
-          setCategories(data);
-        }
-      });
+    updateCategories("" + data);
   };
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -160,6 +162,8 @@ function Search({ onSearch, onUpdateCourses }: Props) {
     if (searchRef.current) {
       searchRef.current.value = category;
     }
+
+    updateCategories(category);
     setShowList(false);
   };
 
