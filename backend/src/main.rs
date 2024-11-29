@@ -1,10 +1,15 @@
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
-use db::{ConnectionExt, Database};
+use db::{models::user::User, ConnectionExt, Database};
 use rand::Rng;
 use routers::{login::LoginRouter, search::SearchRouter, IntoRouter};
-use rusqlite::Connection;
+use sqlx::{
+    pool::PoolOptions,
+    query, query_as,
+    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
+    Acquire, Connection, SqliteConnection, SqlitePool,
+};
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
 use tower_http::{
@@ -40,20 +45,24 @@ async fn main() {
             secret
         })
         .await;
-    let conn =
-        Connection::open(dotenvy::var("DATABASE").unwrap_or("dev.sqlite".to_string())).unwrap();
-    //SqlitePool::connect(&dotenvy::var("DATABASE").unwrap_or("sqlite://dev.sqlite".to_string()))
-    //    .await
-    //    .unwrap();
-    let _ = conn.pragma_update(
-        None,
-        "key",
-        dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
-    );
-    let _ = conn.register_all().unwrap();
+
+    let pool = SqlitePoolOptions::new()
+        .before_acquire(|conn, _| {
+            Box::pin(async move { conn.register_functions().await.map(|_| true) })
+        })
+        .connect_with(
+            SqliteConnectOptions::new()
+                .filename(dotenvy::var("DATABASE").unwrap_or("sqlite://dev.sqlite".to_string()))
+                .pragma(
+                    "key",
+                    dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
+                ),
+        )
+        .await
+        .unwrap();
 
     let state = AppState {
-        database: Database::new(Arc::new(RwLock::new(conn))),
+        database: Database::new(Arc::new(pool)),
     };
 
     let app = Router::new()

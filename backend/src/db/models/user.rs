@@ -1,7 +1,8 @@
+use sqlx::prelude::FromRow;
 use uuid::Uuid;
 
 
-#[derive(Debug)]
+#[derive(Debug, FromRow)]
 pub struct User {
     pub id: Uuid,
     pub username: String,

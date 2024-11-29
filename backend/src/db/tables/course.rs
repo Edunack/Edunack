@@ -1,6 +1,4 @@
-use std::fmt::write;
-
-use rusqlite::ToSql;
+use sqlx::{query, query_as, query_scalar, Sqlite};
 use uuid::Uuid;
 
 use crate::db::models::course::Course;
@@ -8,214 +6,134 @@ use crate::db::models::course::Course;
 use super::Table;
 
 impl Table<Course> {
-    pub fn find_medium_name(&self, medium: i32, language: &str) -> Option<String> {
-        self.0
-            .write()
-            .unwrap()
-            .query_row(
-                format!(
-                    "SELECT name FROM course_mediums WHERE id = ?1 \
-            AND (language = ?2 OR language = 'en') ORDER BY language {}",
-                    if language > "en" { "desc" } else { "asc" }
-                )
-                .as_str(),
-                [medium.to_sql().unwrap(), language.to_sql().unwrap()],
-                |row| row.get(0),
+    pub async fn find_medium_name(&self, medium: i32, language: &str) -> Option<String> {
+        query_scalar(
+            format!(
+                "SELECT name FROM course_mediums WHERE id = ?1 \
+                AND (language = ?2 OR language = 'en') ORDER BY language {}",
+                if language > "en" { "desc" } else { "asc" }
             )
-            .ok()
+            .as_str(),
+        )
+        .bind(medium)
+        .bind(language)
+        .fetch_optional(&*self.0)
+        .await
+        .ok()?
     }
-    pub fn insert(&self, course: Course) -> Result<(), rusqlite::Error> {
-        self.0
-            .write()
-            .unwrap()
-            .execute(
-                "INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)",
-                [
-                    course.id.to_sql().unwrap(),
-                    "en".to_sql().unwrap(),
-                    course.name.to_sql().unwrap(),
-                ],
-            )
-            .map(|_| ())?;
-        self.0
-            .write()
-            .unwrap()
-            .execute(
-                "INSERT INTO courses (id, category, author, medium, url, description, image, price) \
-                VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-                [
-                course.id.to_sql().unwrap(),
-                course.category.to_sql().unwrap(),
-                course.author.to_sql().unwrap(),
-                course.medium.to_sql().unwrap(),
-                course.url.to_sql().unwrap(),
-                course.description.to_sql().unwrap(),
-                course.image.to_sql().unwrap(),
-                course.price.to_sql().unwrap(),
-                ],
-            )
-            .map(|_| ())
+    pub async fn insert(&self, course: Course) -> Result<(), ()> {
+        let mut tx = self.0.begin().await.unwrap();
+
+        query("INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)")
+            .bind(course.id)
+            .bind("en")
+            .bind(course.name)
+            .execute(&mut *tx)
+            .await
+            .map_err(|_| ())?;
+
+        query(
+            "INSERT INTO courses (id, category, author, medium, url, description, image, price)\
+            VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+        )
+        .bind(course.id)
+        .bind(course.category)
+        .bind(course.author)
+        .bind(course.medium)
+        .bind(course.url)
+        .bind(course.description)
+        .bind(course.image)
+        .bind(course.price)
+        .execute(&mut *tx)
+        .await
+        .map_err(|_| ())?;
+
+        tx.commit().await.map_err(|_| ())?;
+
+        Ok(())
     }
 
     pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Course> {
         todo!()
     }
 
-    pub fn find_by_category(&self, category: uuid::Uuid, language: &str) -> Vec<Course> {
-        let conn = self.0.write().unwrap();
-        let mut query = conn
-            .prepare(
-                format!(
-                    "SELECT * FROM \
-                    (SELECT courses.*, name from courses \
-                    INNER JOIN course_translations ON courses.id = course_translations.course \
-                    WHERE category = ?1 AND (language like ?2 or language like 'en') \
-                    GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                    if language > "en" { "desc" } else { "asc" }
-                )
-                .as_str(),
-            )
-            .unwrap();
-        let res = query.query_map(
-            [category.to_sql().unwrap(), language.to_sql().unwrap()],
-            |row| {
-                Ok(Course {
-                    id: row.get("id")?,
-                    category: row.get("category")?,
-                    name: row.get("name")?,
-                    author: row.get("author")?,
-                    description: row.get("description")?,
-                    image: row.get("image")?,
-                    price: row.get("price")?,
-                    rating: 0.0,
-                    medium: row.get("medium")?,
-                    url: row.get("url")?,
-                })
-            },
-        );
-        match res {
-            Ok(user) => user.filter_map(Result::ok).collect(),
-            Err(e) => {
-                println!("{:?}", e);
-                vec![]
-            }
-        }
-    }
-
-    pub fn find_by_author(&self, author: &str, language: &str) -> Vec<Course> {
-        let conn = self.0.write().unwrap();
-        let mut query = conn
-            .prepare(
-                format!(
-                    "SELECT * FROM \
-                    (SELECT courses.*, name from courses \
-                     INNER JOIN course_translations ON courses.id = course_translations.course \
-                     WHERE author = ?1 AND (language like ?2 or language like 'en') \
-                     GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                    if language > "en" { "desc" } else { "asc" }
-                )
-                .as_str(),
-            )
-            .unwrap();
-        let res = query.query_map([author, language], |row| {
-            Ok(Course {
-                id: row.get("id")?,
-                category: row.get("category")?,
-                name: row.get("name")?,
-                author: row.get("author")?,
-                description: row.get("description")?,
-                image: row.get("image")?,
-                price: row.get("price")?,
-                rating: 0.0,
-                medium: row.get("medium")?,
-                url: row.get("url")?,
-            })
-        });
-        match res {
-            Ok(user) => user.filter_map(Result::ok).collect(),
-            Err(_) => vec![],
-        }
-    }
-
-    pub fn find_by_name(&self, name: &str, language: &str) -> Vec<Course> {
-        let conn = self.0.write().unwrap();
-        let mut query = conn
-            .prepare(
-                format!(
-                    "SELECT * FROM \
-                    (SELECT courses.*, name from courses \
-                     INNER JOIN course_translations ON courses.id = course_translations.course \
-                     WHERE course_translations.name LIKE ?1 AND (language like ?2 or language like 'en') \
-                     GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                    if language > "en" { "desc" } else { "asc" }
-                )
-                .as_str(),
-            )
-            .unwrap();
-        let res = query.query_map([name, language], |row| {
-            println!("{:?}", row);
-            Ok(Course {
-                id: row.get("id")?,
-                category: row.get("category")?,
-                name: row.get("name")?,
-                author: row.get("author")?,
-                description: row.get("description")?,
-                image: row.get("image")?,
-                price: row.get("price")?,
-                rating: 0.0,
-                medium: row.get("medium")?,
-                url: row.get("url")?,
-            })
-        });
-        match res {
-            Ok(user) => user.filter_map(Result::ok).collect(),
-            Err(_) => vec![],
-        }
-    }
-
-    pub fn find_by_url(&self, name: &str, language: &str) -> Option<Course> {
-        let res = self.0.write().unwrap().query_row(
+    pub async fn find_by_category(&self, category: uuid::Uuid, language: &str) -> Vec<Course> {
+        query_as(
             format!(
-                "SELECT * FROM \
-                    (SELECT courses.*, name from courses \
-                     INNER JOIN course_translations ON courses.id = course_translations.course \
-                     WHERE url LIKE ?1 AND (language like ?2 or language like 'en') \
-                     GROUP BY id, language ORDER BY language {}) GROUP BY id",
+                "SELECT * FROM (SELECT courses.*, name from courses \
+                INNER JOIN course_translations ON courses.id = course_translations.course \
+                WHERE category = ?1 AND (language like ?2 or language like 'en') \
+                GROUP BY id, language ORDER BY language {}) GROUP BY id",
                 if language > "en" { "desc" } else { "asc" }
             )
             .as_str(),
-            [name, language],
-            |row| {
-                println!("{:?}", row);
-                Ok(Course {
-                    id: row.get("id")?,
-                    category: row.get("category")?,
-                    name: row.get("name")?,
-                    author: row.get("author")?,
-                    description: row.get("description")?,
-                    image: row.get("image")?,
-                    price: row.get("price")?,
-                    rating: 0.0,
-                    medium: row.get("medium")?,
-                    url: row.get("url")?,
-                })
-            },
-        );
-        match res {
-            Ok(user) => Some(user),
-            Err(_) => None,
-        }
+        )
+        .bind(category)
+        .bind(language)
+        .fetch_all(&*self.0)
+        .await
+        .unwrap_or_else(|_| vec![])
     }
 
-    pub fn exists_by_url(&self, url: &str) -> bool {
-        self.0
-            .write()
-            .unwrap()
-            .query_row(
-                "SELECT EXISTS(SELECT 1 FROM courses WHERE url = ?1)",
-                [url],
-                |row| row.get(0),
+    pub async fn find_by_author(&self, author: &str, language: &str) -> Vec<Course> {
+        query_as(
+            format!(
+                "SELECT * FROM (SELECT courses.*, name from courses \
+                INNER JOIN course_translations ON courses.id = course_translations.course \
+                WHERE author = ?1 AND (language like ?2 or language like 'en') \
+                GROUP BY id, language ORDER BY language {}) GROUP BY id",
+                if language > "en" { "desc" } else { "asc" }
             )
+            .as_str(),
+        )
+        .bind(author)
+        .bind(language)
+        .fetch_all(&*self.0)
+        .await
+        .unwrap_or_else(|_| vec![])
+    }
+
+    pub async fn find_by_name(&self, name: &str, language: &str) -> Vec<Course> {
+        query_as(
+            format!(
+                "SELECT * FROM (SELECT courses.*, name from courses \
+                INNER JOIN course_translations ON courses.id = course_translations.course \
+                WHERE course_translations.name LIKE ?1 AND (language like ?2 or language like 'en') \
+                GROUP BY id, language ORDER BY language {}) GROUP BY id",
+                if language > "en" { "desc" } else { "asc" }
+            )
+            .as_str(),
+        )
+        .bind(name)
+        .bind(language)
+        .fetch_all(&*self.0)
+        .await
+        .unwrap_or_else(|_| vec![])
+    }
+
+    pub async fn find_by_url(&self, name: &str, language: &str) -> Option<Course> {
+        query_as(
+            format!(
+                "SELECT * FROM (SELECT courses.*, name from courses \
+                INNER JOIN course_translations ON courses.id = course_translations.course \
+                WHERE url LIKE ?1 AND (language like ?2 or language like 'en') \
+                GROUP BY id, language ORDER BY language {}) GROUP BY id",
+                if language > "en" { "desc" } else { "asc" }
+            )
+            .as_str(),
+        )
+        .bind(name)
+        .bind(language)
+        .fetch_optional(&*self.0)
+        .await
+        .ok()?
+    }
+
+    pub async fn exists_by_url(&self, url: &str) -> bool {
+        query_scalar("SELECT EXISTS(SELECT 1 FROM courses WHERE url = ?1)")
+            .bind(url)
+            .fetch_one(&*self.0)
+            .await
             .unwrap()
     }
 }

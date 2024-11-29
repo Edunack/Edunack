@@ -2,19 +2,18 @@ use std::collections::HashMap;
 
 use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use axum::{
-    extract::{FromRef, State},
-    http::{HeaderMap, HeaderName, HeaderValue, StatusCode},
+    extract::State,
+    http::{HeaderMap, HeaderValue, StatusCode},
     response::{IntoResponse, Response},
     routing::post,
-    Form, Json, Router,
+    Json, Router,
 };
 use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
-use tokio::sync::RwLockReadGuard;
 use uuid::Uuid;
 
 use super::IntoRouter;
-use crate::{auth, db::{models::user::User, Database}, AppState};
+use crate::{auth, db::models::user::User, AppState};
 
 pub struct LoginRouter;
 
@@ -35,9 +34,9 @@ pub struct RegisterParams {
 impl LoginRouter {
     pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
         let user_table = state.database.user();
-        let user = match user_table.find_by_username(&params.login) {
+        let user = match user_table.find_by_username(&params.login).await {
             Some(user) => user,
-            None => match user_table.find_by_email(&params.login) {
+            None => match user_table.find_by_email(&params.login).await {
                 Some(user) => user,
                 None => {
                     return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()
@@ -64,7 +63,7 @@ impl LoginRouter {
             StatusCode::OK,
             HeaderMap::try_from(&HashMap::from([(
                 http::header::SET_COOKIE,
-                HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly", res).as_str())
+                HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly; SameSite=Lax", res).as_str())
                     .unwrap(),
             )]))
             .unwrap(),
@@ -78,7 +77,7 @@ impl LoginRouter {
         Json(params): Json<RegisterParams>,
     ) -> Response {
         let user_table = state.database.user();
-        if let Some(user) = user_table.find_by_username_or_email(&params.username, &params.email) {
+        if let Some(user) = user_table.find_by_username_or_email(&params.username, &params.email).await {
             if user.username == params.username || user.username == params.email {
                 return (StatusCode::BAD_REQUEST, "Username").into_response();
             }
@@ -100,7 +99,7 @@ impl LoginRouter {
             username: params.username.clone(),
             email: params.email.clone(),
             password,
-        }) {
+        }).await {
             Ok(_) => StatusCode::CREATED.into_response(),
             Err(error) => {
                 println!("{error:?}");

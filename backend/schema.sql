@@ -41,3 +41,10 @@ CREATE TABLE IF NOT EXISTS categories(
     name text not null,
     PRIMARY KEY (id, language)
 );
+
+CREATE TABLE IF NOT EXISTS user_ratings(
+    user blob(16) not null,
+    course blob(16) not null,
+    rating int not null,
+    PRIMARY KEY (user, course)
+);

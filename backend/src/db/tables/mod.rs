@@ -1,18 +1,22 @@
 use std::{
     marker::PhantomData,
-    sync::{Arc, RwLock},
+    sync::Arc,
 };
 
-use rusqlite::Connection;
+use sqlx::{Pool, SqlitePool};
 
 pub mod user;
 pub mod course;
 pub mod category;
+pub mod rating;
 
-pub struct Table<T>(Arc<RwLock<Connection>>, PhantomData<T>);
+pub struct Table<T>(Arc<SqlitePool>, PhantomData<T>);
 
 impl<T> Table<T> {
-    pub fn new(conn: Arc<RwLock<Connection>>) -> Self {
+    pub fn new(conn: Arc<SqlitePool>) -> Self {
         Self(conn, PhantomData)
     }
 }
+
+
+

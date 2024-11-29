@@ -1,74 +1,44 @@
-use std::sync::{Arc, RwLock};
+use std::ops::Deref;
 
 use crate::db::models::user::User;
-use rusqlite::{types::ToSqlOutput, Connection, ToSql};
+use sqlx::{query, query_as, Sqlite};
 use uuid::Uuid;
 
 use super::Table;
 
 impl Table<User> {
-    pub fn insert(&self, user: &User) -> Result<(), rusqlite::Error> {
-        self.0
-            .write()
-            .unwrap()
-            .execute(
-                "INSERT INTO users (id, username, email, password) VALUES (?1, ?2, ?3, ?4)",
-                [
-                    user.id.to_sql().unwrap(),
-                    user.username.to_sql().unwrap(),
-                    user.email.to_sql().unwrap(),
-                    user.password.to_sql().unwrap(),
-                ],
-            )
+    pub async fn insert(&self, user: &User) -> Result<(), sqlx::Error> {
+        query("INSERT INTO users (id, username, email, password) VALUES (?1, ?2, ?3, ?4)")
+            .bind(user.id.clone())
+            .bind(user.username.clone())
+            .bind(user.email.clone())
+            .bind(user.password.clone())
+            .execute(&*self.0)
+            .await
             .map(|_| ())
     }
 
-    pub fn find_by_id(&self, id: Uuid) -> Option<User> {
-        self.0
-            .write()
-            .unwrap()
-            .query_row("SELECT * FROM users WHERE id = ?1", [id], |row| {
-                Ok(User {
-                    id: row.get("id")?,
-                    username: row.get("username")?,
-                    email: row.get("email")?,
-                    password: row.get("password")?,
-                })
-            })
+    pub async fn find_by_id(&self, id: Uuid) -> Option<User> {
+        query_as("SELECT * FROM users WHERE id = ?1")
+            .bind(id)
+            .fetch_one(&*self.0)
+            .await
             .ok()
     }
 
-    pub fn find_by_email(&self, email: &str) -> Option<User> {
-        self.0
-            .write()
-            .unwrap()
-            .query_row("SELECT * FROM users WHERE email = ?1", [email], |row| {
-                Ok(User {
-                    id: row.get("id")?,
-                    username: row.get("username")?,
-                    email: row.get("email")?,
-                    password: row.get("password")?,
-                })
-            })
+    pub async fn find_by_email(&self, email: &str) -> Option<User> {
+        query_as("SELECT * FROM users WHERE email = ?1")
+            .bind(email)
+            .fetch_one(&*self.0)
+            .await
             .ok()
     }
 
-    pub fn find_by_username(&self, username: &str) -> Option<User> {
-        self.0
-            .write()
-            .unwrap()
-            .query_row(
-                "SELECT * FROM users WHERE username = ?1",
-                [username],
-                |row| {
-                    Ok(User {
-                        id: row.get("id")?,
-                        username: row.get("username")?,
-                        email: row.get("email")?,
-                        password: row.get("password")?,
-                    })
-                },
-            )
+    pub async fn find_by_username(&self, username: &str) -> Option<User> {
+        query_as("SELECT * FROM users WHERE username = ?1")
+            .bind(username)
+            .fetch_one(&*self.0)
+            .await
             .ok()
     }
 
@@ -92,26 +62,12 @@ impl Table<User> {
     //    }
     //}
 
-    pub fn find_by_username_or_email(&self, username: &str, email: &str) -> Option<User> {
-        self.0
-            .write()
-            .unwrap()
-            .query_row(
-                "SELECT * FROM users WHERE email regexp ?1 OR username regexp ?1 order by ?2",
-                [
-                    format!("^({})$|^({})$", username, email),
-                    "username".min("email").to_string(),
-                ],
-                |row| {
-                    //println!("{:?}", row);
-                    Ok(User {
-                        id: row.get("id")?,
-                        username: row.get("username")?,
-                        email: row.get("email")?,
-                        password: row.get("password")?,
-                    })
-                },
-            )
+    pub async fn find_by_username_or_email(&self, username: &str, email: &str) -> Option<User> {
+        query_as("SELECT * FROM users WHERE email IN (?1, ?2) OR username IN (?1, ?2)")
+            .bind(email)
+            .bind(username)
+            .fetch_one(&*self.0)
+            .await
             .ok()
     }
 }
