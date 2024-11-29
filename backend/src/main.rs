@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{str::FromStr, sync::Arc};
 
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
 use db::{models::user::User, ConnectionExt, Database};
@@ -51,12 +51,16 @@ async fn main() {
             Box::pin(async move { conn.register_functions().await.map(|_| true) })
         })
         .connect_with(
-            SqliteConnectOptions::new()
-                .filename(dotenvy::var("DATABASE").unwrap_or("sqlite://dev.sqlite".to_string()))
-                .pragma(
-                    "key",
-                    dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
-                ),
+            SqliteConnectOptions::from_str(
+                dotenvy::var("DATABASE")
+                    .unwrap_or("sqlite://dev.sqlite".to_string())
+                    .as_str(),
+            )
+            .unwrap()
+            .pragma(
+                "key",
+                dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
+            ),
         )
         .await
         .unwrap();
