@@ -11,6 +11,7 @@ pub struct Course {
     pub description: String,
     pub image: String,
     pub price: String,
+    #[sqlx(default)]
     pub rating: f64,
     pub medium: i32,
     pub url: String,

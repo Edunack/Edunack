@@ -182,7 +182,12 @@ impl SearchRouter {
                 .collect::<Vec<_>>()
         };
         for elem in elements {
-            if state.database.course().exists_by_url(elem.url.as_str()).await {
+            if state
+                .database
+                .course()
+                .exists_by_url(elem.url.as_str())
+                .await
+            {
                 println!("Skipping {}", elem.name);
                 continue;
             }
