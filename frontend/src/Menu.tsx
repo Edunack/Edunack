@@ -34,7 +34,7 @@ function Menu() {
           </li>
           <li className="menuItem">
             {" "}
-            <Link to={`Ranking`} className="menuLink">
+            <Link to={`Search`} className="menuLink">
               ranking
             </Link>
           </li>
@@ -50,7 +50,7 @@ function Menu() {
           </li>
         </ul>
       </div>
-      <div style={{transform: "translateY(10vh)"}}>
+      <div style={{ transform: "translateY(10vh)" }}>
         <Outlet />
       </div>
     </>

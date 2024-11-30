@@ -1,24 +1,20 @@
-import Search from "./RankingPage/Search";
 import Top3 from "./RankingPage/Top3";
 import OutsidePodium from "./RankingPage/OutsidePodium";
 import "./Ranking.css";
-import { useState } from "react";
 
-function Ranking() {
-  const [ShowResult, setShowResults] = useState(false);
-  const [courses, setCourses] = useState<Object[]>([]);
+interface Props {
+  courses: any[];
+  category: string;
+}
+
+function Ranking({ courses, category }: Props) {
   return (
     <div id="ranking">
-      <Search
-        onSearch={() => setShowResults(true)}
-        onUpdateCourses={setCourses}
-      />
-      {ShowResult && (
-        <>
-          <Top3 courses={courses} />
-          <OutsidePodium courses={courses} />
-        </>
-      )}
+      <p id="category">
+        Top searches in: <b>{category}</b>
+      </p>
+      <Top3 courses={courses} />
+      <OutsidePodium courses={courses} />
     </div>
   );
 }
