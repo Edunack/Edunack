@@ -32,7 +32,7 @@
 #searchBar,
 #searchBtn {
   box-sizing: border-box;
-  height: 5vh;
+  height: 8vh;
 }
 
 #searchBar,
@@ -47,7 +47,7 @@
 
 #searchBar {
   font-size: 2.5vh;
-  padding: 4vh 2vh;
+  padding: 3vh 2vh;
   width: 96vh;
   border: 3px solid #5f3480;
   border-right: none;
@@ -64,7 +64,7 @@
 
 #searchBtn {
   position: absolute;
-  padding: 4vh 2vh;
+  padding: 3vh 2vh;
   width: 26vh;
   background-color: #5c2e6b;
   border-radius: 0 1.5vh 1.5vh 0;
@@ -114,4 +114,10 @@
 
 #captcha {
   display: block;
+}
+
+#categoryLine {
+  border-top: 1px solid #a067d2;
+  margin: 0;
+  padding: 0;
 }

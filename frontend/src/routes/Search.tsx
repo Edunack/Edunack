@@ -168,9 +168,14 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
   const updateBtnPos = () => {
     if (searchRef.current && searchBtnRef.current) {
       const searchBtn = searchBtnRef.current;
-      const searchTop = searchRef.current.offsetTop;
+      const searchTop = searchRef.current.getBoundingClientRect().top;
 
-      searchBtn.style.top = `${searchTop}px`;
+      const containerTop = document
+        .getElementById("searchContainer")
+        ?.getBoundingClientRect().top;
+
+      const relativeTop = searchTop - (containerTop || 0);
+      searchBtn.style.top = `${relativeTop}px`;
     }
   };
 
@@ -282,8 +287,10 @@ function CategoryList({
   handleCategoryClick,
   style,
 }: categoryListProps) {
+  const hasCategories = categories.length > 0;
   return (
     <ul id="categoryList" ref={categoryRef} style={{ display: style }}>
+      <div style={{ height: hasCategories ? "1px" : "0" }} id="categoryLine" />
       {categories.map((category, index) => (
         <li key={index} onClick={() => handleCategoryClick(category)}>
           {category}
