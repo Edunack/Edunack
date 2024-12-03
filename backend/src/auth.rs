@@ -1,14 +1,15 @@
 use axum::{extract::Request, http::StatusCode, middleware::Next, response::Response};
+use axum_extra::extract::cookie::CookieJar;
 use tokio::sync::OnceCell;
 
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header, TokenData, Validation};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Claims {
     exp: usize,
     iat: usize,
-    email: String,
+    pub email: String,
 }
 
 pub static SECRET: OnceCell<String> = OnceCell::const_new();
@@ -37,14 +38,38 @@ pub fn decode_jwt(token: &str) -> Result<TokenData<Claims>, ()> {
         &DecodingKey::from_secret(SECRET.get().unwrap().as_ref()),
         &Validation::default(),
     )
-    .map_err(|_| ())?;
+    .map_err(|e| { /*println!("{:?}", e)*/ })?;
 
     Ok(decoded)
 }
 
-pub async fn authorize(request: Request, next: Next) -> Result<Response, StatusCode> {
+pub async fn authorize(
+    jar: CookieJar,
+    mut request: Request,
+    next: Next,
+) -> Result<Response, StatusCode> {
     println!("{}", request.uri());
 
-//    Err(StatusCode::IM_A_TEAPOT)
+    //    Err(StatusCode::IM_A_TEAPOT)
+
+    let get_auth = |jar: CookieJar| -> Option<Claims> {
+        Some(decode_jwt(jar.get("Authorization")?.value()).ok()?.claims)
+    };
+    request.extensions_mut().insert(get_auth(jar));
+
     Ok(next.run(request).await)
+}
+
+pub async fn force_authorize(
+    mut request: Request,
+    next: Next,
+) -> Result<Response, StatusCode> {
+    let ext: Option<Claims> = request.extensions_mut().remove::<Option<Claims>>().unwrap();
+    match ext {
+        Some(ext) => {
+            request.extensions_mut().insert(ext);
+            Ok(next.run(request).await)
+        }
+        None => Err(StatusCode::UNAUTHORIZED),
+    }
 }

@@ -3,7 +3,7 @@ use std::{str::FromStr, sync::Arc};
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
 use db::{models::user::User, ConnectionExt, Database};
 use rand::Rng;
-use routers::{login::LoginRouter, search::SearchRouter, IntoRouter};
+use routers::{login::LoginRouter, rate::RateRouter, search::SearchRouter, IntoRouter};
 use sqlx::{
     pool::PoolOptions,
     query, query_as,
@@ -80,6 +80,7 @@ async fn main() {
                 //                .nest("/sth2", ExampleRouter.into_router())
                 .nest("/", LoginRouter.into_router())
                 .nest("/search", SearchRouter.into_router())
+                .nest("/rate", RateRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize)),
         )
         .nest_service("/", ServeFile::new("../frontend/dist/index.html"))

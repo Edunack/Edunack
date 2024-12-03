@@ -30,7 +30,7 @@ impl Table<Rating> {
         )
         .bind(course_id)
         .bind(user_id)
-        .bind(rating.0)
+        .bind(*rating)
         .execute(&*self.0)
         .await
         .map(|_| ())
