@@ -8,6 +8,7 @@ use axum::{
     routing::post,
     Json, Router,
 };
+use axum_extra::extract::cookie::Cookie;
 use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -63,8 +64,18 @@ impl LoginRouter {
             StatusCode::OK,
             HeaderMap::try_from(&HashMap::from([(
                 http::header::SET_COOKIE,
-                HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly; SameSite=Lax", res).as_str())
-                    .unwrap(),
+                HeaderValue::from_str(
+                    Cookie::build(("Authorization", &res))
+                        .path("/")
+                        .http_only(true)
+                        .same_site(axum_extra::extract::cookie::SameSite::Lax)
+                        .build()
+                        .to_string()
+                        .as_str(),
+                )
+                .unwrap(),
+                //HeaderValue::from_str(format!("Authorization={}; Path=/; HttpOnly; SameSite=Lax", res).as_str())
+                //    .unwrap(),
             )]))
             .unwrap(),
         )
@@ -77,7 +88,10 @@ impl LoginRouter {
         Json(params): Json<RegisterParams>,
     ) -> Response {
         let user_table = state.database.user();
-        if let Some(user) = user_table.find_by_username_or_email(&params.username, &params.email).await {
+        if let Some(user) = user_table
+            .find_by_username_or_email(&params.username, &params.email)
+            .await
+        {
             if user.username == params.username || user.username == params.email {
                 return (StatusCode::BAD_REQUEST, "Username").into_response();
             }
@@ -94,12 +108,15 @@ impl LoginRouter {
             }
         };
 
-        match user_table.insert(&User {
-            id,
-            username: params.username.clone(),
-            email: params.email.clone(),
-            password,
-        }).await {
+        match user_table
+            .insert(&User {
+                id,
+                username: params.username.clone(),
+                email: params.email.clone(),
+                password,
+            })
+            .await
+        {
             Ok(_) => StatusCode::CREATED.into_response(),
             Err(error) => {
                 println!("{error:?}");

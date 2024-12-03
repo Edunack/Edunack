@@ -1,10 +1,8 @@
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
-use axum::BoxError;
-use models::{category::Category, course::Course, user::User};
-use regex::{Regex, RegexBuilder};
+use models::{category::Category, course::Course, rating::Rating, user::User};
 use rusqlite_ext::RusqliteFunctionExt;
-use sqlx::{Acquire, Pool, SqliteConnection, SqlitePool};
+use sqlx::{SqliteConnection, SqlitePool};
 use tables::Table;
 
 pub mod models;
@@ -27,6 +25,10 @@ impl Database {
     }
 
     pub fn category(&self) -> Table<Category> {
+        Table::new(self.0.clone())
+    }
+
+    pub fn rating(&self) -> Table<Rating> {
         Table::new(self.0.clone())
     }
 }
