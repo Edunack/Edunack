@@ -1,4 +1,6 @@
 import "./Course.css";
+import { useContext } from "react";
+import { MagnificationContext } from "../main";
 
 interface Props {
   title: string;
@@ -7,8 +9,16 @@ interface Props {
 }
 
 function Course({ title, author, image }: Props) {
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    height: `${35 * magnificationLevel}vh`,
+    width: `${23 * magnificationLevel}vh`,
+    margin: `${5 * magnificationLevel}% 0`,
+  };
+
   return (
-    <div id="courseContainer">
+    <div id="courseContainer" style={applyMagnification}>
       <div style={{ backgroundImage: `url(${image})` }} id="image"></div>
       <div id="blur"></div>
       <div id="info">

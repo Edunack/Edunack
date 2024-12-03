@@ -16,7 +16,7 @@
 }
 #catchphrase {
   text-align: right;
-  font-size: 6vh;
+  font-size: 5vh;
   font-weight: bold;
   color: #bbb8b8;
 }
@@ -26,11 +26,11 @@
 #howTo {
   text-align: left;
   color: #d9d9d9;
-  font-size: 6vh;
+  font-size: 5vh;
   font-weight: 700;
 }
 #howTo > ul {
-  font-size: 3.75vh;
+  font-size: 3.5vh;
   font-weight: 300;
 }
 .sect {

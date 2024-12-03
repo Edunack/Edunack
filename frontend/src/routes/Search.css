@@ -6,12 +6,12 @@
 
 #searchbarDiv,
 #searchBtnDiv {
-  display: flex;
-  align-items: center;
   height: 90vh;
 }
 
 #searchbarDiv {
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
   width: 63%;
 }
@@ -120,4 +120,51 @@
   border-top: 1px solid #a067d2;
   margin: 0;
   padding: 0;
+}
+
+#filterDiv {
+  width: 55%;
+  padding: 2vh;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#adnotation {
+  position: absolute;
+  bottom: 1vh;
+  font-size: 1.5vh;
+  text-align: center;
+  width: 100%;
+  color: #555555;
+}
+
+.filterBox {
+  display: flex;
+  margin: 2vh 0;
+  font-weight: 300;
+}
+
+.filterBox > select {
+  border-radius: 0 1vh 1vh 0;
+  width: 50%;
+  height: 6vh;
+  margin: 0;
+  background-color: #555555;
+  border: none;
+  color: white;
+  outline: none;
+  box-shadow: none;
+  text-align: center;
+}
+
+.filterBox > p {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  height: 6vh;
+  margin: 0;
+  border-radius: 1vh 0 0 1vh;
+  background: linear-gradient(90deg, #9d2f92 0%, #621a5b 49.68%);
+  padding: 0 5%;
 }

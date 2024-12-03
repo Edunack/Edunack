@@ -1,6 +1,5 @@
 import "./Advert.css";
 import Tile from "../../CommonAssets/Tile";
-
 function Advert() {
   return (
     <div id="advertContainer">

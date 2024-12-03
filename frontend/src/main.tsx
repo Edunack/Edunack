@@ -1,11 +1,7 @@
-import { StrictMode, useState } from "react";
+import { createContext, StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import MainPage from "./routes/MainPage.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {
-  AccessibillityProvider,
-  useAccessibility,
-} from "./AccessibilityContext.tsx";
 import Menu from "./Menu.tsx";
 import Login from "./routes/Login.tsx";
 import Error from "./routes/Error.tsx";
@@ -14,15 +10,78 @@ import Ranking from "./routes/Ranking.tsx";
 import Search from "./routes/Search.tsx";
 import "./main.css";
 
+const originalFontSizes = new Map<Element, string>();
+
+const storeOriginalFontSizes = () => {
+  document.querySelectorAll("*").forEach((element) => {
+    if (element instanceof HTMLElement) {
+      const currentSize = window.getComputedStyle(element).fontSize;
+      if (!originalFontSizes.has(element)) {
+        originalFontSizes.set(element, currentSize);
+      }
+    }
+  });
+};
+
+export const MagnificationContext = createContext<{
+  magnificationLevel: number;
+  setMagnificationLevel: React.Dispatch<React.SetStateAction<number>>;
+}>({
+  magnificationLevel: 1,
+  setMagnificationLevel: () => {}, // Placeholder to avoid warnings
+});
+
+const applyMagnification = (
+  level: number,
+  originalFontSizes: Map<Element, string>
+) => {
+  document.querySelectorAll("*").forEach((element) => {
+    if (element instanceof HTMLElement) {
+      const originalSize = originalFontSizes.get(element);
+      if (originalSize) {
+        element.style.fontSize = parseFloat(originalSize) * level + "px";
+      }
+    }
+  });
+};
+
 const AppContainer: React.FC = () => {
-  const { isMagnified } = useAccessibility();
+  const [magnificationLevel, setMagnificationLevel] = useState(1);
   const [courses, setCourses] = useState<Object[]>([]);
   const [category, setCategory] = useState<string>("");
+
+  useEffect(() => {
+    storeOriginalFontSizes();
+
+    const observer = new MutationObserver(() => {
+      storeOriginalFontSizes();
+      applyMagnification(magnificationLevel, originalFontSizes);
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [magnificationLevel]);
+
+  useEffect(() => {
+    applyMagnification(magnificationLevel, originalFontSizes);
+  }, [magnificationLevel]);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Menu />,
+      element: (
+        <MagnificationContext.Provider
+          value={{ magnificationLevel, setMagnificationLevel }}
+        >
+          <Menu />
+        </MagnificationContext.Provider>
+      ),
       errorElement: <Error />,
       children: [
         {
@@ -54,17 +113,11 @@ const AppContainer: React.FC = () => {
     },
   ]);
 
-  return (
-    <div className={isMagnified ? "magnifiedText" : ""}>
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 };
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AccessibillityProvider>
-      <AppContainer />
-    </AccessibillityProvider>
+    <AppContainer />
   </StrictMode>
 );

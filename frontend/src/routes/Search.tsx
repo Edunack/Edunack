@@ -267,6 +267,28 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
         <button id="searchBtn" type="submit" form="search" ref={searchBtnRef}>
           SEARCH
         </button>
+        {/*<div id="filterDiv">
+          <p>FILTER*: </p>
+          <div id="priceBox" className="filterBox">
+            <p>PRICE</p>
+            <select name="price" form="search">
+              <option value="free">free and paid</option>
+              <option value="free">free</option>
+              <option value="paid">paid</option>
+            </select>
+          </div>
+          <div id="typeBox" className="filterBox">
+            <p>TYPE</p>
+            <select name="type" form="search">
+              <option value="video and text">video and text</option>
+              <option value="video">video</option>
+              <option value="web course">web course</option>
+            </select>
+          </div>
+        </div>
+        <span id="adnotation">
+          *WE MIGHT STILL SHOW YOU COURSES THAT SHOULD BE FILTERED
+        </span>*/}
       </div>
     </div>
   );

@@ -1,8 +1,16 @@
 import "./InfoPanel.css";
+import { MagnificationContext } from "../../main";
+import { useContext } from "react";
 
 function InfoPanel() {
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    height: `${130 * magnificationLevel}vh`,
+  };
+
   return (
-    <div id="infoPanel">
+    <div id="infoPanel" style={applyMagnification}>
       <svg width="0" height="0">
         <defs>
           <clipPath id="roundedPoly" clipPathUnits="objectBoundingBox">

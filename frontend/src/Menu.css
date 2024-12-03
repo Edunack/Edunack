@@ -39,9 +39,12 @@
   text-decoration: none;
 }
 
-#MagnifyText {
+.textMagnifier {
   background: none;
   border: none;
   margin: 0;
   padding: 0;
+  font-size: 6vh;
+  font-weight: 700;
+  color: white;
 }

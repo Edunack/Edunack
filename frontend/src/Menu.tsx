@@ -1,9 +1,10 @@
+import { useContext } from "react";
 import "./Menu.css";
 import { Outlet, Link } from "react-router-dom";
-//import { useAccessibility } from "./AccessibilityContext";
+import { MagnificationContext } from "./main.tsx";
 
 function Menu() {
-  //const { toggleMagnify } = useAccessibility();
+  const { setMagnificationLevel } = useContext(MagnificationContext);
   return (
     <>
       <div id="containerMenu">
@@ -19,13 +20,26 @@ function Menu() {
             </Link>
           </span>
         </div>
-        {/*<button id="MagnifyText" onClick={toggleMagnify}>
-          <img
-            src="../img/magnifyText.svg"
-            alt="magnify text"
-            style={{ width: "5vh", height: "5vh" }}
-          />
-        </button>*/}
+        <div>
+          <button
+            className="textMagnifier"
+            onClick={() => setMagnificationLevel(1)}
+          >
+            A
+          </button>
+          <button
+            className="textMagnifier"
+            onClick={() => setMagnificationLevel(1.25)}
+          >
+            A+
+          </button>
+          <button
+            className="textMagnifier"
+            onClick={() => setMagnificationLevel(1.5)}
+          >
+            A++
+          </button>
+        </div>
         <ul id="menu">
           <li className="menuItem" style={{ fontWeight: 700 }}>
             <Link to={``} className="menuLink">

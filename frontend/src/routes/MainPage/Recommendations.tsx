@@ -2,10 +2,17 @@ import "./Recommendations.css";
 import "../../CommonAssets/Course";
 import Course from "../../CommonAssets/Course";
 import Button from "../../CommonAssets/Button";
+import { useContext } from "react";
+import { MagnificationContext } from "../../main";
 
 function Recommendations() {
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    marginTop: `${90 * magnificationLevel}vh`,
+  };
   return (
-    <div id="recommendationsContainer">
+    <div id="recommendationsContainer" style={applyMagnification}>
       <p id="title" className="onTop">
         What's on your mind?
       </p>
