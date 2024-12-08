@@ -1,0 +1,68 @@
+#aboutPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  text-align: center;
+}
+
+#aboutContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 75vh;
+  width: 70vw;
+  background-color: #202020;
+  padding: 2vh;
+  border-radius: 3vh;
+}
+
+#aboutContainer > p {
+  margin: 0;
+}
+
+#about {
+  font-size: 10vh;
+}
+
+#aboutProject {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#ourTeamContainer, #projectDescription {
+  width: 40%;
+}
+
+#ourTeam {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2vh;
+}
+
+#projectDescription {
+  margin: 2vh;
+}
+
+#ourTeam > img {
+  padding: 2vh;
+}
+
+.team {
+  background-color: #90429c;
+  border-radius: 1vh;
+  padding: 0.5vh;
+}
+
+.team > a {
+  color: white;
+  text-decoration: none;
+}
+
+.projectTitles {
+  font-size: 5vh;
+}

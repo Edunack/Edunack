@@ -9,6 +9,7 @@ import Register from "./routes/Register.tsx";
 import Ranking from "./routes/Ranking.tsx";
 import Search from "./routes/Search.tsx";
 import CourseDetail from "./routes/CourseDetail.tsx";
+import About from "./routes/About.tsx";
 import "./main.css";
 
 const originalFontSizes = new Map<Element, string>();
@@ -113,6 +114,10 @@ const AppContainer: React.FC = () => {
         {
           path: "course/:id",
           element: <CourseDetail courses={courses} />,
+        },
+        {
+          path: "About",
+          element: <About />,
         },
       ],
     },
