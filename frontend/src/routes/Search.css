@@ -168,3 +168,18 @@
   background: linear-gradient(90deg, #9d2f92 0%, #621a5b 49.68%);
   padding: 0 5%;
 }
+
+/*#google_search {
+  display: none;
+}
+
+.gsc-overflow-hidden {
+  overflow: visible !important;
+}
+
+#captcha,
+#recaptcha-wrapper {
+  position: relative !important;
+  display: block !important;
+  z-index: 100 !important;
+}*/

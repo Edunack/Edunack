@@ -8,6 +8,7 @@ interface Props {
   shadow?: string;
   width?: string;
   height?: string;
+  border?: string;
   borderRadius?: string;
   margin?: string;
   padding?: string;
@@ -20,6 +21,7 @@ function Tile({
   shadow,
   width,
   height,
+  border,
   borderRadius,
   margin,
   padding,
@@ -35,6 +37,7 @@ function Tile({
         borderRadius: borderRadius,
         margin: margin,
         padding: padding,
+        border: border,
       }}
       id="tile"
     >

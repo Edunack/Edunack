@@ -9,6 +9,7 @@ interface Props {
   zIndex?: number;
   width?: string;
   padding?: string;
+  border?: string;
   borderRadius?: string;
   margin?: string;
   alignSelf?: string;
@@ -24,6 +25,7 @@ function Button({
   fontWeight,
   zIndex = 0,
   width = "",
+  border,
   borderRadius,
   padding,
   margin,
@@ -45,6 +47,7 @@ function Button({
           borderRadius: borderRadius,
           margin: margin,
           alignSelf: alignSelf,
+          border: border,
         }}
         type={type}
         id="customBtn"

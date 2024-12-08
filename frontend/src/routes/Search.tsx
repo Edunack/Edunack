@@ -19,6 +19,7 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
   const [showList, setShowList] = useState(false);
   const navigate = useNavigate();
 
+  // Utility: Remove the hash from the URL
   function removeHash() {
     history.replaceState(
       null,
@@ -27,6 +28,7 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
     );
   }
 
+  // Fetch categories from API
   function updateCategories(data: string) {
     fetch(
       "api/search/categories?" +
@@ -43,6 +45,111 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
         }
       });
   }
+
+  // Update button position based on input field
+  const updateBtnPos = () => {
+    if (searchRef.current && searchBtnRef.current) {
+      const searchBtn = searchBtnRef.current;
+      const searchTop = searchRef.current.getBoundingClientRect().top;
+
+      const containerTop = document
+        .getElementById("searchContainer")
+        ?.getBoundingClientRect().top;
+
+      const relativeTop = searchTop - (containerTop || 0);
+      searchBtn.style.top = `${relativeTop}px`;
+    }
+  };
+
+  // Handle outside clicks
+  const handleClickOutside = (e: MouseEvent) => {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(e.target as Node) &&
+      categoryRef.current &&
+      !categoryRef.current.contains(e.target as Node)
+    ) {
+      updateBtnPos();
+      setShowList(false);
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let ___gcse_0 = document
+      .querySelector("#google_search")
+      ?.querySelector("#___gcse_0");
+    let input: HTMLInputElement | any =
+      ___gcse_0?.querySelector("input.gsc-input");
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+    console.log(data);
+
+    const catChosen = data.searchBar.toString().toLowerCase();
+    const exists = categories.some(
+      (category) => category.name.toLowerCase() === catChosen
+    );
+
+    if (!exists) {
+      alert("Category does not exist!");
+      return;
+    }
+
+    input!.value = data.searchBar + "courses";
+    (
+      ___gcse_0?.querySelector("button.gsc-search-button") as HTMLButtonElement
+    )?.click();
+  };
+
+  // Load Google CSE script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f";
+    script.async = true;
+    script.onload = () => {
+      console.log("Google CSE script loaded");
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  // Add event listener for outside clicks
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Update button position on resize or scroll
+  useEffect(() => {
+    updateBtnPos();
+
+    window.addEventListener("resize", updateBtnPos);
+    window.addEventListener("scroll", updateBtnPos);
+
+    return () => {
+      window.addEventListener("resize", updateBtnPos);
+      window.addEventListener("scroll", updateBtnPos);
+    };
+  }, [showList]);
+
+  // Adjust UI when categories or showList change
+  useEffect(() => {
+    if (showList) {
+      updateBtnPos();
+    }
+    if (searchRef.current && categoryRef.current) {
+      const searchBarWidth = searchRef.current.offsetWidth;
+      categoryRef.current.style.width = `${searchBarWidth}px`;
+      console.log(searchRef.current.style.width);
+      console.log(categoryRef.current.style.width);
+    }
+  }, [categories, showList]);
 
   (window as any).__gcse || ((window as any).__gcse = {});
   (window as any).__gcse = {
@@ -81,75 +188,40 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
     },
   };
 
-  window.onload = () => {
-    // Options for the observer (which mutations to observe)
-    const config = { attributes: true, childList: true, subtree: true };
-
-    // Callback function to execute when mutations are observed
-    const callback = (mutationList: any) => {
-      let correctMutation = false;
-      for (const mutation of mutationList) {
-        correctMutation ||= mutation.type === "childList";
-      }
-      if (correctMutation) {
-        let captcha = document.querySelector("#recaptcha-wrapper");
-        if (captcha == null) {
-          return;
-        }
-        document.querySelector("#captcha")?.appendChild(captcha);
+  useEffect(() => {
+    // Observer callback to monitor changes in the DOM
+    const callback = () => {
+      let captcha = document.querySelector("#recaptcha-wrapper");
+      if (captcha) {
+        // CAPTCHA is displayed, now update the button position
+        updateBtnPos();
       }
     };
-    const observer = new MutationObserver(callback);
+
+    // Options for the observer (watching for child additions)
+    const config = { childList: true, subtree: true };
+
+    // Get the parent element where CAPTCHA is likely inserted
     const target =
       document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
+
+    // Create the MutationObserver and start observing
     if (target) {
+      const observer = new MutationObserver(callback);
       observer.observe(target, config);
+
+      // Cleanup observer when the component unmounts
+      return () => observer.disconnect();
     }
-  };
-
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let ___gcse_0 = document
-      .querySelector("#google_search")
-      ?.querySelector("#___gcse_0");
-    let input: HTMLInputElement | any =
-      ___gcse_0?.querySelector("input.gsc-input");
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    console.log(data);
-
-    input!.value = data.searchBar + "courses";
-    (
-      ___gcse_0?.querySelector("button.gsc-search-button") as HTMLButtonElement
-    )?.click();
-  };
-
-  const handleChange = () => {
-    const data = new String(searchRef.current?.value);
-    updateBtnPos();
-    setShowList(true);
-
-    updateCategories("" + data);
-  };
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (
-      searchRef.current &&
-      !searchRef.current.contains(e.target as Node) &&
-      categoryRef.current &&
-      !categoryRef.current.contains(e.target as Node)
-    ) {
-      updateBtnPos();
-      setShowList(false);
-    }
-  };
+  }, []);
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f";
+    script.src = "https://www.google.com/recaptcha/api.js";
     script.async = true;
     script.onload = () => {
-      console.log("Google CSE script loaded");
+      console.log("reCAPTCHA script loaded");
+      // You can also trigger any further CAPTCHA setup here if needed
     };
     document.body.appendChild(script);
 
@@ -158,50 +230,13 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
     };
   }, []);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const updateBtnPos = () => {
-    if (searchRef.current && searchBtnRef.current) {
-      const searchBtn = searchBtnRef.current;
-      const searchTop = searchRef.current.getBoundingClientRect().top;
-
-      const containerTop = document
-        .getElementById("searchContainer")
-        ?.getBoundingClientRect().top;
-
-      const relativeTop = searchTop - (containerTop || 0);
-      searchBtn.style.top = `${relativeTop}px`;
-    }
-  };
-
-  useEffect(() => {
+  const handleChange = () => {
+    const data = new String(searchRef.current?.value);
     updateBtnPos();
+    setShowList(true);
 
-    window.addEventListener("resize", updateBtnPos);
-    window.addEventListener("scroll", updateBtnPos);
-
-    return () => {
-      window.addEventListener("resize", updateBtnPos);
-      window.addEventListener("scroll", updateBtnPos);
-    };
-  }, [showList]);
-
-  useEffect(() => {
-    if (showList) {
-      updateBtnPos();
-    }
-    if (searchRef.current && categoryRef.current) {
-      const searchBarWidth = searchRef.current.offsetWidth;
-      categoryRef.current.style.width = `${searchBarWidth}px`;
-      console.log(searchRef.current.style.width);
-      console.log(categoryRef.current.style.width);
-    }
-  }, [categories, showList]);
+    updateCategories("" + data);
+  };
 
   const borderRadius =
     categories.length > 0 && showList ? "1.5vh 0 0 0" : "1.5vh 0 0 1.5vh";
@@ -254,7 +289,7 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
               handleCategoryClick={handleCategoryClick}
               style={displayCategoryList}
             />
-          )}{" "}
+          )}
           <div id="search_results"></div>
           <div id="captcha"></div>
           <div id="google_search">

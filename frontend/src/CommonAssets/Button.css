@@ -5,3 +5,7 @@
   text-align: center;
   position: relative;
 }
+
+#customBtn:hover {
+  cursor: pointer;
+}

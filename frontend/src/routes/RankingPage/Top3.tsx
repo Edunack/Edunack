@@ -11,6 +11,7 @@ function Top3({ courses }: Props) {
     <div id="top3">
       <div className="top3Courses">
         <Course
+          id={courses[1].id}
           title={courses[1].name.split("|")[0]}
           author={courses[1].author}
           image="./img/codeSeg.jpg"
@@ -27,6 +28,7 @@ function Top3({ courses }: Props) {
       </div>
       <div className="top3Courses">
         <Course
+          id={courses[0].id}
           title={courses[0].name.split("|")[0]}
           author={courses[0].author}
           image="./img/codeSeg.jpg"
@@ -43,6 +45,7 @@ function Top3({ courses }: Props) {
       </div>
       <div className="top3Courses">
         <Course
+          id={courses[2].id}
           title={courses[2].name.split("|")[0]}
           author={courses[2].author}
           image="./img/codeSeg.jpg"

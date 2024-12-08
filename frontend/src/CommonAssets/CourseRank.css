@@ -6,6 +6,10 @@
   z-index: 2;
 }
 
+#courseInfo:hover{
+  cursor: pointer;
+}
+
 #courseInfo > span > #link {
   color: white;
   text-decoration: none;

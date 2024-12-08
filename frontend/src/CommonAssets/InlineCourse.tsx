@@ -1,6 +1,8 @@
 import "./InlineCourse.css";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
+  id: string;
   title: string;
   author: string;
   rank: string;
@@ -9,9 +11,10 @@ interface Props {
   opinion: string;
 }
 
-function InlineCourse({ title, author, rank, type, link, opinion }: Props) {
+function InlineCourse({ id, title, author, rank, type, link, opinion }: Props) {
+  const navigate = useNavigate();
   return (
-    <div id="inlineCourse">
+    <div id="inlineCourse" onClick={() => navigate(`/course/${id}`)}>
       <span style={{ fontSize: "5vh" }}>{rank}</span>
       <span>
         {title}

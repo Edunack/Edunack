@@ -1,9 +1,9 @@
 import "./WelcomePanel.css";
 import Button from "../../CommonAssets/Button";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function WelcomePanel() {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div id="WelcomePanel">
@@ -20,6 +20,7 @@ function WelcomePanel() {
         zIndex={1}
         borderRadius="2vh"
         margin="5vh 0 0 0"
+        onClick={() => navigate("/search")}
       >
         START NOW
       </Button>

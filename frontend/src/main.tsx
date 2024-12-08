@@ -8,6 +8,7 @@ import Error from "./routes/Error.tsx";
 import Register from "./routes/Register.tsx";
 import Ranking from "./routes/Ranking.tsx";
 import Search from "./routes/Search.tsx";
+import CourseDetail from "./routes/CourseDetail.tsx";
 import "./main.css";
 
 const originalFontSizes = new Map<Element, string>();
@@ -28,7 +29,7 @@ export const MagnificationContext = createContext<{
   setMagnificationLevel: React.Dispatch<React.SetStateAction<number>>;
 }>({
   magnificationLevel: 1,
-  setMagnificationLevel: () => {}, // Placeholder to avoid warnings
+  setMagnificationLevel: () => {},
 });
 
 const applyMagnification = (
@@ -108,6 +109,10 @@ const AppContainer: React.FC = () => {
         {
           path: "Ranking",
           element: <Ranking courses={courses} category={category} />,
+        },
+        {
+          path: "course/:id",
+          element: <CourseDetail courses={courses} />,
         },
       ],
     },

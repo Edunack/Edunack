@@ -9,6 +9,10 @@
   font-weight: 300;
 }
 
+#inlineCourse:hover {
+  cursor: pointer;
+}
+
 #inlineCourse > span {
   flex: 1;
   text-align: center;

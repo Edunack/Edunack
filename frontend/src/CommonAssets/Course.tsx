@@ -1,15 +1,18 @@
 import "./Course.css";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { MagnificationContext } from "../main";
 
 interface Props {
+  id: string;
   title: string;
   author: string;
   image: string;
 }
 
-function Course({ title, author, image }: Props) {
+function Course({ id, title, author, image }: Props) {
   const { magnificationLevel } = useContext(MagnificationContext);
+  const navigate = useNavigate();
 
   const applyMagnification = {
     height: `${35 * magnificationLevel}vh`,
@@ -18,7 +21,11 @@ function Course({ title, author, image }: Props) {
   };
 
   return (
-    <div id="courseContainer" style={applyMagnification}>
+    <div
+      id="courseContainer"
+      style={applyMagnification}
+      onClick={() => navigate(`/course/${id}`)}
+    >
       <div style={{ backgroundImage: `url(${image})` }} id="image"></div>
       <div id="blur"></div>
       <div id="info">

@@ -7,6 +7,10 @@
   box-shadow: 0 0 3vh #1e1e1e;
 }
 
+#courseContainer:hover {
+  cursor: pointer;
+}
+
 #courseContainer > #image {
   height: 40%;
   background-size: cover;

@@ -56,6 +56,7 @@ function GenerateList({ courses }: ListProps) {
       {slicedCourses.map((course, index) => (
         <React.Fragment key={index}>
           <InlineCourse
+            id={course.id}
             title={course.name.split("|")[0]}
             author={course.author}
             rank={index + 4 + "."}
