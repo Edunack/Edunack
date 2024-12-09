@@ -153,7 +153,36 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
 
   (window as any).__gcse || ((window as any).__gcse = {});
   (window as any).__gcse = {
-    initializationCallback: removeHash,
+    initializationCallback: () => {
+        removeHash();
+
+        const callback = () => {
+            console.log("callback");
+          let captcha = document.querySelector("#recaptcha-wrapper");
+          if (captcha) {
+              document.querySelector("#captcha")?.appendChild(captcha);
+            // CAPTCHA is displayed, now update the button position
+            updateBtnPos();
+          }
+        };
+
+        // Options for the observer (watching for child additions)
+        const config = { childList: true, subtree: true };
+
+        // Get the parent element where CAPTCHA is likely inserted
+        const target =
+          document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
+
+        console.log("target: ", target);
+        // Create the MutationObserver and start observing
+        if (target) {
+          const observer = new MutationObserver(callback);
+          observer.observe(target, config);
+
+          // Cleanup observer when the component unmounts
+          return () => observer.disconnect();
+        }
+    },
     searchCallbacks: {
       web: {
         starting: () => {
@@ -162,6 +191,7 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
         },
         rendered: () =>
           setCategories((cat) => {
+            console.log("cat: ", cat);
             fetch("/api/search/google/" + cat[0].id, {
               method: "POST",
               body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
@@ -188,47 +218,48 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
     },
   };
 
-  useEffect(() => {
-    // Observer callback to monitor changes in the DOM
-    const callback = () => {
-      let captcha = document.querySelector("#recaptcha-wrapper");
-      if (captcha) {
-        // CAPTCHA is displayed, now update the button position
-        updateBtnPos();
-      }
-    };
+  //useEffect(() => {
+  //  // Observer callback to monitor changes in the DOM
+  //  const callback = () => {
+  //    let captcha = document.querySelector("#recaptcha-wrapper");
+  //    if (captcha) {
+  //      // CAPTCHA is displayed, now update the button position
+  //      updateBtnPos();
+  //    }
+  //  };
+  //
+  //  // Options for the observer (watching for child additions)
+  //  const config = { childList: true, subtree: true };
+  //
+  //  // Get the parent element where CAPTCHA is likely inserted
+  //  const target =
+  //    document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
+  //
+  //  console.log("target: ", target);
+  //  // Create the MutationObserver and start observing
+  //  if (target) {
+  //    const observer = new MutationObserver(callback);
+  //    observer.observe(target, config);
+  //
+  //    // Cleanup observer when the component unmounts
+  //    return () => observer.disconnect();
+  //  }
+  //}, []);
 
-    // Options for the observer (watching for child additions)
-    const config = { childList: true, subtree: true };
-
-    // Get the parent element where CAPTCHA is likely inserted
-    const target =
-      document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
-
-    // Create the MutationObserver and start observing
-    if (target) {
-      const observer = new MutationObserver(callback);
-      observer.observe(target, config);
-
-      // Cleanup observer when the component unmounts
-      return () => observer.disconnect();
-    }
-  }, []);
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://www.google.com/recaptcha/api.js";
-    script.async = true;
-    script.onload = () => {
-      console.log("reCAPTCHA script loaded");
-      // You can also trigger any further CAPTCHA setup here if needed
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  //useEffect(() => {
+  //  const script = document.createElement("script");
+  //  script.src = "https://www.google.com/recaptcha/api.js";
+  //  script.async = true;
+  //  script.onload = () => {
+  //    console.log("reCAPTCHA script loaded");
+  //    // You can also trigger any further CAPTCHA setup here if needed
+  //  };
+  //  document.body.appendChild(script);
+  //
+  //  return () => {
+  //    document.body.removeChild(script);
+  //  };
+  //}, []);
 
   const handleChange = () => {
     const data = new String(searchRef.current?.value);
@@ -259,10 +290,10 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
 
   return (
     <div id="searchContainer">
-      <script
+      {/*<script
         async
         src="https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f"
-      ></script>
+      ></script>*/}
       <div id="searchbarDiv">
         <form id="search" onSubmit={handleSubmit} autoComplete="off">
           {/*<label htmlFor="searchBar" id="searchLabel">
