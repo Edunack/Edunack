@@ -65,7 +65,7 @@
 #searchBtn {
   position: absolute;
   padding: 3vh 2vh;
-  width: 26vh;
+  width: 12.5vw;
   background-color: #5c2e6b;
   border-radius: 0 1.5vh 1.5vh 0;
   border: 3px solid #451455;
@@ -86,7 +86,7 @@
   border: 3px solid #5f3480;
   border-top: none;
   border-right: none;
-  width: 96vh;
+  width: 57vw;
   margin: 0;
   margin-top: -1px;
   padding: 0 2vh;
@@ -169,7 +169,7 @@
   padding: 0 5%;
 }
 
-/*#google_search {
+#google_search {
   display: none;
 }
 
@@ -182,4 +182,4 @@
   position: relative !important;
   display: block !important;
   z-index: 100 !important;
-}*/
+}

@@ -19,23 +19,64 @@ function CourseDetail({ courses }: Props) {
   return (
     <div id="courseDetail">
       <div>
-        <p>{course.name}</p>
-        <p>BY {course.author}</p>
+        <p style={{ fontWeight: 400 }} className="courseTitle">
+          {course.name}
+        </p>
+        <p
+          style={{ fontWeight: 300, marginBottom: "2vh" }}
+          className="courseTitle"
+        >
+          BY {course.author}
+        </p>
         <div id="courseInfoContainer">
-          <Tile bgColor="#56346C" border="3px solid #6A4781" borderRadius="2vh">
-            user ratings:
-            {course.rating}
-            your rating:
-          </Tile>
-          <div>
-            <p>{course.url}</p>
+          <div className="courseContent">
+            <Tile
+              bgColor="#56346C"
+              border="5px solid #6A4781"
+              borderRadius="1vh"
+              width="80%"
+              height="100%"
+              margin="0"
+              padding="0"
+            >
+              <span className="ratingText">user ratings:</span>
+              <div id="rating">
+                <img src="/img/star.svg" alt="star" className="star" />
+                {course.rating}
+                <span>(10)</span>
+              </div>
+              <br />
+              <br />
+              <span className="ratingText">your rating:</span>
+              <div id="userRating">
+                <img src="/img/star.svg" alt="star" className="star" />
+                <img src="/img/star.svg" alt="star" className="star" />
+                <img src="/img/star.svg" alt="star" className="star" />
+                <img src="/img/star.svg" alt="star" className="star" />
+                <img src="/img/star.svg" alt="star" className="star" />
+              </div>
+            </Tile>
+          </div>
+          <div className="courseContent" id="courseLink">
+            <div id="urlHolder">
+              <p>
+                <a href={course.url}>{course.url}</a>
+              </p>
+            </div>
             <Button
               bgColor="#412941"
               color="#D8AFD8"
-              border="#7C607C"
-              borderRadius="2vh"
+              border="5px solid #7C607C"
+              borderRadius="1vh"
+              width="100%"
             >
-              go to course
+              <a
+                style={{ color: "#D8AFD8", textDecoration: "none" }}
+                href={course.url}
+                target="_blank"
+              >
+                go to course
+              </a>
             </Button>
           </div>
         </div>

@@ -42,7 +42,9 @@ function About() {
             <p></p>
           </div>
         </div>
-        <p style={{fontSize: "3vh", margin: "3vh 0 0 0"}}>Contact us: contact@edunack.com</p>
+        <p style={{ fontSize: "3vh", margin: "3vh 0 0 0" }}>
+          Contact us: contact@edunack.com
+        </p>
       </div>
     </div>
   );

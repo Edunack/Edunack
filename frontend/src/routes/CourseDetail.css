@@ -8,30 +8,96 @@
   align-items: center;
 }
 
-#courseDetail > p {
-  margin: 0;
-  padding: 0;
-}
-
 #courseDetail > div {
   background: linear-gradient(155.13deg, #4e2175 -61.89%, #171117 20.71%);
   min-height: 80vh;
   width: 60vw;
   border-radius: 2vh;
-  padding: 10vh;
-  margin: 5vh 0;
+  padding: 5vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 3vh;
+  margin: 5vh 0;
+}
+
+#courseDetail > p {
+  margin: 0;
+  padding: 0;
 }
 
 #courseInfoContainer {
   width: 100%;
   display: flex;
+  justify-content: center;
+  gap: 3vw;
 }
 
-#courseInfoContainer > Tile,
-#courseInfoContainer > div {
+#courseLink {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+}
+
+#urlHolder {
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  color: #d8afd8;
+}
+
+#urlHolder > p > a {
+  text-decoration: none;
+  color: #d8afd8;
+  display: block;
+  word-wrap: break-word;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+  margin-bottom: 5vh;
+}
+
+#rating,
+#userRating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vw;
+}
+
+#courseLink > Button {
+  position: absolute;
+  bottom: 0;
+}
+
+.star {
+  width: 4vh;
+  height: 4vh;
+}
+
+.courseTitle {
+  font-size: 5vh;
+  margin: 0;
   width: 50%;
+  text-align: center;
+}
+
+.courseContent {
+  width: 35%;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5vh;
+}
+
+.ratingText {
+  color: #cdb5df;
+  font-size: 2.5vh;
+  margin-bottom: 0.5vh;
 }

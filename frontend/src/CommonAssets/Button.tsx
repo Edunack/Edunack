@@ -1,7 +1,8 @@
 import "./Button.css";
+import { ReactNode } from "react";
 
 interface Props {
-  children: string;
+  children: ReactNode;
   bgColor: string;
   color?: string;
   fontSize?: string;
