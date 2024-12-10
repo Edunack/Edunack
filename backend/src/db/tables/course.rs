@@ -1,5 +1,4 @@
-use sqlx::{query, query_as, query_scalar, Sqlite};
-use uuid::Uuid;
+use sqlx::{query, query_scalar};
 
 use crate::db::models::course::Course;
 
@@ -51,82 +50,6 @@ impl Table<Course> {
         tx.commit().await.map_err(|_| ())?;
 
         Ok(())
-    }
-
-    pub fn find_by_id(&self, id: Uuid, language: &str) -> Option<Course> {
-        todo!()
-    }
-
-    pub async fn find_by_category(&self, category: uuid::Uuid, language: &str) -> Vec<Course> {
-        query_as(
-            format!(
-                "SELECT * FROM (SELECT courses.*, name from courses \
-                INNER JOIN course_translations ON courses.id = course_translations.course \
-                WHERE category = ?1 AND (language like ?2 or language like 'en') \
-                GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                if language > "en" { "desc" } else { "asc" }
-            )
-            .as_str(),
-        )
-        .bind(category)
-        .bind(language)
-        .fetch_all(&*self.0)
-        .await
-        .unwrap_or_else(|_| vec![])
-    }
-
-    pub async fn find_by_author(&self, author: &str, language: &str) -> Vec<Course> {
-        query_as(
-            format!(
-                "SELECT * FROM (SELECT courses.*, name from courses \
-                INNER JOIN course_translations ON courses.id = course_translations.course \
-                WHERE author = ?1 AND (language like ?2 or language like 'en') \
-                GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                if language > "en" { "desc" } else { "asc" }
-            )
-            .as_str(),
-        )
-        .bind(author)
-        .bind(language)
-        .fetch_all(&*self.0)
-        .await
-        .unwrap_or_else(|_| vec![])
-    }
-
-    pub async fn find_by_name(&self, name: &str, language: &str) -> Vec<Course> {
-        query_as(
-            format!(
-                "SELECT * FROM (SELECT courses.*, name from courses \
-                INNER JOIN course_translations ON courses.id = course_translations.course \
-                WHERE course_translations.name LIKE ?1 AND (language like ?2 or language like 'en') \
-                GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                if language > "en" { "desc" } else { "asc" }
-            )
-            .as_str(),
-        )
-        .bind(name)
-        .bind(language)
-        .fetch_all(&*self.0)
-        .await
-        .unwrap_or_else(|_| vec![])
-    }
-
-    pub async fn find_by_url(&self, name: &str, language: &str) -> Option<Course> {
-        query_as(
-            format!(
-                "SELECT * FROM (SELECT courses.*, name from courses \
-                INNER JOIN course_translations ON courses.id = course_translations.course \
-                WHERE url LIKE ?1 AND (language like ?2 or language like 'en') \
-                GROUP BY id, language ORDER BY language {}) GROUP BY id",
-                if language > "en" { "desc" } else { "asc" }
-            )
-            .as_str(),
-        )
-        .bind(name)
-        .bind(language)
-        .fetch_optional(&*self.0)
-        .await
-        .ok()?
     }
 
     pub async fn exists_by_url(&self, url: &str) -> bool {

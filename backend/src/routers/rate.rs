@@ -1,13 +1,12 @@
 use axum::{
-    extract::{Path, Request, State},
-    middleware::{self, Next},
+    extract::{Path, State},
+    middleware,
     response::{IntoResponse, Response},
     routing::{get, post},
     Extension, Json, Router,
 };
 use http::StatusCode;
 use serde::Deserialize;
-use tower::ServiceBuilder;
 use uuid::Uuid;
 
 use crate::{auth::Claims, db::models::rating::Rating, AppState};
@@ -16,29 +15,37 @@ use super::IntoRouter;
 
 pub struct RateRouter;
 
+#[derive(Deserialize)]
+pub struct RatingParams {
+    rating: u32,
+}
+
 impl RateRouter {
     //#[axum_macros::debug_handler]
     pub async fn post(
         State(state): State<AppState>,
         Path(course_id): Path<Uuid>,
         Extension(ext): Extension<Claims>,
-        Json(params): Json<Rating>,
+        Json(params): Json<RatingParams>,
     ) -> Response {
         let rating_table = state.database.rating();
         let user_table = state.database.user();
-        let user = match user_table.find_by_email(&ext.email).await {
+        let user = match user_table.find_by_email(ext.email.clone()).await {
             Some(user) => user,
             None => return (StatusCode::INTERNAL_SERVER_ERROR, "User not found").into_response(),
         };
-        if *params > 5 {
+        if params.rating > 5 {
             return (StatusCode::BAD_REQUEST, "Invalid rating").into_response();
         }
         match rating_table
-            .insert_or_update_rating(course_id, user.id, params)
+            .insert_or_update_rating(course_id, user.id, Rating(params.rating))
             .await
         {
             Ok(_) => StatusCode::OK,
-            Err(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Err(e) => {
+                println!("{:?}", e);
+                StatusCode::INTERNAL_SERVER_ERROR
+            },
         }
         .into_response()
     }
@@ -50,7 +57,7 @@ impl RateRouter {
     ) -> Response {
         let rating_table = state.database.rating();
         let user_table = state.database.user();
-        let user = match user_table.find_by_email(&ext.email).await {
+        let user = match user_table.find_by_email(ext.email.clone()).await {
             Some(user) => user,
             None => return (StatusCode::INTERNAL_SERVER_ERROR, "User not found").into_response(),
         };

@@ -1,4 +1,4 @@
-use sqlx::{query_as, Sqlite};
+use sqlx::query_as;
 use uuid::Uuid;
 
 use crate::db::models::category::Category;

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"></script>
+<script>
+    function before(event) {
+        let detail = event.detail;
+        let res = JSON.parse(detail.elt.innerHTML);
+        detail.elt.innerHTML = '';
+        const template = document.querySelector('#result');
+        res.forEach(element => {
+            console.log(element);
+            const clone = template.content.cloneNode(true);
+            clone.querySelector('p').innerHTML = element.id;
+            clone.querySelector('form').setAttribute('id', element.id);
+            detail.elt.appendChild(clone);
+            document.getElementById(element.id).onsubmit = (event) => {
+                event.preventDefault();
+                fetch('/api/rating/' + element.id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({rating: Number(event.target[0].value)})
+                })
+            }
+        });
+        htmx.process(detail.elt);
+    }
+
+    document.addEventListener('htmx:afterSwap', before);
+
+
+</script>
+</head>
+<body>
+    <template id="result">
+        <div>
+            <p></p>
+            <form hx-ext="json-enc" hx-swap="none">
+            <input type="number" name="rating" min=0 max=5>
+            <button type="submit">Add</button>
+            </form>
+        </div>
+    </template>
+    <form hx-post="/api/login" hx-boost="true" hx-ext="json-enc" hx-swap="none">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit">Login</button>
+    </form>
+
+    <button hx-post="/api/search/"
+        hx-vals='{"category": "20f6a6bf0e1d4e84b92e2f2272ab0443"}'
+        hx-ext="json-enc" hx-target="#search-results">Search</button>
+
+    <div id="search-results">
+
+    </div>
+</body>
+</html>

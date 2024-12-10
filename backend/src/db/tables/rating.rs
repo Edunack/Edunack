@@ -1,4 +1,4 @@
-use sqlx::{query, query_as, Sqlite};
+use sqlx::{query, query_as};
 use uuid::Uuid;
 
 use crate::db::models::rating::Rating;
@@ -20,13 +20,9 @@ impl Table<Rating> {
         course_id: Uuid,
         user_id: Uuid,
         rating: Rating,
-    ) -> Result<(), ()> {
+    ) -> Result<(), sqlx::Error> {
         query(
-            "IF EXISTS (SELECT * FROM user_likes WHERE course_id = ?1 AND user_id = ?2) (
-                UPDATE user_likes SET rating = ?3 WHERE course_id = ?1 AND user_id = ?2
-            ) ELSE (
-                INSERT INTO user_likes (course_id, user_id, rating) VALUES (?1, ?2, ?3)
-            )",
+            "INSERT OR REPLACE INTO user_ratings (course, user, rating) VALUES (?1, ?2, ?3)",
         )
         .bind(course_id)
         .bind(user_id)
@@ -34,6 +30,5 @@ impl Table<Rating> {
         .execute(&*self.0)
         .await
         .map(|_| ())
-        .map_err(|_| ())
     }
 }
