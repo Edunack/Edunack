@@ -20,6 +20,7 @@ function Advert() {
             width="40vh"
             height="45vh"
             borderRadius="4vh"
+            padding="5vh"
           >
             <p className="titles">
               THE
@@ -41,6 +42,7 @@ function Advert() {
             width="40vh"
             height="45vh"
             borderRadius="4vh"
+            padding="5vh"
           >
             <p className="titles">THE IDEA</p>
             <span className="TileContent">

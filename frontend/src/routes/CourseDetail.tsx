@@ -2,6 +2,7 @@ import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 import "./CourseDetail.css";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import DisqusElement from "./Disqus";
 
 interface Props {
@@ -11,6 +12,9 @@ interface Props {
 function CourseDetail({ courses }: Props) {
   const { id } = useParams<{ id: string }>();
   const course = courses.find((course) => course.id === id);
+
+  const [hoveredStarIndex, setHoveredStarIndex] = useState<number | null>(null);
+  const stars = Array(5).fill(0);
 
   if (!course) {
     return <div>Course not found</div>;
@@ -48,12 +52,28 @@ function CourseDetail({ courses }: Props) {
               <br />
               <br />
               <span className="ratingText">your rating:</span>
-              <div id="userRating">
+              <div
+                id="userRating"
+                onMouseLeave={() => setHoveredStarIndex(null)}
+              >
+                {stars.map((_, index) => (
+                  <img
+                    key={index}
+                    src={
+                      hoveredStarIndex !== null && index <= hoveredStarIndex
+                        ? "/img/starFull.svg"
+                        : "/img/star.svg"
+                    }
+                    alt="star"
+                    className="star"
+                    onMouseEnter={() => setHoveredStarIndex(index)}
+                  />
+                ))}
+                {/*<img src="/img/star.svg" alt="star" className="star" />
                 <img src="/img/star.svg" alt="star" className="star" />
                 <img src="/img/star.svg" alt="star" className="star" />
                 <img src="/img/star.svg" alt="star" className="star" />
-                <img src="/img/star.svg" alt="star" className="star" />
-                <img src="/img/star.svg" alt="star" className="star" />
+                <img src="/img/star.svg" alt="star" className="star" />*/}
               </div>
             </Tile>
           </div>
