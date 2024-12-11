@@ -38,7 +38,7 @@ pub fn decode_jwt(token: &str) -> Result<TokenData<Claims>, ()> {
         &DecodingKey::from_secret(SECRET.get().unwrap().as_ref()),
         &Validation::default(),
     )
-    .map_err(|e| { /*println!("{:?}", e)*/ })?;
+    .map_err(|_e| { /*println!("{:?}", _e)*/ })?;
 
     Ok(decoded)
 }

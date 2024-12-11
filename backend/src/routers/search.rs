@@ -94,11 +94,15 @@ impl SearchRouter {
             futures::future::join_all(
                 if let Some(name) = params.name {
                     courses_table
-                        .find_by_name(format!("%{}%", name).as_str(), lang.as_str())
+                        .find_all_by_name(format!("%{}%", name), lang.as_str())
                         .await
                 } else if let Some(category) = params.category {
                     courses_table
-                        .find_by_category(category, lang.as_str())
+                        .find_all_by_category(
+                            category,
+                            lang.as_str(),
+                            crate::db::models::course::Order::ID,
+                        )
                         .await
                 } else {
                     return StatusCode::UNPROCESSABLE_ENTITY.into_response();
@@ -118,7 +122,7 @@ impl SearchRouter {
                             .await
                             .unwrap(),
                         description: course.description.clone(),
-                        rating: 0.0,
+                        rating: course.rating,
                     }
                 }),
             )

@@ -1,5 +1,5 @@
 [package]
-name = "search"
+name = "edunack"
 version = "0.1.0"
 edition = "2021"
 
@@ -27,6 +27,8 @@ reqwest = "0.12.9"
 scraper = "0.21.0"
 futures = "0.3.31"
 axum-extra = { version = "0.9.6", features = ["cookie"] }
+const_format = "0.2.34"
+edunack-macros = { path = "macros" }
 
 [target.'cfg(unix)'.dependencies.libsqlite3-sys]
 version = "0.30.1"

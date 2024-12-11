@@ -32,6 +32,7 @@ impl Database {
         Table::new(self.0.clone())
     }
 }
+
 pub mod rusqlite_ext {
     use std::sync::Arc;
 

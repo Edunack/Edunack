@@ -35,9 +35,9 @@ pub struct RegisterParams {
 impl LoginRouter {
     pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
         let user_table = state.database.user();
-        let user = match user_table.find_by_username(&params.login).await {
+        let user = match user_table.find_by_username(params.login.clone()).await {
             Some(user) => user,
-            None => match user_table.find_by_email(&params.login).await {
+            None => match user_table.find_by_email(params.login.clone()).await {
                 Some(user) => user,
                 None => {
                     return (StatusCode::UNAUTHORIZED, "Wrong username or password").into_response()

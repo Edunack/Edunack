@@ -1,15 +1,10 @@
 use std::{str::FromStr, sync::Arc};
 
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
-use db::{models::user::User, ConnectionExt, Database};
+use db::{ConnectionExt, Database};
 use rand::Rng;
 use routers::{login::LoginRouter, rate::RateRouter, search::SearchRouter, IntoRouter};
-use sqlx::{
-    pool::PoolOptions,
-    query, query_as,
-    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
-    Acquire, Connection, SqliteConnection, SqlitePool,
-};
+use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
 use tower_http::{
@@ -80,11 +75,11 @@ async fn main() {
                 //                .nest("/sth2", ExampleRouter.into_router())
                 .nest("/", LoginRouter.into_router())
                 .nest("/search", SearchRouter.into_router())
-                .nest("/rate", RateRouter.into_router())
+                .nest("/rating", RateRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize)),
         )
         .nest_service("/", ServeFile::new("../frontend/dist/index.html"))
-        .nest_service("/google", ServeFile::new("./index.html"))
+        .nest_service("/example", ServeDir::new("./example"))
         .nest_service("/assets", ServeDir::new("../frontend/dist/assets"))
         .nest_service("/img", ServeDir::new("../frontend/img"))
         .with_state(state)
