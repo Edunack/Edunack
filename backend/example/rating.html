@@ -20,6 +20,9 @@
             detail.elt.appendChild(clone);
             document.getElementById(element.id).onsubmit = (event) => {
                 event.preventDefault();
+                // tu jest request na rating
+                // format body: {"rating": 3}
+                // url to request: /api/rating/{id}
                 fetch('/api/rating/' + element.id, {
                     method: 'POST',
                     headers: {

@@ -2,8 +2,6 @@ use std::{marker::PhantomData, sync::Arc};
 
 use sqlx::SqlitePool;
 
-use super::models::course::Order;
-
 pub mod category;
 pub mod course;
 pub mod rating;

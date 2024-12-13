@@ -13,20 +13,52 @@ use uuid::Uuid;
 
 use super::IntoRouter;
 use crate::{
-    db::models::{category::Category, course::Course},
+    db::models::{
+        category::Category,
+        course::{Course, Order},
+    },
     AppState,
 };
 
 pub struct SearchRouter;
 
+//#[derive(Serialize, Deserialize)]
+//pub struct SearchParams {
+//    name: Option<String>,
+//    category: Option<Uuid>,
+//    language: Option<String>,
+//}
+
 #[derive(Serialize, Deserialize)]
-pub struct SearchParams {
-    name: Option<String>,
-    category: Option<Uuid>,
-    language: Option<String>,
+#[serde(untagged)]
+pub enum SearchParams {
+    Course {
+        course: Uuid,
+        language: Option<String>,
+    },
+    Name {
+        name: String,
+        language: Option<String>,
+    },
+    Category {
+        category: Uuid,
+        order: Option<Order>,
+        language: Option<String>,
+    },
+}
+
+impl SearchParams {
+    pub fn language(&self) -> &str {
+        match self {
+            SearchParams::Name { language, .. } => language.as_deref().unwrap_or("en"),
+            SearchParams::Course { language, .. } => language.as_deref().unwrap_or("en"),
+            SearchParams::Category { language, .. } => language.as_deref().unwrap_or("en"),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SearchResponse {
     id: Uuid,
     category: Uuid,
@@ -38,6 +70,7 @@ pub struct SearchResponse {
     price: String,
     medium: String,
     rating: f64,
+    rating_count: i32,
 }
 
 impl SearchRouter {
@@ -83,29 +116,35 @@ impl SearchRouter {
         State(state): State<AppState>,
         Json(params): Json<SearchParams>,
     ) -> axum::response::Response {
-        let lang = match params.language {
-            Some(lang) => lang,
-            None => "en".to_string(),
-        };
+        let lang = params.language();
         let db = state.database.clone();
         let courses_table = db.course();
 
         Json(
             futures::future::join_all(
-                if let Some(name) = params.name {
-                    courses_table
-                        .find_all_by_name(format!("%{}%", name), lang.as_str())
-                        .await
-                } else if let Some(category) = params.category {
-                    courses_table
-                        .find_all_by_category(
-                            category,
-                            lang.as_str(),
-                            crate::db::models::course::Order::ID,
-                        )
-                        .await
-                } else {
-                    return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+                match params {
+                    SearchParams::Name { ref name, .. } => {
+                        courses_table.find_all_by_name(name.clone(), lang).await
+                    }
+                    SearchParams::Course { course, .. } => {
+                        match courses_table.find_by_id(course, lang).await {
+                            Some(course) => vec![course],
+                            None => vec![],
+                        }
+                    }
+                    SearchParams::Category {
+                        category,
+                        ref order,
+                        ..
+                    } => {
+                        courses_table
+                            .find_all_by_category(
+                                category,
+                                lang,
+                                order.clone().unwrap_or(Order::ID),
+                            )
+                            .await
+                    }
                 }
                 .iter()
                 .map(|course| async {
@@ -118,11 +157,12 @@ impl SearchRouter {
                         url: course.url.clone(),
                         image: course.image.clone(),
                         medium: courses_table
-                            .find_medium_name(course.medium, lang.as_str())
+                            .find_medium_name(course.medium, lang)
                             .await
                             .unwrap(),
                         description: course.description.clone(),
                         rating: course.rating,
+                        rating_count: course.rating_count,
                     }
                 }),
             )
@@ -204,6 +244,7 @@ impl SearchRouter {
                 author: elem.author.clone(),
                 price: "free".to_string(),
                 rating: 0.0,
+                rating_count: 0,
                 medium: 0,
                 category,
             };

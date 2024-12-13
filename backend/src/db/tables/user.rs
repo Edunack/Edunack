@@ -1,6 +1,5 @@
 use crate::db::models::user::User;
 use sqlx::{query, query_as};
-use uuid::Uuid;
 
 use super::Table;
 
