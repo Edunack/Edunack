@@ -4,12 +4,12 @@ use sqlx::FromRow;
 use uuid::Uuid;
 
 #[derive(Serialize, Debug, FromRow, Clone, QueryGen)]
-#[query_gen(language, single = false, all, query = select_query)]
+#[query_gen(single = false, all, query = select_query_wrapper, add_params = "language: &str")]
 pub struct Course {
     #[query_gen(single, all = false)]
     pub id: Uuid,
     pub author: String,
-    #[query_gen(order)]
+    #[query_gen(add_params = "language: &str, order: Option<Order>", query = select_query)]
     pub category: Uuid,
     pub name: String,
     pub description: String,
@@ -22,23 +22,21 @@ pub struct Course {
     pub url: String,
 }
 
-pub fn select_query(column: &str, language: Option<&str>, order: Option<Order>) -> String {
-    if language.is_none() {
-        panic!("language is required");
-    }
+pub fn select_query_wrapper(column: &str, language: &str) -> String {
+    select_query(column, language, None)
+}
+
+pub fn select_query(column: &str, language: &str, order: Option<Order>) -> String {
     let q = format!(
         "select * from (select courses.*, name, avg(coalesce(rating, 0)) as rating, \
             count(rating) as rating_count from courses \
             inner join course_translations on courses.id = course_translations.course \
             left join user_ratings on courses.id = user_ratings.course \
-            where {} like ?1 and (language like ?2 or language like 'en') \
+            where {} like ?1 and (language like '{}' or language like 'en') \
             group by id, language order by language {}) group by id {}",
         column,
-        if language.unwrap() > "en" {
-            "desc"
-        } else {
-            "asc"
-        },
+        language,
+        if language > "en" { "desc" } else { "asc" },
         order
             .and_then(|o| Some(format!("order by {}", o.to_string())))
             .unwrap_or_default()

@@ -9,13 +9,12 @@ impl Table<Course> {
         query_scalar(
             format!(
                 "SELECT name FROM course_mediums WHERE id = ?1 \
-                AND (language = ?2 OR language = 'en') ORDER BY language {}",
-                if language > "en" { "desc" } else { "asc" }
+                AND (language = '{}' OR language = 'en') ORDER BY language {}",
+                language, if language > "en" { "desc" } else { "asc" }
             )
             .as_str(),
         )
         .bind(medium)
-        .bind(language)
         .fetch_optional(&*self.0)
         .await
         .ok()?

@@ -141,7 +141,7 @@ impl SearchRouter {
                             .find_all_by_category(
                                 category,
                                 lang,
-                                order.clone().unwrap_or(Order::ID),
+                                order.clone(),
                             )
                             .await
                     }
