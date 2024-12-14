@@ -26,6 +26,12 @@ pub struct LoginParams {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct LoginResponse {
+    pub username: String,
+    pub email: String,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct RegisterParams {
     pub username: String,
     pub email: String,
@@ -78,6 +84,10 @@ impl LoginRouter {
                 //    .unwrap(),
             )]))
             .unwrap(),
+            Json(LoginResponse {
+                username: user.username,
+                email: user.email,
+            })
         )
             .into_response()
     }
