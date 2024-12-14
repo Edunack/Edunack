@@ -2,11 +2,16 @@ import Course from "../../CommonAssets/Course";
 import CourseRank from "../../CommonAssets/CourseRank";
 import "./Top3.css";
 
-interface Props {
-  courses: any[];
-}
+function Top3() {
+  const categoryName = sessionStorage.getItem("categoryName");
+  const getCourses = sessionStorage.getItem("category" + categoryName);
 
-function Top3({ courses }: Props) {
+  if (!getCourses) {
+    return <div>No courses found:/</div>;
+  }
+
+  const courses = JSON.parse(getCourses);
+
   return (
     <div id="top3">
       <div className="top3Courses">

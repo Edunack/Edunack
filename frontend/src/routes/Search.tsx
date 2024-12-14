@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search.css";
-interface Props {
-  onUpdateCourses: (courses: Object[]) => void;
-  setCategoryName: (category: string) => void;
-}
 
 interface Category {
   id: String;
   name: String;
 }
 
-function Search({ onUpdateCourses, setCategoryName }: Props) {
+function Search() {
   const searchRef = useRef<HTMLInputElement>(null);
   const searchBtnRef = useRef<HTMLButtonElement>(null);
   const categoryRef = useRef<HTMLUListElement>(null);
@@ -206,8 +202,15 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
               })
                 .then((data) => data.json())
                 .then(async (data) => {
-                  onUpdateCourses(data);
-                  setCategoryName(cat[0].name.toString());
+                  console.log(data);
+                  sessionStorage.setItem(
+                    "category" + cat[0].name.toString(),
+                    JSON.stringify(data)
+                  );
+                  sessionStorage.setItem(
+                    "categoryName",
+                    cat[0].name.toString()
+                  );
                   setIsDataFetched(true);
                 });
             });

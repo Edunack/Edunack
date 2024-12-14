@@ -1,0 +1,4 @@
+This file for just for me to remember what I stored in the session and type here all keys to easily get this elements
+
+category + categoryName - list of all courses from selected category
+categoryName - name of the category currently searched

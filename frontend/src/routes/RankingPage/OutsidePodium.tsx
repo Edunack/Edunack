@@ -2,12 +2,7 @@ import React from "react";
 import InlineCourse from "../../CommonAssets/InlineCourse";
 import "./OutsidePodium.css";
 
-interface Props {
-  courses: any[];
-}
-
-function OutsidePodium({ courses }: Props) {
-  console.log(courses);
+function OutsidePodium() {
   return (
     <div id="rankContainer">
       <svg
@@ -37,7 +32,7 @@ function OutsidePodium({ courses }: Props) {
         />
       </svg>
       <div id="outside">
-        <GenerateList courses={courses} />
+        <GenerateList />
       </div>
     </div>
   );
@@ -45,15 +40,20 @@ function OutsidePodium({ courses }: Props) {
 
 export default OutsidePodium;
 
-interface ListProps {
-  courses: any[];
-}
+function GenerateList() {
+  const categoryName = sessionStorage.getItem("categoryName");
+  const getCourses = sessionStorage.getItem("category" + categoryName);
 
-function GenerateList({ courses }: ListProps) {
+  if (!getCourses) {
+    return <div>No courses found:/</div>;
+  }
+
+  const courses = JSON.parse(getCourses);
+
   const slicedCourses = courses.slice(3);
   return (
     <div id="courses">
-      {slicedCourses.map((course, index) => (
+      {slicedCourses.map((course: any, index: number) => (
         <React.Fragment key={index}>
           <InlineCourse
             id={course.id}

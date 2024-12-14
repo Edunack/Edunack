@@ -5,13 +5,17 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import DisqusElement from "./Disqus";
 
-interface Props {
-  courses: any[];
-}
-
-function CourseDetail({ courses }: Props) {
+function CourseDetail() {
   const { id } = useParams<{ id: string }>();
-  const course = courses.find((course) => course.id === id);
+  const categoryName = sessionStorage.getItem("categoryName");
+  const getCourses = sessionStorage.getItem("category" + categoryName);
+
+  if (!getCourses) {
+    return <div>No courses found</div>;
+  }
+
+  const courses = JSON.parse(getCourses);
+  const course = courses.find((course: any) => course.id === id);
 
   const [hoveredStarIndex, setHoveredStarIndex] = useState<number | null>(null);
   const stars = Array(5).fill(0);

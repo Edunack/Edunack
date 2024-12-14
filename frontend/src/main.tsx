@@ -49,8 +49,6 @@ const applyMagnification = (
 
 const AppContainer: React.FC = () => {
   const [magnificationLevel, setMagnificationLevel] = useState(1);
-  const [courses, setCourses] = useState<Object[]>([]);
-  const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
     storeOriginalFontSizes();
@@ -100,22 +98,15 @@ const AppContainer: React.FC = () => {
         },
         {
           path: "Search",
-          element: (
-            <Search
-              onUpdateCourses={setCourses}
-              setCategoryName={setCategory}
-            />
-          ),
+          element: <Search />,
         },
         {
           path: "Ranking",
-          element: (
-            <Ranking courses={courses} category={category} key={category} />
-          ),
+          element: <Ranking />,
         },
         {
           path: "course/:id",
-          element: <CourseDetail courses={courses} />,
+          element: <CourseDetail />,
         },
         {
           path: "About",
