@@ -1,5 +1,5 @@
 use edunack_macros::QueryGen;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use uuid::Uuid;
 
@@ -16,6 +16,8 @@ pub struct Course {
     pub image: String,
     pub price: String,
     pub rating: f64,
+    #[query_gen(skip)]
+    pub rating_count: i32,
     pub medium: i32,
     pub url: String,
 }
@@ -45,6 +47,7 @@ pub fn select_query(column: &str, language: Option<&str>, order: Option<Order>) 
     q
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum Order {
     Rating,
     ID,
