@@ -80,7 +80,9 @@ function CourseDetail({ courses }: Props) {
           <div className="courseContent" id="courseLink">
             <div id="urlHolder">
               <p>
-                <a href={course.url}>{course.url}</a>
+                <a href={course.url} target="_blank">
+                  {course.url}
+                </a>
               </p>
             </div>
             <Button

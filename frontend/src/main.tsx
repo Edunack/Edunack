@@ -109,7 +109,9 @@ const AppContainer: React.FC = () => {
         },
         {
           path: "Ranking",
-          element: <Ranking courses={courses} category={category} />,
+          element: (
+            <Ranking courses={courses} category={category} key={category} />
+          ),
         },
         {
           path: "course/:id",

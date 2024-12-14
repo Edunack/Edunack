@@ -17,6 +17,7 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
   const categoryRef = useRef<HTMLUListElement>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [showList, setShowList] = useState(false);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const navigate = useNavigate();
 
   // Utility: Remove the hash from the URL
@@ -154,34 +155,34 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
   (window as any).__gcse || ((window as any).__gcse = {});
   (window as any).__gcse = {
     initializationCallback: () => {
-        removeHash();
+      removeHash();
 
-        const callback = () => {
-            console.log("callback");
-          let captcha = document.querySelector("#recaptcha-wrapper");
-          if (captcha) {
-              document.querySelector("#captcha")?.appendChild(captcha);
-            // CAPTCHA is displayed, now update the button position
-            updateBtnPos();
-          }
-        };
-
-        // Options for the observer (watching for child additions)
-        const config = { childList: true, subtree: true };
-
-        // Get the parent element where CAPTCHA is likely inserted
-        const target =
-          document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
-
-        console.log("target: ", target);
-        // Create the MutationObserver and start observing
-        if (target) {
-          const observer = new MutationObserver(callback);
-          observer.observe(target, config);
-
-          // Cleanup observer when the component unmounts
-          return () => observer.disconnect();
+      const callback = () => {
+        console.log("callback");
+        let captcha = document.querySelector("#recaptcha-wrapper");
+        if (captcha) {
+          document.querySelector("#captcha")?.appendChild(captcha);
+          // CAPTCHA is displayed, now update the button position
+          updateBtnPos();
         }
+      };
+
+      // Options for the observer (watching for child additions)
+      const config = { childList: true, subtree: true };
+
+      // Get the parent element where CAPTCHA is likely inserted
+      const target =
+        document.getElementsByClassName("gsc-wrapper")[0]?.parentElement;
+
+      console.log("target: ", target);
+      // Create the MutationObserver and start observing
+      if (target) {
+        const observer = new MutationObserver(callback);
+        observer.observe(target, config);
+
+        // Cleanup observer when the component unmounts
+        return () => observer.disconnect();
+      }
     },
     searchCallbacks: {
       web: {
@@ -205,11 +206,9 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
               })
                 .then((data) => data.json())
                 .then(async (data) => {
-                  console.log(data);
-                  console.log(cat[0].name);
                   onUpdateCourses(data);
                   setCategoryName(cat[0].name.toString());
-                  navigate("/Ranking", { replace: true });
+                  setIsDataFetched(true);
                 });
             });
             return cat;
@@ -217,6 +216,10 @@ function Search({ onUpdateCourses, setCategoryName }: Props) {
       },
     },
   };
+
+  useEffect(() => {
+    if (isDataFetched) navigate("/Ranking");
+  }, [isDataFetched]);
 
   //useEffect(() => {
   //  // Observer callback to monitor changes in the DOM

@@ -8,6 +8,7 @@ interface Props {
 }
 
 function Ranking({ courses, category }: Props) {
+  console.log("Hello");
   return (
     <div id="ranking">
       <p id="category">
