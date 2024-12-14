@@ -232,7 +232,6 @@ impl SearchRouter {
                 .exists_by_url(elem.url.as_str())
                 .await
             {
-                println!("Skipping {}", elem.name);
                 continue;
             }
             let course = Course {

@@ -27,6 +27,9 @@ function Login() {
         setResponse("Internal server error");
       } else if (data.status === 200) {
         setResponse("");
+        data.json().then((data) => {
+            console.log(data);
+        });
         navigate("/", { replace: true });
       }
     });
