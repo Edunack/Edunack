@@ -119,18 +119,14 @@ impl SearchRouter {
         let lang = params.language();
         let db = state.database.clone();
         let courses_table = db.course();
-
+        if let SearchParams::Course { course, .. } = params {
+            return Json(courses_table.find_by_id(course, lang).await).into_response();
+        }
         Json(
             futures::future::join_all(
                 match params {
                     SearchParams::Name { ref name, .. } => {
                         courses_table.find_all_by_name(name.clone(), lang).await
-                    }
-                    SearchParams::Course { course, .. } => {
-                        match courses_table.find_by_id(course, lang).await {
-                            Some(course) => vec![course],
-                            None => vec![],
-                        }
                     }
                     SearchParams::Category {
                         category,
@@ -138,13 +134,10 @@ impl SearchRouter {
                         ..
                     } => {
                         courses_table
-                            .find_all_by_category(
-                                category,
-                                lang,
-                                order.clone(),
-                            )
+                            .find_all_by_category(category, lang, order.clone())
                             .await
                     }
+                    _ => unreachable!(),
                 }
                 .iter()
                 .map(|course| async {
