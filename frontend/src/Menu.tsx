@@ -1,28 +1,15 @@
-import { useContext } from "react";
+//import { useContext } from "react";
 import "./Menu.css";
 import { Outlet, Link } from "react-router-dom";
-import { MagnificationContext } from "./main.tsx";
+//import { MagnificationContext } from "./main.tsx";
 
 function Menu() {
-  const { setMagnificationLevel } = useContext(MagnificationContext);
-  const username = sessionStorage.getItem("username");
+  //const { setMagnificationLevel } = useContext(MagnificationContext);
 
   return (
     <>
       <div id="containerMenu">
-        <div id="logoContainer">
-          <img
-            src="../img/logo.svg"
-            alt="Edunack logo"
-            style={{ width: "3vh", height: "3vh", margin: "0 1vh" }}
-          />
-          <span>
-            <Link to={``} className="menuLink">
-              EDUNACK
-            </Link>
-          </span>
-        </div>
-        <div>
+        {/*<div>
           <button
             className="textMagnifier"
             onClick={() => setMagnificationLevel(1)}
@@ -41,30 +28,52 @@ function Menu() {
           >
             A++
           </button>
+        </div>*/}
+        <div id="mainMenu" className="menuItem" style={{ width: "25%" }}>
+          <ul id="menu" className="menuList">
+            <li className="menuItem">
+              <Link to={``} className="menuLink">
+                HOME
+              </Link>
+            </li>
+            <li className="menuItem">
+              <Link to={`Search`} className="menuLink">
+                RANKING
+              </Link>
+            </li>
+            <li className="menuItem">
+              <Link to={`About`} className="menuLink">
+                ABOUT
+              </Link>
+            </li>
+          </ul>
         </div>
-        <ul id="menu">
-          <li className="menuItem" style={{ fontWeight: 700 }}>
+        <div id="logoContainer" className="menuItem" style={{ width: "50%" }}>
+          <img
+            src="../img/logo.svg"
+            alt="Edunack logo"
+            style={{ width: "3vh", height: "3vh", margin: "0 1vh" }}
+          />
+          <span>
             <Link to={``} className="menuLink">
-              home
+              EDUNACK
             </Link>
-          </li>
-          <li className="menuItem">
-            {" "}
-            <Link to={`Search`} className="menuLink">
-              ranking
-            </Link>
-          </li>
-          <li className="menuItem">
-            <Link to={`About`} className="menuLink">
-              about
-            </Link>
-          </li>
-          <li className="menuItem">
-            <Link to={`Login`} className="menuLink">
-              {username ? "my account" : "log in"}
-            </Link>
-          </li>
-        </ul>
+          </span>
+        </div>
+        <div className="menuItem" style={{ width: "25%" }}>
+          <ul id="loginMenu" className="menuList">
+            <li className="menuItem">
+              <Link to={`Login`} className="menuLink">
+                LOGIN
+              </Link>
+            </li>
+            <li className="menuItem">
+              <Link to={`Profile`} className="menuLink">
+                YOUR PROFILE
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
       <div style={{ transform: "translateY(10vh)" }}>
         <Outlet />
