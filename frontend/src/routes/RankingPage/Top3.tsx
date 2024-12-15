@@ -19,7 +19,7 @@ function Top3() {
           id={courses[1].id}
           title={courses[1].name.split("|")[0]}
           author={courses[1].author}
-          image="./img/codeSeg.jpg"
+          image="../img/codeSeg.jpg"
         />
         <CourseRank
           rank="2."
@@ -36,7 +36,7 @@ function Top3() {
           id={courses[0].id}
           title={courses[0].name.split("|")[0]}
           author={courses[0].author}
-          image="./img/codeSeg.jpg"
+          image="../img/codeSeg.jpg"
         />
         <CourseRank
           rank="1."
@@ -53,7 +53,7 @@ function Top3() {
           id={courses[2].id}
           title={courses[2].name.split("|")[0]}
           author={courses[2].author}
-          image="./img/codeSeg.jpg"
+          image="../img/codeSeg.jpg"
         />
         <CourseRank
           rank="3."

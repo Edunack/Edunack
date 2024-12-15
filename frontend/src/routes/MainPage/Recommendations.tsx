@@ -64,7 +64,7 @@ function Recommendations() {
             />
           </svg>
         </span>{" "}
-        Ebroidery{" "}
+        Embroidery{" "}
         <span className="toCenter">
           <svg
             width="3vh"

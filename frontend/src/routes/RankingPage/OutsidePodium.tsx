@@ -3,6 +3,11 @@ import InlineCourse from "../../CommonAssets/InlineCourse";
 import "./OutsidePodium.css";
 
 function OutsidePodium() {
+  if (
+    !sessionStorage.getItem("category" + sessionStorage.getItem("categoryName"))
+  )
+    return <div></div>;
+
   return (
     <div id="rankContainer">
       <svg

@@ -5,6 +5,8 @@ import { MagnificationContext } from "./main.tsx";
 
 function Menu() {
   const { setMagnificationLevel } = useContext(MagnificationContext);
+  const username = sessionStorage.getItem("username");
+
   return (
     <>
       <div id="containerMenu">
@@ -59,7 +61,7 @@ function Menu() {
           </li>
           <li className="menuItem">
             <Link to={`Login`} className="menuLink">
-              log in
+              {username ? "my account" : "log in"}
             </Link>
           </li>
         </ul>

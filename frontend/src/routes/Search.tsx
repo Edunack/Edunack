@@ -37,7 +37,7 @@ function Search() {
       .then((data) => data.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          console.log(data);
+          console.log("categories: ", data);
           setCategories(data);
         }
       });
@@ -221,7 +221,8 @@ function Search() {
   };
 
   useEffect(() => {
-    if (isDataFetched) navigate("/Ranking");
+    if (isDataFetched)
+      navigate(`/Ranking/${sessionStorage.getItem("categoryName")}`);
   }, [isDataFetched]);
 
   //useEffect(() => {

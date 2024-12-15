@@ -101,7 +101,7 @@ const AppContainer: React.FC = () => {
           element: <Search />,
         },
         {
-          path: "Ranking",
+          path: "Ranking/:categoryName",
           element: <Ranking />,
         },
         {

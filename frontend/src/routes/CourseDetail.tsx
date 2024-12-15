@@ -10,6 +10,8 @@ function CourseDetail() {
   const categoryName = sessionStorage.getItem("categoryName");
   const getCourses = sessionStorage.getItem("category" + categoryName);
 
+  console.log(id);
+
   if (!getCourses) {
     return <div>No courses found</div>;
   }
