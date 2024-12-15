@@ -2,28 +2,48 @@ import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 import "./CourseDetail.css";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DisqusElement from "./Disqus";
 
 function CourseDetail() {
   const { id } = useParams<{ id: string }>();
   const categoryName = sessionStorage.getItem("categoryName");
   const getCourses = sessionStorage.getItem("category" + categoryName);
-
-  console.log(id);
-
-  if (!getCourses) {
-    return <div>No courses found</div>;
-  }
-
-  const courses = JSON.parse(getCourses);
-  const course = courses.find((course: any) => course.id === id);
-
   const [hoveredStarIndex, setHoveredStarIndex] = useState<number | null>(null);
+  const [course, setCourse] = useState<any>(null);
   const stars = Array(5).fill(0);
 
+  const getCourse = () => {
+    fetch(`${window.location.origin}/api/search/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ course: id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        sessionStorage.setItem("course", JSON.stringify(data[0]));
+        setCourse(data[0]);
+      });
+  };
+
+  useEffect(() => {
+    if (!getCourses) {
+      console.log("Fetching course details...");
+      getCourse();
+    } else {
+      const courses = JSON.parse(getCourses);
+      const selectedCourse = courses.find((c: any) => c.id === id);
+      setCourse(selectedCourse);
+    }
+  }, [id, getCourses]);
+
+  useEffect(() => {
+    console.log(course);
+  }, [course]);
+
   if (!course) {
-    return <div>Course not found</div>;
+    return <div>Loading course details...</div>;
   }
 
   return (
@@ -75,18 +95,13 @@ function CourseDetail() {
                     onMouseEnter={() => setHoveredStarIndex(index)}
                   />
                 ))}
-                {/*<img src="/img/star.svg" alt="star" className="star" />
-                <img src="/img/star.svg" alt="star" className="star" />
-                <img src="/img/star.svg" alt="star" className="star" />
-                <img src="/img/star.svg" alt="star" className="star" />
-                <img src="/img/star.svg" alt="star" className="star" />*/}
               </div>
             </Tile>
           </div>
           <div className="courseContent" id="courseLink">
             <div id="urlHolder">
               <p>
-                <a href={course.url} target="_blank">
+                <a href={course.url} target="_blank" rel="noopener noreferrer">
                   {course.url}
                 </a>
               </p>
@@ -102,6 +117,7 @@ function CourseDetail() {
                 style={{ color: "#D8AFD8", textDecoration: "none" }}
                 href={course.url}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 go to course
               </a>
