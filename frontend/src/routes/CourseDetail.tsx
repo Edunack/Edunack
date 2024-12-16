@@ -11,6 +11,7 @@ function CourseDetail() {
   const getCourses = sessionStorage.getItem("category" + categoryName);
   const [hoveredStarIndex, setHoveredStarIndex] = useState<number | null>(null);
   const [course, setCourse] = useState<any>(null);
+  const [courseExists, setCourseExists] = useState<boolean | null>(null);
   const stars = Array(5).fill(0);
 
   const getCourse = () => {
@@ -22,8 +23,9 @@ function CourseDetail() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        sessionStorage.setItem("course", JSON.stringify(data[0]));
-        setCourse(data[0]);
+        sessionStorage.setItem("course", JSON.stringify(data));
+        setCourse(data);
+        setCourseExists(true);
       });
   };
 
@@ -42,8 +44,14 @@ function CourseDetail() {
     console.log(course);
   }, [course]);
 
+  if (setCourseExists === null) {
+    return <div>Loading...</div>;
+  } else if (courseExists === false) {
+    return <div>Course not found</div>;
+  }
+
   if (!course) {
-    return <div>Loading course details...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
