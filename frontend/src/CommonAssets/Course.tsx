@@ -11,9 +11,20 @@ interface Props {
   link: string;
   rating: number;
   numOfRatings: number;
+  scale?: number;
+  margin?: number;
 }
 
-function Course({ id, title, author, link, rating, numOfRatings }: Props) {
+function Course({
+  id,
+  title,
+  author,
+  link,
+  rating,
+  numOfRatings,
+  scale = 1,
+  margin = 5,
+}: Props) {
   const { magnificationLevel } = useContext(MagnificationContext);
   const navigate = useNavigate();
   let isOpinion = true;
@@ -25,7 +36,9 @@ function Course({ id, title, author, link, rating, numOfRatings }: Props) {
   const applyMagnification = {
     height: `${45 * magnificationLevel}vh`,
     width: `${15 * magnificationLevel}vw`,
-    margin: `${5 * magnificationLevel}% 0`,
+    margin: `${margin * magnificationLevel}% 0`,
+    marginTop: 0,
+    zoom: `${scale * magnificationLevel}`,
   };
 
   return (

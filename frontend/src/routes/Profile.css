@@ -1,0 +1,86 @@
+#accountContainer {
+  min-height: 90vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#account {
+  background: linear-gradient(176.75deg, #411d5f -49.72%, #171117 55.11%);
+  min-height: 70vh;
+  width: 60vw;
+  border-radius: 2vh;
+  padding: 5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5vh;
+}
+
+#accountInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5vw;
+  width: 100%;
+  height: 40vh;
+}
+
+#userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #171117;
+  border: 4px solid #573b57;
+  border-radius: 1.5vh;
+  width: 40%;
+  height: 90%;
+}
+
+#userInfo > img {
+  width: 8vh;
+  height: 8vh;
+}
+
+#unfinishedCourse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+#unfinishedCourse > span {
+  margin-bottom: 1vh;
+  font-size: 1.5vh;
+}
+
+#yourCourses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  width: 100%;
+}
+
+#yourCourses > span {
+  font-size: 2vh;
+}
+
+#startedCourses {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+}
+
+.line {
+  height: 1px;
+  width: 90%;
+  border-bottom: 1px solid #ac57ab;
+}

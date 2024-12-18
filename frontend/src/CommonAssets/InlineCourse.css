@@ -12,3 +12,8 @@
 #inlineCourse:hover {
   cursor: pointer;
 }
+
+#inlineCourseRating {
+  display: flex;
+  justify-items: center;
+}

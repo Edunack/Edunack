@@ -1,0 +1,25 @@
+#inlineCoursePremium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2vh 3vh;
+  color: #fff;
+  font-size: 2.6vh;
+  width: 80%;
+  font-weight: 400;
+}
+
+#inlineCoursePremium:hover {
+  cursor: pointer;
+}
+
+#inlineCoursePremium > span > Link,
+#inlineCoursePremium > span > a {
+  color: white;
+  text-decoration: none;
+}
+
+.linkToCenter {
+  display: flex;
+  justify-content: center;
+}

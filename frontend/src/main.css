@@ -9,6 +9,7 @@ body {
   font-size: 200%;
 }
 
-input {
+input,
+button {
   font-family: "Quicksand", sans-serif;
 }
