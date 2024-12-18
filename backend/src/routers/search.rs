@@ -13,9 +13,9 @@ use uuid::Uuid;
 
 use super::IntoRouter;
 use crate::{
-    db::models::{
-        category::Category,
-        course::{Course, Order},
+    db::{
+        category::{Category, CategoryTable},
+        course::{Course, CourseTable, Order},
     },
     AppState,
 };
@@ -31,29 +31,28 @@ pub struct SearchRouter;
 
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum SearchParams {
-    Course {
+pub enum SearchCoursesBy {
+    ID {
         course: Uuid,
-        language: Option<String>,
     },
     Name {
         name: String,
-        language: Option<String>,
     },
     Category {
         category: Uuid,
         order: Option<Order>,
-        language: Option<String>,
     },
 }
 
-impl SearchParams {
+#[derive(Serialize, Deserialize)]
+pub struct SearchCourses {
+    by: SearchCoursesBy,
+    language: Option<String>,
+}
+
+impl SearchCourses {
     pub fn language(&self) -> &str {
-        match self {
-            SearchParams::Name { language, .. } => language.as_deref().unwrap_or("en"),
-            SearchParams::Course { language, .. } => language.as_deref().unwrap_or("en"),
-            SearchParams::Category { language, .. } => language.as_deref().unwrap_or("en"),
-        }
+        self.language.as_deref().unwrap_or("en")
     }
 }
 
@@ -88,7 +87,7 @@ impl SearchRouter {
             None => "en",
         };
         let db = state.database.clone();
-        let categories_table = db.category();
+        let categories_table = CategoryTable::new(db.get_conn());
         let categories = categories_table.find_by_name(name.as_str(), lang).await;
 
         Json(categories)
@@ -104,7 +103,7 @@ impl SearchRouter {
             None => "en",
         };
         let db = state.database.clone();
-        let categories_table = db.category();
+        let categories_table = CategoryTable::new(db.get_conn());
         match categories_table.find_by_id(id, lang).await {
             Some(category) => Json(category).into_response(),
             None => StatusCode::NOT_FOUND.into_response(),
@@ -114,21 +113,21 @@ impl SearchRouter {
     //#[axum::debug_handler]
     pub async fn search(
         State(state): State<AppState>,
-        Json(params): Json<SearchParams>,
+        Json(params): Json<SearchCourses>,
     ) -> axum::response::Response {
         let lang = params.language();
         let db = state.database.clone();
-        let courses_table = db.course();
-        if let SearchParams::Course { course, .. } = params {
+        let courses_table = CourseTable::new(db.get_conn());
+        if let SearchCoursesBy::ID { course, .. } = params.by {
             return Json(courses_table.find_by_id(course, lang).await).into_response();
         }
         Json(
             futures::future::join_all(
-                match params {
-                    SearchParams::Name { ref name, .. } => {
+                match params.by {
+                    SearchCoursesBy::Name { ref name, .. } => {
                         courses_table.find_all_by_name(name.clone(), lang).await
                     }
-                    SearchParams::Category {
+                    SearchCoursesBy::Category {
                         category,
                         ref order,
                         ..
@@ -218,13 +217,9 @@ impl SearchRouter {
                 })
                 .collect::<Vec<_>>()
         };
+        let courses_table = CourseTable::new(state.database.get_conn());
         for elem in elements {
-            if state
-                .database
-                .course()
-                .exists_by_url(elem.url.as_str())
-                .await
-            {
+            if courses_table.exists_by_url(elem.url.as_str()).await {
                 continue;
             }
             let course = Course {
@@ -241,12 +236,7 @@ impl SearchRouter {
                 category,
             };
             println!("{:?}", course);
-            state
-                .database
-                .course()
-                .insert(course.clone())
-                .await
-                .unwrap();
+            courses_table.insert(course.clone()).await.unwrap();
         }
 
         StatusCode::OK.into_response()

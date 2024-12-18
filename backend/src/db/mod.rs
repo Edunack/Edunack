@@ -1,12 +1,12 @@
-use std::sync::Arc;
+use std::{marker::PhantomData, sync::Arc};
 
-use models::{category::Category, course::Course, rating::Rating, user::User};
 use rusqlite_ext::RusqliteFunctionExt;
 use sqlx::{SqliteConnection, SqlitePool};
-use tables::Table;
 
-pub mod models;
-pub mod tables;
+pub mod category;
+pub mod course;
+pub mod rating;
+pub mod user;
 
 #[derive(Clone)]
 pub struct Database(Arc<SqlitePool>);
@@ -16,20 +16,20 @@ impl Database {
         Self(conn)
     }
 
-    pub fn user(&self) -> Table<User> {
-        Table::new(self.0.clone())
+    pub fn get_conn(&self) -> Arc<SqlitePool> {
+        self.0.clone()
+    }
+}
+
+pub struct Table<T>(Arc<SqlitePool>, PhantomData<T>);
+
+impl<T> Table<T> {
+    pub fn new(conn: Arc<SqlitePool>) -> Self {
+        Self(conn, PhantomData)
     }
 
-    pub fn course(&self) -> Table<Course> {
-        Table::new(self.0.clone())
-    }
-
-    pub fn category(&self) -> Table<Category> {
-        Table::new(self.0.clone())
-    }
-
-    pub fn rating(&self) -> Table<Rating> {
-        Table::new(self.0.clone())
+    pub fn get_conn(&self) -> Arc<SqlitePool> {
+        self.0.clone()
     }
 }
 
@@ -148,11 +148,11 @@ pub mod rusqlite_ext {
 }
 
 pub trait ConnectionExt {
-    async fn register_functions(&mut self) -> sqlx::Result<()>;
+    async fn before_acquire(&mut self) -> sqlx::Result<()>;
 }
 
 impl ConnectionExt for SqliteConnection {
-    async fn register_functions(&mut self) -> sqlx::Result<()> {
+    async fn before_acquire(&mut self) -> sqlx::Result<()> {
         let mut handle_lock = self.lock_handle().await?;
         let handle = handle_lock.as_raw_handle().as_ptr();
         // Safety: we know that the handle is a SQLite connection is locked and is not used anywhere else.

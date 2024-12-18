@@ -4,17 +4,18 @@ use tokio::sync::OnceCell;
 
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header, TokenData, Validation};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Claims {
     exp: usize,
     iat: usize,
-    pub email: String,
+    pub id: Uuid,
 }
 
 pub static SECRET: OnceCell<String> = OnceCell::const_new();
 
-pub fn encode_jwt(email: &str) -> Result<String, ()> {
+pub fn encode_jwt(id: &Uuid) -> Result<String, ()> {
     let now = chrono::Utc::now();
     let delta = chrono::Duration::days(1);
     let exp = (now + delta).timestamp() as usize;
@@ -22,7 +23,7 @@ pub fn encode_jwt(email: &str) -> Result<String, ()> {
     let claims = Claims {
         exp,
         iat,
-        email: email.to_string(),
+        id: id.clone(),
     };
     encode(
         &Header::default(),
@@ -49,8 +50,6 @@ pub async fn authorize(
     next: Next,
 ) -> Result<Response, StatusCode> {
     println!("{}", request.uri());
-
-    //    Err(StatusCode::IM_A_TEAPOT)
 
     let get_auth = |jar: CookieJar| -> Option<Claims> {
         Some(decode_jwt(jar.get("Authorization")?.value()).ok()?.claims)

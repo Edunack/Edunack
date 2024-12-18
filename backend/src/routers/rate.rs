@@ -9,7 +9,7 @@ use http::StatusCode;
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::{auth::Claims, db::models::rating::Rating, AppState};
+use crate::{auth::Claims, db::{rating::Rating, rating::RatingTable, user::UserTable}, AppState};
 
 use super::IntoRouter;
 
@@ -28,9 +28,9 @@ impl RateRouter {
         Extension(ext): Extension<Claims>,
         Json(params): Json<RatingParams>,
     ) -> Response {
-        let rating_table = state.database.rating();
-        let user_table = state.database.user();
-        let user = match user_table.find_by_email(ext.email.clone()).await {
+        let rating_table = RatingTable::new(state.database.get_conn());
+        let user_table = UserTable::new(state.database.get_conn());
+        let user = match user_table.find_by_id(ext.id.clone()).await {
             Some(user) => user,
             None => return (StatusCode::INTERNAL_SERVER_ERROR, "User not found").into_response(),
         };
@@ -55,9 +55,9 @@ impl RateRouter {
         Path(course_id): Path<Uuid>,
         Extension(ext): Extension<Claims>,
     ) -> Response {
-        let rating_table = state.database.rating();
-        let user_table = state.database.user();
-        let user = match user_table.find_by_email(ext.email.clone()).await {
+        let rating_table = RatingTable::new(state.database.get_conn());
+        let user_table = UserTable::new(state.database.get_conn());
+        let user = match user_table.find_by_id(ext.id.clone()).await {
             Some(user) => user,
             None => return (StatusCode::INTERNAL_SERVER_ERROR, "User not found").into_response(),
         };

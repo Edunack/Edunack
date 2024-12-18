@@ -14,7 +14,11 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::IntoRouter;
-use crate::{auth, db::models::user::User, AppState};
+use crate::{
+    auth,
+    db::user::{User, UserTable},
+    AppState,
+};
 
 pub struct LoginRouter;
 
@@ -27,6 +31,7 @@ pub struct LoginParams {
 
 #[derive(Serialize, Deserialize)]
 pub struct LoginResponse {
+    pub id: Uuid,
     pub username: String,
     pub email: String,
 }
@@ -40,7 +45,7 @@ pub struct RegisterParams {
 
 impl LoginRouter {
     pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
-        let user_table = state.database.user();
+        let user_table = UserTable::new(state.database.get_conn());
         let user = match user_table.find_by_username(params.login.clone()).await {
             Some(user) => user,
             None => match user_table.find_by_email(params.login.clone()).await {
@@ -61,7 +66,7 @@ impl LoginRouter {
             }
         }
 
-        let res = match auth::encode_jwt(&user.email) {
+        let res = match auth::encode_jwt(&user.id) {
             Ok(res) => res,
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
@@ -85,9 +90,10 @@ impl LoginRouter {
             )]))
             .unwrap(),
             Json(LoginResponse {
+                id: user.id,
                 username: user.username,
                 email: user.email,
-            })
+            }),
         )
             .into_response()
     }
@@ -97,7 +103,7 @@ impl LoginRouter {
         State(state): State<AppState>,
         Json(params): Json<RegisterParams>,
     ) -> Response {
-        let user_table = state.database.user();
+        let user_table = UserTable::new(state.database.get_conn());
         if let Some(user) = user_table
             .find_by_username_or_email(&params.username, &params.email)
             .await

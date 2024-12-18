@@ -3,7 +3,9 @@ use std::{str::FromStr, sync::Arc};
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
 use db::{ConnectionExt, Database};
 use rand::Rng;
-use routers::{login::LoginRouter, rate::RateRouter, search::SearchRouter, IntoRouter};
+use routers::{
+    login::LoginRouter, rate::RateRouter, search::SearchRouter, user::UserRouter, IntoRouter,
+};
 use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
@@ -43,7 +45,7 @@ async fn main() {
 
     let pool = SqlitePoolOptions::new()
         .before_acquire(|conn, _| {
-            Box::pin(async move { conn.register_functions().await.map(|_| true) })
+            Box::pin(async move { conn.before_acquire().await.map(|_| true) })
         })
         .connect_with(
             SqliteConnectOptions::from_str(
@@ -55,7 +57,8 @@ async fn main() {
             .pragma(
                 "key",
                 dotenvy::var("DATABASE_KEY").unwrap_or("secret".to_string()),
-            ),
+            )
+            .pragma("foreign_keys", "ON"),
         )
         .await
         .unwrap();
@@ -76,6 +79,7 @@ async fn main() {
                 .nest("/", LoginRouter.into_router())
                 .nest("/search", SearchRouter.into_router())
                 .nest("/rating", RateRouter.into_router())
+                .nest("/user", UserRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize)),
         )
         .nest_service("/", ServeFile::new("../frontend/dist/index.html"))
@@ -91,7 +95,10 @@ async fn main() {
             ),
         );
     let app = NormalizePath::trim_trailing_slash(app);
-    let listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let port = dotenvy::var("PORT").unwrap_or("3000".to_string());
+    let listener = TcpListener::bind(format!("0.0.0.0:{}", port))
+        .await
+        .unwrap();
     axum::serve::serve(listener, ServiceExt::<Request>::into_make_service(app))
         .await
         .unwrap();

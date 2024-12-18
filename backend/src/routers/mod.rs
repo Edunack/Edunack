@@ -2,6 +2,7 @@ use axum::{routing::get, Router};
 pub mod login;
 pub mod search;
 pub mod rate;
+pub mod user;
 
 use crate::AppState;
 

@@ -15,7 +15,9 @@ CREATE TABLE IF NOT EXISTS courses(
     url text,
     description text,
     image text,
-    price text
+    price text,
+    FOREIGN KEY (category) REFERENCES categories(id)
+    FOREIGN KEY (medium) REFERENCES course_mediums(id)
 );
 
 -- course translation table
@@ -24,6 +26,7 @@ CREATE TABLE IF NOT EXISTS course_translations(
     language varchar(2) not null,
     name text not null,
     PRIMARY KEY (course, language)
+    FOREIGN KEY (course) REFERENCES courses(id)
 );
 
 -- course medium table
@@ -47,4 +50,14 @@ CREATE TABLE IF NOT EXISTS user_ratings(
     course blob(16) not null,
     rating int not null,
     PRIMARY KEY (user, course)
+    FOREIGN KEY (course) REFERENCES courses(id)
+    FOREIGN KEY (user) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS user_favorites(
+    user blob(16) not null,
+    course blob(16) not null,
+    PRIMARY KEY (user, course)
+    FOREIGN KEY (course) REFERENCES courses(id)
+    FOREIGN KEY (user) REFERENCES users(id)
 );

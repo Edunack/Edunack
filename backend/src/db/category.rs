@@ -1,9 +1,16 @@
-use sqlx::query_as;
+use serde::Serialize;
+use sqlx::{prelude::FromRow, query_as};
 use uuid::Uuid;
 
-use crate::db::models::category::Category;
-
 use super::Table;
+
+pub(crate) type CategoryTable = Table<Category>;
+
+#[derive(Serialize, Debug, FromRow)]
+pub struct Category {
+    pub id: uuid::Uuid,
+    pub name: String,
+}
 
 impl Table<Category> {
     pub async fn find_by_id(&self, id: Uuid, language: &str) -> Option<Category> {

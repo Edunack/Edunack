@@ -1,7 +1,24 @@
-use crate::db::models::user::User;
-use sqlx::{query, query_as};
+use edunack_macros::QueryGen;
+use sqlx::{prelude::FromRow, query, query_as};
+use uuid::Uuid;
 
-use super::Table;
+use super::super::Table;
+
+pub(crate) type UserTable = Table<User>;
+
+#[derive(Debug, FromRow, QueryGen)]
+#[query_gen(query = select_query)]
+pub struct User {
+    pub id: Uuid,
+    pub username: String,
+    pub email: String,
+    #[query_gen(skip)]
+    pub password: String,
+}
+
+pub fn select_query(column: &str) -> String {
+    format!("SELECT * FROM users WHERE {column} = ?1")
+}
 
 impl Table<User> {
     pub async fn insert(&self, user: &User) -> Result<(), sqlx::Error> {
