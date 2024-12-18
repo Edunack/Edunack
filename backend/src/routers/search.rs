@@ -46,6 +46,7 @@ pub enum SearchCoursesBy {
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchCourses {
+    #[serde(flatten)]
     by: SearchCoursesBy,
     language: Option<String>,
 }
