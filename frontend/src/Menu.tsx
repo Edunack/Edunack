@@ -49,13 +49,13 @@ function Menu() {
           </ul>
         </div>
         <div id="logoContainer" className="menuItem" style={{ width: "50%" }}>
-          <img
-            src="../img/logo.svg"
-            alt="Edunack logo"
-            style={{ width: "3vh", height: "3vh", margin: "0 1vh" }}
-          />
+          <img src="../img/logo.svg" alt="Edunack logo" />
           <span>
-            <Link to={``} className="menuLink">
+            <Link
+              to={``}
+              className="menuLink"
+              style={{ fontFamily: '"Lato", sans-serif' }}
+            >
               EDUNACK
             </Link>
           </span>

@@ -60,6 +60,7 @@
 
 #searchBar::placeholder {
   color: #340f55;
+  font-family: "Quicksand", sans-serif;
 }
 
 #searchBtn {

@@ -82,19 +82,25 @@ function Recommendations() {
           id="0"
           title="PHP beginner"
           author="TUTORIALER 3248"
-          image="../img/codeSeg.jpg"
+          link="google.com"
+          rating={4.8}
+          numOfRatings={30}
         />
         <Course
           id="0"
           title="PHP intermediate"
           author="TUTORIALER 3248"
-          image="../img/codeSeg.jpg"
+          link="google.com"
+          rating={4.8}
+          numOfRatings={30}
         />
         <Course
           id="0"
           title="PHP advanced"
           author="TUTORIALER 3248"
-          image="../img/codeSeg.jpg"
+          link="google.com"
+          rating={4.8}
+          numOfRatings={30}
         />
       </div>
       <Button

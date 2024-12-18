@@ -65,7 +65,8 @@ function Ranking() {
   return (
     <div id="ranking">
       <p id="category">
-        Top searches in: <b>{categoryName}</b>
+        Top searches in: <br />
+        <b>{categoryName}</b>
       </p>
       <Top3 />
       <OutsidePodium />

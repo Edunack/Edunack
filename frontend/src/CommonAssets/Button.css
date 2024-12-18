@@ -4,6 +4,7 @@
   border: none;
   text-align: center;
   position: relative;
+  font-family: "Quicksand", sans-serif;
 }
 
 #customBtn:hover {

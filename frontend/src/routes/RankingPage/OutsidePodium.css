@@ -22,8 +22,7 @@
 
 #outside > #courses > .line {
   height: 1px;
-  width: 48%;
-  transform: translateX(8vh);
+  width: 50%;
   border-bottom: 1px solid #ac57ab;
 }
 

@@ -23,6 +23,19 @@
   align-items: center;
 }
 
+#containerMenu > #logoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logoContainer > img {
+  width: 5vh;
+  height: 5vh;
+  padding-right: 1vh;
+  vertical-align: middle;
+}
+
 .menuItem {
   height: 100%;
   display: flex;
@@ -34,7 +47,7 @@
 
 .menuList > .menuItem {
   font-weight: 500;
-  font-size: 2.5vh;
+  font-size: 3vh;
   padding: 2vh;
 }
 

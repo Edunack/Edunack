@@ -9,6 +9,7 @@ interface Props {
   fontWeight?: number;
   zIndex?: number;
   width?: string;
+  height?: string;
   padding?: string;
   border?: string;
   borderRadius?: string;
@@ -26,6 +27,7 @@ function Button({
   fontWeight,
   zIndex = 0,
   width = "",
+  height = "",
   border,
   borderRadius,
   padding,
@@ -44,6 +46,7 @@ function Button({
           fontWeight: fontWeight,
           zIndex: zIndex,
           width: width,
+          height: height,
           padding: padding,
           borderRadius: borderRadius,
           margin: margin,

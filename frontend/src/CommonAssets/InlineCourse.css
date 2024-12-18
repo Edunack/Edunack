@@ -5,25 +5,10 @@
   padding: 2vh 3vh;
   color: #fff;
   font-size: 2.6vh;
-  width: 60%;
-  font-weight: 300;
+  width: 40%;
+  font-weight: 400;
 }
 
 #inlineCourse:hover {
   cursor: pointer;
-}
-
-#inlineCourse > span {
-  flex: 1;
-  text-align: center;
-}
-
-#inlineCourse > span:nth-child(2) {
-  flex: 2;
-  text-align: left;
-}
-
-#inlineCourse > span > #link {
-  color: white;
-  text-decoration: none;
 }

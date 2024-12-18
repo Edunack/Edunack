@@ -5,29 +5,36 @@ interface Props {
   id: string;
   title: string;
   author: string;
-  rank: string;
-  type: string;
-  link: string;
-  opinion: string;
+  rating: number;
+  numOfRatings: number;
 }
 
-function InlineCourse({ id, title, author, rank, type, link, opinion }: Props) {
+function InlineCourse({ id, title, author, rating, numOfRatings }: Props) {
   const navigate = useNavigate();
+  let isOpinion = true;
+
+  if (rating == 0 && numOfRatings == 0) {
+    isOpinion = false;
+  }
+
   return (
     <div id="inlineCourse" onClick={() => navigate(`/course/${id}`)}>
-      <span style={{ fontSize: "5vh" }}>{rank}</span>
-      <span>
+      <span style={{ maxWidth: "80%" }}>
         {title}
         <br />
         by {author}
       </span>
-      <span>{type}</span>
-      <span>
-        <a href={link} id="link" target="_blank">
-          see course
-        </a>
+      <span style={{ maxWidth: "20%" }}>
+        {isOpinion ? (
+          <span>no ratings</span>
+        ) : (
+          <>
+            <img src={`/img/star.svg`} alt="star" style={{ width: "8%" }} />
+            <span style={{ marginLeft: "0.2vw" }}>{rating}</span>
+            <span>({numOfRatings})</span>
+          </>
+        )}
       </span>
-      <span>{opinion}</span>
     </div>
   );
 }

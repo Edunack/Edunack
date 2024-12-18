@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search.css";
 
@@ -268,6 +268,12 @@ function Search() {
   //  };
   //}, []);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleChange();
+    }
+  };
+
   const handleChange = () => {
     const data = new String(searchRef.current?.value);
     updateBtnPos();
@@ -312,6 +318,7 @@ function Search() {
             id="searchBar"
             placeholder="start typing..."
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             onClick={() => {
               handleChange();
               setShowList(true);

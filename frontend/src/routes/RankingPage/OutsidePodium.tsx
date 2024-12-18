@@ -64,12 +64,8 @@ function GenerateList() {
             id={course.id}
             title={course.name.split("|")[0]}
             author={course.author}
-            rank={index + 4 + "."}
-            type={course.medium}
-            link={course.url}
-            opinion={
-              course.rating === 0 ? "very positive ratings" : course.rating
-            }
+            rating={course.rating}
+            numOfRatings={course.rating_count}
           />
           {index !== slicedCourses.length - 1 && <div className="line"></div>}
         </React.Fragment>

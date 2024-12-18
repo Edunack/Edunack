@@ -120,6 +120,7 @@ function CourseDetail() {
               border="5px solid #7C607C"
               borderRadius="1vh"
               width="100%"
+              onClick={() => window.open(course.url, "_blank")}
             >
               <a
                 style={{ color: "#D8AFD8", textDecoration: "none" }}

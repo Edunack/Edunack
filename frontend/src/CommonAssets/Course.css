@@ -1,64 +1,38 @@
 #courseContainer {
-  background-color: #1e1e1e;
-  border-radius: 2.5vh;
-  width: 23vh;
-  height: 35vh;
+  background-color: #181218;
+  border-radius: 1.5vh;
   margin: 5% 0;
-  box-shadow: 0 0 3vh #1e1e1e;
 }
 
-#courseContainer:hover {
-  cursor: pointer;
-}
-
-#courseContainer > #image {
-  height: 40%;
-  background-size: cover;
-  border-radius: 2.5vh 2.5vh 0 0;
-  z-index: -2;
-}
-
-#courseContainer > #blur {
-  height: 20%;
-  width: 100%;
-  position: relative;
-  top: -10%;
-  background: linear-gradient(to top, rgba(30, 30, 30, 0) 0%, #1e1e1e 100%);
-  box-shadow: 0 -5px 5px -5px #1e1e1e;
-}
-
-#courseContainer > #info {
+#courseContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: auto;
   position: relative;
-  width: 80%;
-  height: 100%;
-  top: -60%;
+  gap: 1vw;
 }
 
-#info > p {
+#mainInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35%;
+  width: 85%;
+  color: #ebd1eb;
+  background-color: #403140;
+  border: 4px solid #362536;
+  border-radius: 1vh;
   text-align: center;
-  font-weight: 300;
-  font-size: 1.3vh;
-  word-wrap: break-word;
-  word-break: break-word;
 }
 
-#info > p > #title {
-  font-weight: 500;
-  font-size: 3vh;
-  margin-bottom: 1.5vh;
-  word-wrap: break-word;
-  word-break: break-word;
-}
-
-#info > p > #author {
-  padding: 0 2%;
-  font-weight: 700;
-  font-size: 2vh;
-  margin-top: 1vh;
-  word-wrap: break-word;
-  word-break: break-word;
+#courseRating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ebd1eb;
+  height: 5%;
+  width: 85%;
+  gap: 0.3vw;
 }
