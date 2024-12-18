@@ -11,6 +11,8 @@
 #account {
   background: linear-gradient(176.75deg, #411d5f -49.72%, #171117 55.11%);
   min-height: 70vh;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
   width: 60vw;
   border-radius: 2vh;
   padding: 5vh;
@@ -83,4 +85,18 @@
   height: 1px;
   width: 90%;
   border-bottom: 1px solid #ac57ab;
+}
+
+#noAccount {
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2vh;
+}
+
+#noAccount > span {
+  font-size: 10vh;
 }

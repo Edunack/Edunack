@@ -54,6 +54,25 @@ function CourseDetail() {
     return <div>Loading...</div>;
   }
 
+  const handleStarClick = (index: number) => {
+    const userId = sessionStorage.getItem("userId");
+    if (!userId) {
+      return alert("You must be logged in to rate courses");
+    }
+
+    if (hoveredStarIndex !== null) {
+      fetch("/api/rating/" + id, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating: Number(index + 1) }),
+      }).then(() => {
+        alert("Rating submitted!");
+      });
+    }
+  };
+
   return (
     <div id="courseDetail">
       <div>
@@ -101,6 +120,7 @@ function CourseDetail() {
                     alt="star"
                     className="star"
                     onMouseEnter={() => setHoveredStarIndex(index)}
+                    onClick={() => handleStarClick(index)}
                   />
                 ))}
               </div>

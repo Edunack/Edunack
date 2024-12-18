@@ -3,3 +3,5 @@ This file for just for me to remember what I stored in the session and type here
 category + categoryName - list of all courses from selected category
 categoryName - name of the category currently searched
 course - selected course, overwritten when another course is selected
+userId - user id, stored after loging in
+username - username, stored after loging in 

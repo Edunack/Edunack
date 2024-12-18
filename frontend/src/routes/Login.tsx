@@ -28,7 +28,9 @@ function Login() {
       } else if (data.status === 200) {
         setResponse("");
         data.json().then((data) => {
-            console.log(data);
+          console.log(data);
+          sessionStorage.setItem("username", data.username);
+          sessionStorage.setItem("userId", data.id);
         });
         navigate("/", { replace: true });
       }
@@ -45,7 +47,7 @@ function Login() {
               If you do not have an account, click{" "}
               <Link to={`/Register`} className="LoginPanelLinks">
                 here
-              </Link>{" "}
+              </Link>
               to create one
             </span>
           </div>
