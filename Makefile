@@ -5,6 +5,13 @@ build:
 run: build
 	cd ./backend && cargo run
 
+deploy:
+	cd ./frontend && npm run build
+	cd ./backend && cargo run --release > ../edunack.log &
+
+kill:
+	pkill edunack
+
 env:
 	nix develop --command "zsh"
 
