@@ -1,13 +1,97 @@
 //import { useContext } from "react";
 import "./Menu.css";
 import { Outlet, Link } from "react-router-dom";
+import { useState } from "react";
 //import { MagnificationContext } from "./main.tsx";
 
 function Menu() {
   //const { setMagnificationLevel } = useContext(MagnificationContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
-    <>
+    <div style={{ width: "100%" }}>
+      <div id="burgerMenu" onClick={toggleMenu}>
+        {isMenuOpen ? (
+          <svg
+            width="31"
+            height="31"
+            viewBox="0 0 31 31"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2 3L29 28"
+              stroke="#FFE9E9"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <path
+              d="M2 28L29 3"
+              stroke="#FFE9E9"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+          </svg>
+        ) : (
+          <svg
+            width="35"
+            height="28"
+            viewBox="0 0 35 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2 2H33"
+              stroke="#FFE9E9"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <path
+              d="M2 13.6758H33"
+              stroke="#FFE9E9"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <path
+              d="M2 26H33"
+              stroke="#FFE9E9"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+          </svg>
+        )}
+      </div>
+      {isMenuOpen ? (
+        <div id="mobileMenu">
+          <div
+            id="logoContainer"
+            className="mobileMenuItem"
+            style={{ width: "50%" }}
+          >
+            <img src="../img/logo.svg" alt="Edunack logo" />
+            <span>
+              <Link
+                to={``}
+                className="menuLink"
+                style={{ fontFamily: '"Lato", sans-serif', fontWeight: "bold" }}
+              >
+                EDUNACK
+              </Link>
+            </span>
+          </div>
+          <ul>
+            <li className="mobileMenuItem">HOME</li>
+            <li className="mobileMenuItem">RANKING</li>
+            <li className="mobileMenuItem">ABOUT</li>
+            <li className="mobileMenuItem">LOGIN</li>
+            <li className="mobileMenuItem">YOUR PROFILE</li>
+          </ul>
+        </div>
+      ) : (
+        <div style={{ display: "none" }}></div>
+      )}
       <div id="containerMenu">
         {/*<div>
           <button
@@ -75,10 +159,10 @@ function Menu() {
           </ul>
         </div>
       </div>
-      <div style={{ transform: "translateY(10vh)" }}>
+      <div id="outlet">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }
 
