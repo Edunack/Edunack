@@ -37,8 +37,92 @@ function Login() {
     });
   }
 
+  function handleSubmitMobile(event: React.SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData);
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((data) => {
+      console.log(data);
+      if (data.status === 401) {
+        setResponse("Incorrect login or password");
+      } else if (data.status === 500) {
+        setResponse("Internal server error");
+      } else if (data.status === 200) {
+        setResponse("");
+        data.json().then((data) => {
+          console.log(data);
+          sessionStorage.setItem("username", data.username);
+          sessionStorage.setItem("userId", data.id);
+        });
+        navigate("/", { replace: true });
+      }
+    });
+  }
+
   return (
     <div id="Login">
+      <div id="mobileLoginPanel">
+        <div id="mobileLoginTitle">
+          <span>
+            <span style={{ fontSize: "200%" }}>LOG IN</span>
+            <br />
+            WE ARE SO EXCITED
+            <br />
+            TO SEE YOU AGAIN!
+          </span>
+          <img src="/img/logo.svg" alt="app logo" />
+        </div>
+        <form id="mobileForm" onSubmit={handleSubmitMobile}>
+          <Input
+            hint="EMAIL"
+            type="text"
+            name="login"
+            width="85vw"
+            margin="0"
+            padding="1.5vh 1vh"
+          />
+          <Input
+            hint="PASSWORD"
+            type="password"
+            name="password"
+            width="85vw"
+            margin="0"
+            padding="1.5vh 1vh"
+          />
+          <p
+            id="mobileLoginResponse"
+            style={{ display: response !== "" ? "block" : "none" }}
+          >
+            {response}
+          </p>
+          <Button
+            bgColor="#90429C"
+            color="white"
+            fontWeight={700}
+            width="90vw"
+            margin="0"
+            padding="1.5vh 1vh"
+            borderRadius="10px"
+            type="submit"
+          >
+            LOG IN
+          </Button>
+        </form>
+        <span id="mobileRegisterRedirect">
+          If you do not have an account, click{" "}
+          <Link to={`/Register`} className="LoginPanelLinks">
+            here
+          </Link>{" "}
+          to create one
+        </span>
+      </div>
+
       <div id="LoginPanel">
         <div id="Left">
           <div id="MainText">
@@ -47,7 +131,7 @@ function Login() {
               If you do not have an account, click{" "}
               <Link to={`/Register`} className="LoginPanelLinks">
                 here
-              </Link>
+              </Link>{" "}
               to create one
             </span>
           </div>

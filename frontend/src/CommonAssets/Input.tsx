@@ -1,13 +1,16 @@
 import "./Input.css";
 
 interface Props {
-  label: string;
+  label?: string;
   type: string;
   bgColor?: string;
   color?: string;
   margin?: string;
   padding?: string;
   name?: string;
+  hint?: string;
+  width?: string;
+  height?: string;
 }
 
 function Input({
@@ -18,6 +21,9 @@ function Input({
   margin,
   padding,
   name,
+  hint,
+  width,
+  height,
 }: Props) {
   return (
     <div style={{ textAlign: "left" }}>
@@ -27,11 +33,14 @@ function Input({
       <input
         type={type}
         name={name}
+        placeholder={hint}
         style={{
           backgroundColor: bgColor,
           color: color,
           margin: margin,
           padding: padding,
+          width: width,
+          height: height,
         }}
         className="CustomInput"
       />

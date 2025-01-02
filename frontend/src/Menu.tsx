@@ -82,11 +82,31 @@ function Menu() {
             </span>
           </div>
           <ul>
-            <li className="mobileMenuItem">HOME</li>
-            <li className="mobileMenuItem">RANKING</li>
-            <li className="mobileMenuItem">ABOUT</li>
-            <li className="mobileMenuItem">LOGIN</li>
-            <li className="mobileMenuItem">YOUR PROFILE</li>
+            <li className="mobileMenuItem">
+              <Link to={``} className="menuLink">
+                HOME
+              </Link>
+            </li>
+            <li className="mobileMenuItem">
+              <Link to={`Search`} className="menuLink">
+                RANKING
+              </Link>
+            </li>
+            <li className="mobileMenuItem">
+              <Link to={`About`} className="menuLink">
+                ABOUT
+              </Link>
+            </li>
+            <li className="mobileMenuItem">
+              <Link to={`Login`} className="menuLink">
+                LOGIN
+              </Link>
+            </li>
+            <li className="mobileMenuItem">
+              <Link to={`Profile`} className="menuLink">
+                YOUR PROFILE
+              </Link>
+            </li>
           </ul>
         </div>
       ) : (
