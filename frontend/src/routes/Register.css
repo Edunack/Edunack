@@ -1,4 +1,4 @@
-#Register {
+#register {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,14 +6,14 @@
   background: linear-gradient(249.93deg, #60316c 33.97%, #392d64 65.48%);
 }
 
-#RegisterPanel {
+#registerPanel {
   display: flex;
   justify-content: center;
   height: 80vh;
   width: 130vh;
 }
 
-#RegisterPanel > #Left {
+#registerPanel > #left {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
   border-radius: 22px 0 0 22px;
 }
 
-#RegisterPanel > #Right {
+#registerPanel > #right {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,17 +40,17 @@
   border-radius: 0 22px 22px 0;
 }
 
-#RegisterPanel > #Left > #Welcome {
+#registerPanel > #left > #welcome {
   font-weight: 900;
   font-size: 4vh;
 }
 
-#RegisterPanel > #Left > #LoginText {
+#registerPanel > #left > #loginText {
   font-weight: 400;
   font-size: 3vh;
 }
 
-#RegisterPanel > #Left > #Logo {
+#registerPanel > #left > #logo {
   transform: scaleX(-1);
   position: absolute;
   width: 12vh;
@@ -58,31 +58,31 @@
   left: -7.5%;
 }
 
-#RegisterPanel > #Left > p {
+#registerPanel > #left > p {
   margin: 0;
 }
 
-#RegisterPanel > #Right > p {
+#registerPanel > #right > p {
   margin: 0;
 }
 
-#RegisterPanel > #Right > #RegisterText > #MainText {
+#registerPanel > #right > #registerText > #mainText {
   margin: 0;
   font-weight: 700;
   font-size: 3vh;
 }
 
-#RegisterPanel > #Right > #RegisterText > #RegisterSubtext {
+#registerPanel > #right > #registerText > #registerSubtext {
   font-weight: 400;
   font-size: 2vh;
 }
 
-#RegisterPanel > #Right > #Form {
+#registerPanel > #right > #form {
   display: flex;
   flex-direction: column;
 }
 
-#RegisterPanel > #Right > #AlternateRegisterText {
+#registerPanel > #right > #alternateRegisterText {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,12 +91,12 @@
   align-self: center;
 }
 
-#RegisterPanel > #Right > #AlternateRegisterText > span {
+#registerPanel > #right > #alternateRegisterText > span {
   margin: 0;
   text-align: center;
 }
 
-#RegisterPanel > #Right > #AlternateRegisterMethods {
+#registerPanel > #right > #alternateRegisterMethods {
   display: flex;
   justify-content: center;
   width: 70%;
@@ -104,13 +104,71 @@
   align-self: center;
 }
 
-#RegisterResponse {
+#registerResponse {
   margin: 0;
   padding: 0;
 }
 
-.RegisterPanelLinks {
+.registerPanelLinks {
   color: white;
   font-weight: bold;
   text-decoration: none;
+}
+
+#mobileRegisterPanel {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  #register {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(230deg, #382d63, #60306b, #90429c);
+  }
+
+  #registerPanel {
+    display: none;
+    visibility: hidden;
+  }
+
+  #mobileRegisterPanel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2vh;
+    height: 100%;
+    width: 100%;
+    background-color: #171117;
+    clip-path: polygon(0% 30%, 100% 0%, 100% 70%, 0 100%);
+  }
+
+  #mobileRegisterTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    font-weight: bold;
+  }
+
+  #mobileRegisterTitle > img {
+    width: 25%;
+    transform: rotate(-20deg);
+  }
+
+  #mobileRegisterPanel > #mobileForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vh;
+  }
+
+  #mobileLoginRedirect {
+    width: 60%;
+    text-align: center;
+  }
 }

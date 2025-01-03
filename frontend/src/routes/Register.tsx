@@ -55,32 +55,104 @@ function Register() {
   }
 
   return (
-    <div id="Register">
-      <div id="RegisterPanel">
-        <div id="Left">
-          <p id="Welcome">WE ARE SO EXCITED TO HAVE YOU!</p>
-          <p id="LoginText">
+    <div id="register">
+      <div id="mobileRegisterPanel">
+        <div id="mobileRegisterTitle">
+          <img src="/img/logo.svg" alt="app logo" />
+          <span>
+            <span style={{ fontSize: "200%" }}>SIGN UP</span>
+            <br />
+            WE ARE SO EXCITED
+            <br />
+            TO HAVE YOU!
+          </span>
+        </div>
+        <form id="mobileForm" onSubmit={handleSubmit}>
+          <Input
+            hint="NAME"
+            type="text"
+            name="username"
+            width="85vw"
+            margin="0"
+            padding="1.5vh 1vh"
+          />
+          <Input
+            hint="EMAIL"
+            type="text"
+            name="email"
+            width="85vw"
+            margin="0"
+            padding="1.5vh 1vh"
+          />
+          <Input
+            hint="PASSWORD"
+            type="password"
+            name="password"
+            width="85vw"
+            margin="0"
+            padding="1.5vh 1vh"
+          />
+          <Input
+            hint="REPEAT PASSWORD"
+            type="password"
+            name="repeatPassword"
+            width="85vw"
+            margin="0"
+            padding="1.5vh 1vh"
+          />
+          <p
+            id="mobileRegisterResponse"
+            style={{ display: response !== "" ? "block" : "none" }}
+          >
+            {response}
+          </p>
+          <Button
+            bgColor="#90429C"
+            color="white"
+            fontWeight={700}
+            width="90vw"
+            margin="0"
+            padding="1.5vh 1vh"
+            borderRadius="10px"
+            type="submit"
+          >
+            SIGN UP
+          </Button>
+        </form>
+        <span id="mobileLoginRedirect">
+          If you already have an account, click{" "}
+          <Link to={`/Login`} className="registerPanelLinks">
+            here
+          </Link>{" "}
+          to log in
+        </span>
+      </div>
+
+      <div id="registerPanel">
+        <div id="left">
+          <p id="welcome">WE ARE SO EXCITED TO HAVE YOU!</p>
+          <p id="loginText">
             ALREADY HAVE AN ACCOUNT
             <br />
             CLICK{" "}
-            <Link to={`/Login`} className="RegisterPanelLinks">
+            <Link to={`/Login`} className="registerPanelLinks">
               HERE
             </Link>
           </p>
-          <img src="../../img/logo.svg" alt="" id="Logo" />
+          <img src="../../img/logo.svg" alt="" id="logo" />
         </div>
-        <div id="Right">
-          <div id="RegisterText">
-            <p id="MainText">SIGN UP</p>
-            <span id="RegisterSubtext">
+        <div id="right">
+          <div id="registerText">
+            <p id="mainText">SIGN UP</p>
+            <span id="registerSubtext">
               If you already have an account, click{" "}
-              <Link to={`/Login`} className="RegisterPanelLinks">
+              <Link to={`/Login`} className="registerPanelLinks">
                 here
               </Link>{" "}
-              to create one
+              to log in
             </span>
           </div>
-          <form id="Form" onSubmit={handleSubmit}>
+          <form id="form" onSubmit={handleSubmit}>
             <Input label="NAME" type="text" name="username" padding="1.5vh" />
             <Input label="EMAIL" type="text" name="email" padding="1.5vh" />
             <Input
@@ -95,7 +167,7 @@ function Register() {
               name="repeatPassword"
               padding="1.5vh"
             />
-            <p id="RegisterResponse">{response}</p>
+            <p id="registerResponse">{response}</p>
             <Button
               type="submit"
               bgColor="#90429C"
@@ -110,7 +182,7 @@ function Register() {
               SIGN UP
             </Button>
           </form>
-          <div id="AlternateRegisterText">
+          <div id="alternateRegisterText">
             <svg
               width="94"
               height="1"
@@ -131,7 +203,7 @@ function Register() {
               <line y1="0.5" x2="94" y2="0.5" stroke="#454545" />
             </svg>
           </div>
-          <div id="AlternateRegisterMethods">
+          <div id="alternateRegisterMethods">
             <Tile
               bgColor="#D9D9D9"
               shadow="0 0 5px #D9D9D9"

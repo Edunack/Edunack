@@ -37,36 +37,8 @@ function Login() {
     });
   }
 
-  function handleSubmitMobile(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData);
-    fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then((data) => {
-      console.log(data);
-      if (data.status === 401) {
-        setResponse("Incorrect login or password");
-      } else if (data.status === 500) {
-        setResponse("Internal server error");
-      } else if (data.status === 200) {
-        setResponse("");
-        data.json().then((data) => {
-          console.log(data);
-          sessionStorage.setItem("username", data.username);
-          sessionStorage.setItem("userId", data.id);
-        });
-        navigate("/", { replace: true });
-      }
-    });
-  }
-
   return (
-    <div id="Login">
+    <div id="login">
       <div id="mobileLoginPanel">
         <div id="mobileLoginTitle">
           <span>
@@ -78,7 +50,7 @@ function Login() {
           </span>
           <img src="/img/logo.svg" alt="app logo" />
         </div>
-        <form id="mobileForm" onSubmit={handleSubmitMobile}>
+        <form id="mobileForm" onSubmit={handleSubmit}>
           <Input
             hint="EMAIL"
             type="text"
@@ -116,26 +88,26 @@ function Login() {
         </form>
         <span id="mobileRegisterRedirect">
           If you do not have an account, click{" "}
-          <Link to={`/Register`} className="LoginPanelLinks">
+          <Link to={`/Register`} className="loginPanelLinks">
             here
           </Link>{" "}
           to create one
         </span>
       </div>
 
-      <div id="LoginPanel">
-        <div id="Left">
-          <div id="MainText">
-            <p id="LoginText">LOG IN</p>
-            <span id="LoginSubtext">
+      <div id="loginPanel">
+        <div id="left">
+          <div id="mainText">
+            <p id="loginText">LOG IN</p>
+            <span id="loginSubtext">
               If you do not have an account, click{" "}
-              <Link to={`/Register`} className="LoginPanelLinks">
+              <Link to={`/Register`} className="loginPanelLinks">
                 here
               </Link>{" "}
               to create one
             </span>
           </div>
-          <form id="Form" onSubmit={handleSubmit}>
+          <form id="form" onSubmit={handleSubmit}>
             <Input label="EMAIL" type="text" name="login" />
             <Input
               label="PASSWORD"
@@ -143,7 +115,7 @@ function Login() {
               name="password"
               margin="2% 0 1.5vh 0"
             />
-            <p id="LoginResponse">{response}</p>
+            <p id="loginResponse">{response}</p>
             <Button
               bgColor="#90429C"
               color="white"
@@ -157,7 +129,7 @@ function Login() {
               LOG IN
             </Button>
           </form>
-          <div id="AlternateLoginText">
+          <div id="alternateLoginText">
             <svg
               width="94"
               height="1"
@@ -178,7 +150,7 @@ function Login() {
               <line y1="0.5" x2="94" y2="0.5" stroke="#454545" />
             </svg>
           </div>
-          <div id="AlternateLoginMethods">
+          <div id="alternateLoginMethods">
             <Tile
               bgColor="#D9D9D9"
               shadow="0 0 5px #D9D9D9"
@@ -202,17 +174,17 @@ function Login() {
             ></Tile>
           </div>
         </div>
-        <div id="Right">
-          <p id="WelcomeBack">WE ARE SO EXCITED TO SEE YOU AGAIN!</p>
-          <p id="RegisterText">
+        <div id="right">
+          <p id="welcomeBack">WE ARE SO EXCITED TO SEE YOU AGAIN!</p>
+          <p id="registerText">
             FIRST TIME HERE?
             <br />
             CLICK{" "}
-            <Link to={`/Register`} className="LoginPanelLinks">
+            <Link to={`/Register`} className="loginPanelLinks">
               HERE
             </Link>
           </p>
-          <img src="../../img/logo.svg" alt="" id="Logo" />
+          <img src="../../img/logo.svg" alt="" id="logo" />
         </div>
       </div>
     </div>

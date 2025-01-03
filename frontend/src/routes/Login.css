@@ -1,4 +1,4 @@
-#Login {
+#login {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,13 +6,13 @@
   text-align: left;
 }
 
-#LoginPanel {
+#loginPanel {
   display: flex;
   justify-content: center;
   height: 75vh;
   width: 130vh;
 }
-#LoginPanel > #Left {
+#loginPanel > #left {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,13 +25,13 @@
   border-radius: 22px 0 0 22px;
 }
 
-#LoginPanel > #Left > #Form {
+#loginPanel > #left > #form {
   display: flex;
   flex-direction: column;
   gap: 2vh;
 }
 
-#LoginPanel > #Right {
+#loginPanel > #right {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -44,50 +44,50 @@
   border-radius: 0 22px 22px 0;
 }
 
-#LoginPanel > #Right > p {
+#loginPanel > #right > p {
   margin: 0;
 }
 
-#LoginPanel > #Right > #WelcomeBack {
+#loginPanel > #right > #welcomeBack {
   font-weight: 900;
   font-size: 4vh;
 }
 
-#LoginPanel > #Right > #RegisterText {
+#loginPanel > #right > #registerText {
   font-weight: 400;
   font-size: 3vh;
 }
 
-#AlternateLoginText {
+#alternateLoginText {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2vh;
 }
 
-#AlternateLoginText > span {
+#alternateLoginText > span {
   margin: 0;
   text-align: center;
 }
 
-.LoginPanelLinks {
+.loginPanelLinks {
   color: white;
   font-weight: bold;
   text-decoration: none;
 }
 
-#LoginPanel > #Left > #MainText > #LoginText {
+#loginPanel > #left > #mainText > #loginText {
   margin: 0;
   font-weight: 700;
   font-size: 3vh;
 }
 
-#LoginSubtext {
+#loginSubtext {
   font-weight: 400;
   font-size: 2vh;
 }
 
-#AlternateLoginMethods {
+#alternateLoginMethods {
   display: flex;
   justify-content: center;
   justify-content: space-between;
@@ -95,14 +95,14 @@
   width: 100%;
 }
 
-#LoginPanel > #Right > #Logo {
+#loginPanel > #right > #logo {
   position: absolute;
   width: 12vh;
   bottom: -2%;
   right: -7%;
 }
 
-#LoginResponse {
+#loginResponse {
   margin: 0;
   padding: 0;
 }
@@ -113,15 +113,15 @@
 }
 
 @media only screen and (max-width: 768px) {
-  #LoginPanel {
+  #loginPanel {
     display: none;
   }
-  #Login {
+  #login {
     width: 100%;
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: linear-gradient(230deg, #382d63, #60306b, #90429c);
+    background: linear-gradient(150deg, #382d63, #60306b, #90429c);
   }
 
   #mobileLoginPanel {
@@ -133,7 +133,7 @@
     height: 100%;
     width: 100%;
     background-color: #171117;
-    clip-path: polygon(0% 0, 100% 35%, 100% 100%, 0 65%);
+    clip-path: polygon(0% 0, 100% 30%, 100% 100%, 0 70%);
   }
 
   #mobileLoginResponse {
@@ -142,13 +142,13 @@
     padding: 0;
   }
 
-  #mobileForm {
+  #mobileLoginPanel > #mobileForm {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2vh;
+    gap: 1.5vh;
   }
 
   #mobileRegisterRedirect {
