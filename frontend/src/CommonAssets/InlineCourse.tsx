@@ -26,8 +26,6 @@ function InlineCourse({ id, title, author, rating, numOfRatings }: Props) {
       </span>
       <span style={{ maxWidth: "20%" }}>
         {isOpinion ? (
-          <span>no ratings</span>
-        ) : (
           <div id="inlineCourseRating">
             <img
               src={`/img/star.svg`}
@@ -37,6 +35,8 @@ function InlineCourse({ id, title, author, rating, numOfRatings }: Props) {
             <span style={{ marginLeft: "0.2vw" }}>{rating}</span>
             <span>({numOfRatings})</span>
           </div>
+        ) : (
+          <span>no ratings</span>
         )}
       </span>
     </div>

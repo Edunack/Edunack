@@ -1,0 +1,15 @@
+#mobileCourseContainer {
+  margin-top: 17.5vh;
+  margin-bottom: 17.5vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mobileCourses {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  align-items: center;
+}

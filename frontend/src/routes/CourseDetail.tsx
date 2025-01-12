@@ -100,7 +100,7 @@ function CourseDetail() {
               <div id="rating">
                 <img src="/img/star.svg" alt="star" className="star" />
                 {course.rating}
-                <span>(10)</span>
+                <span>{course.numOfRatings}</span>
               </div>
               <br />
               <br />

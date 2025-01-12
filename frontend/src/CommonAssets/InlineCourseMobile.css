@@ -1,0 +1,34 @@
+#mobileInlineCourse {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2vh 3vh;
+  color: #fff;
+  width: 80%;
+  height: 6vh;
+  font-weight: 400;
+  background-color: #341e40;
+  border-radius: 2vw;
+  border-bottom: 7px solid #58336b;
+}
+
+#inlineCourse:hover {
+  cursor: pointer;
+}
+
+#inlineCourseRatingMobile {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  color: #ad83c3;
+}
+
+#mobileCourseInfo {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+  text-align: center;
+}

@@ -15,6 +15,7 @@ interface Props {
   borderRadius?: string;
   margin?: string;
   alignSelf?: string;
+  boxShadow?: string;
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
 }
@@ -35,6 +36,7 @@ function Button({
   type,
   alignSelf,
   onClick,
+  boxShadow,
 }: Props) {
   return (
     <>
@@ -52,6 +54,7 @@ function Button({
           margin: margin,
           alignSelf: alignSelf,
           border: border,
+          boxShadow: boxShadow,
         }}
         type={type}
         id="customBtn"
