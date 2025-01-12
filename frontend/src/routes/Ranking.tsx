@@ -3,7 +3,7 @@ import OutsidePodium from "./RankingPage/OutsidePodium";
 import FullRanking from "./RankingPage/FullRanking";
 import "./Ranking.css";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 interface Category {
   id: String;
@@ -16,6 +16,7 @@ function Ranking() {
   const [category, setCategory] = useState<Category>();
   const [isDataFetched, setIsDataFetched] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const getCategoryId = (data: string) => {
     fetch(
@@ -43,20 +44,13 @@ function Ranking() {
       })
         .then((data) => data.json())
         .then(async (data) => {
-          console.log(data);
           sessionStorage.setItem(
             "category" + category.name.toString(),
             JSON.stringify(data)
           );
           sessionStorage.setItem("categoryName", category.name.toString());
-          console.log("Right after fetching");
-          console.log(sessionStorage.getItem("categoryName"));
-          console.log(sessionStorage.getItem("category" + category.name));
         })
         .then(() => {
-          console.log("After `then`");
-          console.log(sessionStorage.getItem("categoryName"));
-          console.log(sessionStorage.getItem("category" + category.name));
           setIsDataFetched(true);
         });
     }
@@ -79,16 +73,24 @@ function Ranking() {
   }, [category]);
 
   useEffect(() => {
-    console.log("in useeffect");
-    let cat = console.log(sessionStorage.getItem("categoryName"));
-    console.log(sessionStorage.getItem("category" + cat));
     if (isDataFetched) {
-      navigate(`/Ranking/${sessionStorage.getItem("categoryName")}`);
+      const targetPath = `/Ranking/${sessionStorage.getItem("categoryName")}`;
+      if (location.pathname !== targetPath) {
+        navigate(targetPath);
+      }
       setIsDataFetched(false);
     }
-  }, [isDataFetched]);
+  }, [isDataFetched, location.pathname, navigate]);
 
-  console.log("isDataFetched: ", isDataFetched);
+  useEffect(() => {
+    if (categoryName != sessionStorage.getItem("categoryName")) {
+      if (categoryName) {
+        console.log("categoryName: " + categoryName);
+        sessionStorage.setItem("categoryName", categoryName);
+        navigate(`/Ranking/${sessionStorage.getItem("categoryName")}`);
+      }
+    }
+  }, [categoryName]);
 
   return (
     <div id="ranking">
