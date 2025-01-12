@@ -73,6 +73,18 @@ const AppContainer: React.FC = () => {
     applyMagnification(magnificationLevel, originalFontSizes);
   }, [magnificationLevel]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      window.location.reload();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",

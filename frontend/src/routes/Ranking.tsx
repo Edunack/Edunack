@@ -82,8 +82,10 @@ function Ranking() {
     console.log("in useeffect");
     let cat = console.log(sessionStorage.getItem("categoryName"));
     console.log(sessionStorage.getItem("category" + cat));
-    if (isDataFetched)
+    if (isDataFetched) {
       navigate(`/Ranking/${sessionStorage.getItem("categoryName")}`);
+      setIsDataFetched(false);
+    }
   }, [isDataFetched]);
 
   console.log("isDataFetched: ", isDataFetched);
