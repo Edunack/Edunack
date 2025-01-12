@@ -3,6 +3,7 @@ use std::{str::FromStr, sync::Arc};
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
 use db::{ConnectionExt, Database};
 use rand::Rng;
+use rankers::Ranker;
 use routers::{
     login::LoginRouter, rate::RateRouter, search::SearchRouter, user::UserRouter, IntoRouter,
 };
@@ -17,9 +18,11 @@ use tower_http::{
 mod auth;
 mod db;
 mod routers;
+mod rankers;
 
 #[derive(Clone)]
 pub struct AppState {
+    rankers: Vec<Arc<dyn Ranker>>,
     database: Database,
 }
 
@@ -64,6 +67,10 @@ async fn main() {
         .unwrap();
 
     let state = AppState {
+        rankers: vec![
+            Arc::new(rankers::coursera::CourseraRanker::env()),
+            Arc::new(rankers::youtube::YoutubeRanker::env()),
+        ],
         database: Database::new(Arc::new(pool)),
     };
 
