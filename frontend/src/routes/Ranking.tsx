@@ -87,7 +87,7 @@ function Ranking() {
       if (categoryName) {
         console.log("categoryName: " + categoryName);
         sessionStorage.setItem("categoryName", categoryName);
-        navigate(`/Ranking/${sessionStorage.getItem("categoryName")}`);
+        window.location.reload();
       }
     }
   }, [categoryName]);
