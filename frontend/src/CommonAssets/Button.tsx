@@ -12,6 +12,7 @@ interface Props {
   height?: string;
   padding?: string;
   border?: string;
+  borderBottom?: string;
   borderRadius?: string;
   margin?: string;
   alignSelf?: string;
@@ -30,6 +31,7 @@ function Button({
   width = "",
   height = "",
   border,
+  borderBottom,
   borderRadius,
   padding,
   margin,
@@ -54,6 +56,7 @@ function Button({
           margin: margin,
           alignSelf: alignSelf,
           border: border,
+          borderBottom: borderBottom,
           boxShadow: boxShadow,
         }}
         type={type}

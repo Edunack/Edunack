@@ -13,6 +13,7 @@ function CourseDetail() {
   const [course, setCourse] = useState<any>(null);
   const [courseExists, setCourseExists] = useState<boolean | null>(null);
   const stars = Array(5).fill(0);
+  const isMobile = window.innerWidth <= 768;
 
   const getCourse = () => {
     fetch(`${window.location.origin}/api/search/`, {
@@ -44,15 +45,15 @@ function CourseDetail() {
     console.log(course);
   }, [course]);
 
-  if (setCourseExists === null) {
+  if (setCourseExists === null || !course) {
     return <div>Loading...</div>;
   } else if (courseExists === false) {
     return <div>Course not found</div>;
   }
 
-  if (!course) {
+  /*if (!course) {
     return <div>Loading...</div>;
-  }
+  }*/
 
   const handleStarClick = (index: number) => {
     const userId = sessionStorage.getItem("userId");
@@ -75,16 +76,150 @@ function CourseDetail() {
 
   return (
     <div id="courseDetail">
-      <div>
-        <p style={{ fontWeight: 400 }} className="courseTitle">
-          {course.name}
-        </p>
-        <p
-          style={{ fontWeight: 300, marginBottom: "2vh" }}
-          className="courseTitle"
-        >
-          BY {course.author}
-        </p>
+      <div id="courseDetailContainer">
+        <div id="courseDetailTitle">
+          <span>PREVIEW COURSE</span>
+        </div>
+        <div id="courseDetailHeader">
+          <p
+            style={{ fontWeight: 400 }}
+            className="courseTitle"
+            id="courseDetailName"
+          >
+            {course.name}
+          </p>
+          <p
+            style={{ fontWeight: 300, marginBottom: "2vh" }}
+            className="courseTitle"
+            id="courseDetailAuthor"
+          >
+            BY {course.author}
+          </p>
+        </div>
+        <div id="mobileCourseRaitingInfo">
+          <span>other people rated this course:</span>
+          <div id="mobileCourseRaiting">
+            <svg
+              width="35"
+              height="32"
+              viewBox="0 0 35 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.998 5L21.075 13.4033H29.998L22.6134 18.6757L25.4145 27L17.998 20.9193L10.5816 27L13.3827 17.7838L5.99805 13.4033H15.2288L17.998 5Z"
+                fill="#EBD2FF"
+                stroke="#EBD2FF"
+                stroke-width="3"
+              />
+            </svg>
+            <span>{course.rating}</span>
+            {
+              (course.numOfRatings =
+                0 || course.numOfRatings == null ? (
+                  <span>(0)</span>
+                ) : (
+                  <span>({course.numOfRatings})</span>
+                ))
+            }
+          </div>
+          <span>your rating:</span>
+          <div
+            id="mobileUserRating"
+            onMouseLeave={() => setHoveredStarIndex(null)}
+          >
+            {stars.map((_, index) =>
+              hoveredStarIndex !== null && index <= hoveredStarIndex ? (
+                <svg
+                  width="35"
+                  height="32"
+                  viewBox="0 0 35 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="star"
+                  onMouseEnter={() => setHoveredStarIndex(index)}
+                  onClick={() => handleStarClick(index)}
+                >
+                  <path
+                    d="M17.998 5L21.075 13.4033H29.998L22.6134 18.6757L25.4145 27L17.998 20.9193L10.5816 27L13.3827 17.7838L5.99805 13.4033H15.2288L17.998 5Z"
+                    fill="#EBD2FF"
+                    stroke="#EBD2FF"
+                    stroke-width="3"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width="36"
+                  height="32"
+                  viewBox="0 0 36 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="star"
+                  onMouseEnter={() => setHoveredStarIndex(index)}
+                  onClick={() => handleStarClick(index)}
+                >
+                  <path
+                    d="M18.2341 5L21.371 13.3933H30.4682L22.9395 18.6595L25.7952 26.974L18.2341 20.9005L10.673 26.974L13.5287 17.7687L6 13.3933H15.4108L18.2341 5Z"
+                    stroke="#EBD2FF"
+                    stroke-width="3"
+                  />
+                </svg>
+              )
+            )}
+          </div>
+        </div>
+        <div id="courseDetailButtons">
+          <Button
+            bgColor="#90429C"
+            borderBottom="5px solid #5A3060"
+            borderRadius="10px"
+            fontSize="1.75vh"
+            width="50%"
+            height="6vh"
+            padding="0"
+            margin="0"
+          >
+            go to course
+          </Button>
+          <Button
+            bgColor="#90429C"
+            borderBottom="5px solid #5A3060"
+            borderRadius="10px"
+            fontSize="1.75vh"
+            width="50%"
+            height="6vh"
+            padding="0"
+            margin="0"
+          >
+            add to your courses
+          </Button>
+        </div>
+        <div id="mobileDisqusPointer">
+          <span>See discussion</span>
+          <svg
+            width="13"
+            height="22"
+            viewBox="0 0 13 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="6.28906" x2="6.28906" y2="12.1579" stroke="#90429C" />
+            <line
+              x1="0.353553"
+              y1="15.2778"
+              x2="6.72197"
+              y2="21.6462"
+              stroke="#90429C"
+            />
+            <line
+              y1="-0.5"
+              x2="9.00631"
+              y2="-0.5"
+              transform="matrix(-0.707107 0.707107 0.707107 0.707107 12.7363 15.6313)"
+              stroke="#90429C"
+            />
+          </svg>
+        </div>
         <div id="courseInfoContainer">
           <div className="courseContent">
             <Tile
@@ -153,7 +288,11 @@ function CourseDetail() {
             </Button>
           </div>
         </div>
-        <DisqusElement id={course.id} title={course.name} />
+        <DisqusElement
+          id={course.id}
+          title={course.name}
+          width={isMobile ? "80%" : "100%"}
+        />
       </div>
     </div>
   );

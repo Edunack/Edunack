@@ -3,9 +3,10 @@ import { DiscussionEmbed } from "disqus-react";
 interface Props {
   id: string;
   title: string;
+  width?: string;
 }
 
-function DisqusElement({ id, title }: Props) {
+function DisqusElement({ id, title, width }: Props) {
   const disqusShortname = "edunack";
   const disqusConfig = {
     url: `${window.location.origin}/courses/${id}`,
@@ -14,7 +15,7 @@ function DisqusElement({ id, title }: Props) {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: width ? width : "100%" }}>
       <DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
     </div>
   );
