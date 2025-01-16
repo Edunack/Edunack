@@ -45,7 +45,11 @@ function CourseDetail() {
     console.log(course);
   }, [course]);
 
-  if (setCourseExists === null || !course) {
+  useEffect(() => {
+    console.log(courseExists);
+  }, [courseExists]);
+
+  if (setCourseExists === null || course === null) {
     return <div>Loading...</div>;
   } else if (courseExists === false) {
     return <div>Course not found</div>;

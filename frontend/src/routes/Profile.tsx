@@ -1,6 +1,7 @@
 import Button from "../CommonAssets/Button";
 import Course from "../CommonAssets/Course";
 import InlineCoursePremium from "../CommonAssets/InlineCoursePremium";
+import InlineCourseContinueMobile from "../CommonAssets/InlineCourseContinueMobile";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
 
@@ -32,13 +33,18 @@ function Profile() {
   return (
     <div id="accountContainer">
       <div id="account">
+        <div id="accountHeader">
+          <span>YOUR ACCOUNT</span>
+        </div>
         <div id="accountInfo">
           <div id="userInfo">
             <img src="/img/logo.svg" />
-            <span style={{ fontSize: "5vh", fontWeight: "700" }}>
-              Hi, {username}
+            <span style={{ fontSize: "5vh", fontWeight: "600" }}>
+              hi, {username}
             </span>
-            <span style={{ fontSize: "2vh" }}>It's great to see you again</span>
+            <span style={{ fontSize: "2vh" }} id="greeting">
+              It's great to see you again
+            </span>
           </div>
           <div id="unfinishedCourse">
             <span>Continue where you left</span>
@@ -53,6 +59,47 @@ function Profile() {
               margin={0}
             />
           </div>
+        </div>
+        <div id="mobileUnfinishedCourse">
+          <span>jump back to where you left off:</span>
+          <div id="mobileUnfinishedCourseInfo">
+            <span>course PHP beginner</span>
+            <Button
+              bgColor="#90429C"
+              borderBottom="5px solid #5A3060"
+              borderRadius="10px"
+              fontSize="1.75vh"
+              width="50%"
+              height="6vh"
+              padding="0"
+              margin="0"
+            >
+              continue
+            </Button>
+          </div>
+        </div>
+        <div id="mobileStartedCourses">
+          <span>Courses you started:</span>
+          <InlineCourseContinueMobile
+            id="1"
+            title="title"
+            author="author"
+            link="https://www.google.com"
+          />
+          <div className="mobileLine"></div>
+          <InlineCourseContinueMobile
+            id="1"
+            title="title"
+            author="author"
+            link="https://www.google.com"
+          />
+          <div className="mobileLine"></div>
+          <InlineCourseContinueMobile
+            id="1"
+            title="title"
+            author="author"
+            link="https://www.google.com"
+          />
         </div>
         <div id="yourCourses">
           <span>the courses you started</span>

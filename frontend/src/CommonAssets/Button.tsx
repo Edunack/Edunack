@@ -56,7 +56,7 @@ function Button({
           margin: margin,
           alignSelf: alignSelf,
           border: border,
-          borderBottom: borderBottom,
+          borderBottom: borderBottom ? borderBottom : border,
           boxShadow: boxShadow,
         }}
         type={type}

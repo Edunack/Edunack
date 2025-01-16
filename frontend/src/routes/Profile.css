@@ -1,53 +1,54 @@
-#accountContainer {
-  min-height: 90vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+@media only screen and (min-width: 768px) {
+  #accountContainer {
+    min-height: 90vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-#account {
-  background: linear-gradient(176.75deg, #411d5f -49.72%, #171117 55.11%);
-  min-height: 70vh;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
-  width: 60vw;
-  border-radius: 2vh;
-  padding: 5vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5vh;
-}
+  #account {
+    background: linear-gradient(176.75deg, #411d5f -49.72%, #171117 55.11%);
+    min-height: 70vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    width: 60vw;
+    border-radius: 2vh;
+    padding: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5vh;
+  }
 
-#accountInfo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5vw;
-  width: 100%;
-  height: 40vh;
-}
+  #accountInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+    width: 100%;
+    height: 40vh;
+  }
 
-#userInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #171117;
-  border: 4px solid #573b57;
-  border-radius: 1.5vh;
-  width: 40%;
-  height: 90%;
-}
+  #userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #171117;
+    border: 4px solid #573b57;
+    border-radius: 1.5vh;
+    width: 40%;
+    height: 90%;
+  }
 
-#userInfo > img {
-  width: 8vh;
-  height: 8vh;
+  #userInfo > img {
+    width: 8vh;
+    height: 8vh;
+  }
 }
-
 #unfinishedCourse {
   display: flex;
   flex-direction: column;
@@ -99,4 +100,130 @@
 
 #noAccount > span {
   font-size: 10vh;
+}
+
+#accountHeader,
+#mobileUnfinishedCourse,
+#mobileStartedCourses {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  #accountContainer {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100vw;
+  }
+
+  #account {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #171117;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  #accountHeader {
+    display: flex;
+    align-items: center;
+    height: 12vh;
+    width: 100%;
+    background: linear-gradient(159.38deg, #382d63 15.5%, #60306b 84.5%);
+    clip-path: polygon(0% 0, 100% 0%, 100% 50%, 0 100%);
+  }
+
+  #accountHeader > span {
+    margin-left: 10%;
+    margin-bottom: 5%;
+    font-size: 140%;
+    font-weight: 500;
+  }
+
+  #accountInfo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  #userInfo {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+  }
+
+  #mobileUnfinishedCourse {
+    width: 100%;
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1vh;
+    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 393 212" fill="none"><rect width="111.753" height="793" transform="matrix(-0.126525 -0.991964 -0.991964 0.126525 560.766 110.854)" fill="url(%23paint0_linear_534_666)"/><defs><linearGradient id="paint0_linear_534_666" x1="48.424" y1="793" x2="-80.2202" y2="738.623" gradientUnits="userSpaceOnUse"><stop stop-color="%23171117"/><stop offset="1" stop-color="%232E1133"/></linearGradient></defs></svg>');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  #mobileUnfinishedCourse > span {
+    color: #9e8db1;
+    text-align: left;
+    width: 75%;
+    font-weight: 500;
+  }
+
+  #mobileUnfinishedCourseInfo {
+    width: 80%;
+    height: 15vh;
+    background-color: #291d29;
+    border: 2px solid #492d49;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
+    position: relative;
+  }
+
+  #mobileUnfinishedCourseInfo > span {
+    font-size: 150%;
+    font-weight: 500;
+  }
+
+  #mobileUnfinishedCourseInfo > Button {
+    position: absolute;
+    bottom: -20%;
+  }
+
+  #mobileStartedCourses {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vh;
+    margin-top: 5vh;
+  }
+
+  #mobileStartedCourses > span {
+    color: #9e8db1;
+    font-weight: 500;
+    font-size: 110%;
+  }
+
+  .mobileLine {
+    height: 1px;
+    width: 60%;
+    border-bottom: 1px solid #ded4df;
+  }
+
+  #userInfo > img,
+  #greeting,
+  #unfinishedCourse,
+  #yourCourses {
+    display: none;
+  }
 }
