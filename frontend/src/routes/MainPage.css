@@ -1,4 +1,151 @@
-#MainPage {
-  background-color: #37343d;
-  text-align: center;
+@media only screen and (min-width: 768px) {
+  #MainPage {
+    background-color: #37343d;
+    text-align: center;
+  }
+
+  #mobileMainPage {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #MainPage {
+    background-color: #171117;
+    min-height: 100vh;
+  }
+
+  #mobileHeaderDecors {
+    position: relative;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  #mobileHeaderBigger {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 25vh;
+    background: linear-gradient(
+      57deg,
+      rgba(56, 45, 99, 1) 41%,
+      rgba(96, 48, 107, 1) 74%
+    );
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+  }
+
+  #mobileHeaderSmaller {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    height: 30vh;
+    width: 60vw;
+    background-color: #90429c;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+  }
+
+  #mobileMainPageContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 50vh;
+    width: 100vw;
+    gap: 2vh;
+  }
+
+  #mobileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+  }
+
+  #mobileHeader > span {
+    font-weight: 700;
+    font-size: 4vh;
+  }
+
+  #mobileSubHeader {
+    width: 70%;
+    font-size: 2.5vh;
+  }
+
+  #mobileHeaderButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
+    margin-top: 1vh;
+  }
+
+  #mobileDecors {
+    position: relative;
+    height: 50vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  #pinkRect {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    z-index: 3;
+    background: linear-gradient(264.38deg, #90429c 58.39%, #71297c 88.81%);
+    clip-path: polygon(0 0, 100% 30%, 100% 95%, 0% 65%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2vh;
+  }
+
+  #pinkRect > svg {
+    margin-bottom: 6vh;
+  }
+
+  #purpleRect {
+    width: 100%;
+    height: 50vh;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    background: linear-gradient(74deg, #382d63 0%, #60306b 100%);
+    clip-path: polygon(0 35%, 100% 5%, 100% 70%, 0 100%);
+  }
+
+  #chartTextInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vh;
+  }
+
+  #mobileDataHolder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+    padding-bottom: 10vh;
+  }
+
+  #mobileDataHolder > svg {
+    margin-bottom: 5vh;
+  }
+
+  .chartResult {
+    display: flex;
+    justify-content: space-between;
+    gap: 1vh;
+    width: 27%;
+  }
 }
