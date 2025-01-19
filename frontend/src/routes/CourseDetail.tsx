@@ -182,6 +182,7 @@ function CourseDetail() {
             height="6vh"
             padding="0"
             margin="0"
+            onClick={() => window.open(course.url, "_blank")}
           >
             go to course
           </Button>

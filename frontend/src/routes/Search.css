@@ -185,6 +185,12 @@
   z-index: 100 !important;
 }
 
+#loadingAnimation {
+  position: absolute;
+  bottom: 30%;
+  left: 30%;
+}
+
 #searchTitleContainer,
 #ducks,
 #closeSVG {

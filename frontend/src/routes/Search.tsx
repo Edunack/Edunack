@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../CommonAssets/Loading";
 import "./Search.css";
 
 interface Category {
@@ -14,6 +15,7 @@ function Search() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [showList, setShowList] = useState(false);
   const [isDataFetched, setIsDataFetched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const isMobile = window.innerWidth <= 768;
 
@@ -190,6 +192,7 @@ function Search() {
         rendered: () =>
           setCategories((cat) => {
             console.log("cat: ", cat);
+            setIsLoading(true);
             fetch("/api/search/google/" + cat[0].id, {
               method: "POST",
               body: document.querySelector("div.gsc-expansionArea")?.innerHTML,
@@ -213,7 +216,8 @@ function Search() {
                     cat[0].name.toString()
                   );
                   setIsDataFetched(true);
-                });
+                })
+                .finally(() => setIsLoading(false));
             });
             return cat;
           }),
@@ -356,6 +360,7 @@ function Search() {
           </div>
         </form>
       </div>
+      <div id="loadingAnimation">{isLoading && <Loading />}</div>
       <div id="searchBtnDiv">
         <button id="searchBtn" type="submit" form="search" ref={searchBtnRef}>
           SEARCH

@@ -5,9 +5,11 @@ import Advert from "./MainPage/Advert";
 import Footer from "./MainPage/Footer";
 import "./MainPage.css";
 import Button from "../CommonAssets/Button";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const isMobile = window.innerWidth <= 768;
+  const navigate = useNavigate();
   return (
     <div id="MainPage">
       {isMobile ? (
@@ -77,6 +79,7 @@ function App() {
                 margin="0"
                 padding="0"
                 fontWeight={600}
+                onClick={() => navigate("/search")}
               >
                 START NOW
               </Button>
@@ -90,6 +93,7 @@ function App() {
                 margin="0"
                 padding="0"
                 fontWeight={600}
+                onClick={() => navigate("/about")}
               >
                 LEARN MORE
               </Button>
