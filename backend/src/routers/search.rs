@@ -126,7 +126,7 @@ impl SearchRouter {
             futures::future::join_all(
                 match params.by {
                     SearchCoursesBy::Name { ref name, .. } => {
-                        courses_table.find_all_by_name(name.clone(), lang).await
+                        courses_table.find_all_by_name_tolerant(name.clone(), lang).await
                     }
                     SearchCoursesBy::Category {
                         category,
@@ -248,8 +248,8 @@ impl IntoRouter for SearchRouter {
     fn into_router(self) -> Router<AppState> {
         Router::new()
             .route("/", post(Self::search))
-            .route("/google/:category", post(Self::google))
-            .route("/categories/:id", get(Self::category))
+            .route("/google/{category}", post(Self::google))
+            .route("/categories/{id}", get(Self::category))
             .route("/categories", get(Self::categories))
     }
 }

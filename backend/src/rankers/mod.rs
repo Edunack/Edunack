@@ -1,6 +1,5 @@
 use std::{future::Future, pin::Pin};
 
-use axum::async_trait;
 use chrono::TimeZone;
 
 use crate::db::{category::Category, course::Course};
@@ -15,7 +14,7 @@ pub struct Token {
     pub expires_in: i64,
 }
 
-#[async_trait]
+#[async_trait::async_trait]
 pub trait Ranker {
     fn env_name() -> &'static str where Self: Sized;
     fn new(key: String, secret: String) -> Self where Self: Sized;

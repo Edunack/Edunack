@@ -78,18 +78,16 @@ async fn main() {
         //.fallback(|uri: Uri| async move {
         //    (StatusCode::NOT_FOUND, format!("No route for {uri}"))
         //})
+        .fallback_service(ServeFile::new("../frontend/dist/index.html"))
         .nest(
             "/api",
             Router::new()
-                //                .nest("/sth", ExampleRouter.into_router())
-                //                .nest("/sth2", ExampleRouter.into_router())
-                .nest("/", LoginRouter.into_router())
+                .nest("/auth", LoginRouter.into_router())
                 .nest("/search", SearchRouter.into_router())
                 .nest("/rating", RateRouter.into_router())
                 .nest("/user", UserRouter.into_router())
                 .layer(middleware::from_fn(auth::authorize)),
         )
-        .nest_service("/", ServeFile::new("../frontend/dist/index.html"))
         .nest_service("/example", ServeDir::new("./example"))
         .nest_service("/assets", ServeDir::new("../frontend/dist/assets"))
         .nest_service("/img", ServeDir::new("../frontend/img"))

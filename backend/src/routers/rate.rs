@@ -72,8 +72,8 @@ impl RateRouter {
 impl IntoRouter for RateRouter {
     fn into_router(self) -> axum::Router<AppState> {
         Router::new()
-            .route("/:id", post(Self::post))
-            .route("/:id", get(Self::get))
+            .route("/{id}", post(Self::post))
+            .route("/{id}", get(Self::get))
             .layer(middleware::from_fn(crate::auth::force_authorize))
     }
 }

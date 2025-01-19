@@ -1,6 +1,6 @@
 use edunack_macros::QueryGen;
 use serde::{Deserialize, Serialize};
-use sqlx::{query, query_scalar, FromRow};
+use sqlx::{query, query_as, query_scalar, FromRow};
 use uuid::Uuid;
 
 use super::Table;
@@ -120,5 +120,30 @@ impl Table<Course> {
             .fetch_one(&*self.0)
             .await
             .unwrap()
+    }
+
+    pub async fn find_all_by_name_tolerant(&self, name: String, language: &str) -> Vec<Course> {
+        query_as(
+            // absolutely unreadable
+            format!(
+               "select *, all_index_of(?1, name) as aio from \
+               (select courses.*, name, avg(coalesce(rating, 0)) as rating, \
+                count(rating) as rating_count from courses \
+                inner join course_translations on courses.id = course_translations.course \
+                left join user_ratings on courses.id = user_ratings.course \
+                where cimatch(?1, name) and (language like '{}' or language like 'en') \
+                group by id, language order by language {}) group by id order by aio",
+                language,
+                if language > "en" { "desc" } else { "asc" },
+            ).as_str()
+        )
+        .bind(name)
+        .fetch_all(&*self.0)
+        .await
+        .unwrap_or_else(|e| {
+            println!("{:?}", e);
+            vec![]
+        })
+
     }
 }
