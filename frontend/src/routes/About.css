@@ -1,23 +1,28 @@
-#aboutPage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90vh;
-  text-align: center;
-}
+@media only screen and (min-width: 768px) {
+  #aboutPageContainer {
+    display: none;
+  }
 
-#aboutContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 75vh;
-  width: 70vw;
-  background-color: #202020;
-  padding: 2vh;
-  border-radius: 3vh;
-}
+  #aboutPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    text-align: center;
+  }
 
+  #aboutContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 75vh;
+    width: 70vw;
+    background-color: #202020;
+    padding: 2vh;
+    border-radius: 3vh;
+  }
+}
 #aboutContainer > p {
   margin: 0;
 }
@@ -33,7 +38,8 @@
   width: 100%;
 }
 
-#ourTeamContainer, #projectDescription {
+#ourTeamContainer,
+#projectDescription {
   width: 40%;
 }
 
@@ -65,4 +71,192 @@
 
 .projectTitles {
   font-size: 5vh;
+}
+
+@media only screen and (max-width: 768px) {
+  #aboutPage {
+    background-color: #171117;
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  #aboutContainer {
+    display: none;
+  }
+
+  #aboutPageContainer {
+    width: 100%;
+    height: 100%;
+  }
+
+  #aboutHeaderDecors {
+    width: 100%;
+    position: relative;
+  }
+
+  #aboutHeader {
+    width: 100%;
+    height: 12vh;
+    background: linear-gradient(87.36deg, #382d63 31.57%, #60306b 61.92%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 70%);
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+  }
+
+  #aboutHeader > span {
+    margin-left: 10%;
+    margin-bottom: 5%;
+    font-size: 140%;
+    font-weight: 500;
+  }
+
+  #aboutHeaderDecor {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 25vh;
+    background-color: #90429c;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+  }
+
+  #whoWeAre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 20vh;
+    font-size: 150%;
+    font-weight: 300;
+    gap: 1.5vh;
+  }
+
+  #whoWeAre > span {
+    text-align: left;
+    width: 80%;
+  }
+
+  #whatWeBelieve {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 25vh;
+    font-size: 150%;
+    font-weight: 300;
+    background: linear-gradient(
+      160deg,
+      rgba(193, 95, 208, 0.2) 0%,
+      rgba(144, 66, 156, 0.2) 100%
+    );
+    position: relative;
+  }
+
+  #whatWeBelieve > svg {
+    position: absolute;
+    top: 20%;
+    right: 10%;
+  }
+
+  #whatWeBelieve > span {
+    text-align: left;
+    width: 60%;
+    font-size: 100%;
+  }
+
+  #whatWeDo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh;
+    text-align: center;
+  }
+  #whatWeDo > span {
+    width: 80%;
+  }
+
+  #aboutCreators {
+    position: relative;
+    width: 100%;
+  }
+
+  #creators {
+    position: relative;
+    height: 40vh;
+    width: 100%;
+    background: linear-gradient(100.87deg, #382d63 0.11%, #60306b 73.49%);
+    clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 70%);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1vh;
+  }
+
+  .creatorsGithub {
+    width: 35%;
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .creatorsGithub > svg {
+    width: 20%;
+  }
+
+  .creatorsGithub > a {
+    color: white;
+    text-decoration: none;
+    width: 70%;
+  }
+
+  .creatorsGithub > a:visited {
+    text-decoration: none;
+    color: white;
+  }
+
+  #aboutCreatorsDecor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 40vh;
+    width: 100%;
+    background-color: #382d63;
+    clip-path: polygon(0 30%, 100% 0%, 100% 70%, 0 100%);
+    z-index: 2;
+  }
+
+  #ourMessage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3vh;
+    text-align: center;
+    padding-top: 5vh;
+    padding-bottom: 7vh;
+  }
+
+  #ourMessage > span,
+  #ourMessage > a {
+    width: 65%;
+  }
+
+  #ourMessage > a {
+    text-decoration: none;
+    color: white;
+  }
+
+  #ourMessage > a:visited {
+    text-decoration: none;
+    color: white;
+  }
 }
