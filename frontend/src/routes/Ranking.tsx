@@ -14,7 +14,7 @@ function Ranking() {
   const sessionCategoryName = sessionStorage.getItem("categoryName");
   const { categoryName } = useParams<{ categoryName: string }>();
   const [category, setCategory] = useState<Category>();
-  const [isDataFetched, setIsDataFetched] = useState(false);
+  const [isDataFetched, setIsDataFetched] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,10 +28,16 @@ function Ranking() {
     )
       .then((data) => data.json())
       .then((data) => {
+        console.log(data);
         if (Array.isArray(data)) {
+          console.log(data);
           sessionStorage.setItem("categoryName", data[0].name);
           setCategory(data[0]);
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsDataFetched(false);
       });
   };
 
@@ -44,6 +50,7 @@ function Ranking() {
       })
         .then((data) => data.json())
         .then(async (data) => {
+          console.log(data);
           sessionStorage.setItem(
             "category" + category.name.toString(),
             JSON.stringify(data)
@@ -65,7 +72,12 @@ function Ranking() {
   };
 
   useEffect(() => {
-    if (!sessionCategoryName && categoryName) getCategoryId(categoryName);
+    if (!sessionCategoryName && categoryName) {
+      if (isDataFetched === null) getCategoryId(categoryName);
+    } else if (sessionCategoryName && categoryName) {
+      if (!sessionStorage.getItem("category" + sessionCategoryName))
+        getCategoryId(sessionCategoryName);
+    }
   }, [categoryName, sessionCategoryName]);
 
   useEffect(() => {
@@ -78,7 +90,7 @@ function Ranking() {
       if (location.pathname !== targetPath) {
         navigate(targetPath);
       }
-      setIsDataFetched(false);
+      setIsDataFetched(null);
     }
   }, [isDataFetched, location.pathname, navigate]);
 
@@ -92,6 +104,13 @@ function Ranking() {
     }
   }, [categoryName]);
 
+  useEffect(() => {
+    if (isDataFetched === true) {
+      window.location.reload();
+      console.log("isDataFetched: " + isDataFetched);
+    }
+  }, [isDataFetched]);
+
   return (
     <div id="ranking">
       <div id="categoryContainer">
@@ -103,7 +122,7 @@ function Ranking() {
         </p>
       </div>
       <div id="mobileRanking">
-        <FullRanking />
+        <FullRanking isDataFetched={isDataFetched} />
         <div id="mobileRankingSearch">
           <form
             id="mobileRankingSearchForm"
@@ -120,7 +139,7 @@ function Ranking() {
         </div>
       </div>
       <div id="desktopRanking">
-        <Top3 />
+        <Top3 isDataFetched={isDataFetched} />
         <OutsidePodium />
       </div>
     </div>
