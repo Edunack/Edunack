@@ -4,6 +4,7 @@ import "./CourseDetail.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DisqusElement from "./Disqus";
+import Loading from "../CommonAssets/Loading";
 
 function CourseDetail() {
   const { id } = useParams<{ id: string }>();
@@ -27,6 +28,10 @@ function CourseDetail() {
         sessionStorage.setItem("course", JSON.stringify(data));
         setCourse(data);
         setCourseExists(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setCourseExists(false);
       });
   };
 
@@ -35,9 +40,15 @@ function CourseDetail() {
       console.log("Fetching course details...");
       getCourse();
     } else {
+      console.log("Using cached course details...");
       const courses = JSON.parse(getCourses);
       const selectedCourse = courses.find((c: any) => c.id === id);
-      setCourse(selectedCourse);
+      if (selectedCourse) {
+        setCourse(selectedCourse);
+        setCourseExists(true);
+      } else {
+        getCourse();
+      }
     }
   }, [id, getCourses]);
 
@@ -45,19 +56,11 @@ function CourseDetail() {
     console.log(course);
   }, [course]);
 
-  useEffect(() => {
-    console.log(courseExists);
-  }, [courseExists]);
-
-  if (setCourseExists === null || course === null) {
-    return <div>Loading...</div>;
+  if (courseExists === null) {
+    return <Loading />;
   } else if (courseExists === false) {
     return <div>Course not found</div>;
   }
-
-  /*if (!course) {
-    return <div>Loading...</div>;
-  }*/
 
   const handleStarClick = (index: number) => {
     const userId = sessionStorage.getItem("userId");

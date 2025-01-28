@@ -58,6 +58,14 @@
   padding: 2vh;
 }
 
+#aboutContainer > a,
+#aboutContainer > a:visited {
+  font-size: "3vh";
+  margin: "3vh 0 0 0";
+  text-decoration: none;
+  color: white;
+}
+
 .team {
   background-color: #90429c;
   border-radius: 1vh;

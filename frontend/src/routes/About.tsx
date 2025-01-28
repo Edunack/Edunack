@@ -248,9 +248,7 @@ function About() {
             <p></p>
           </div>
         </div>
-        <p style={{ fontSize: "3vh", margin: "3vh 0 0 0" }}>
-          Contact us: contact@edunack.com
-        </p>
+        <a href="mailto:contact@edunack.com">Contact us: contact@edunack.com</a>
       </div>
     </div>
   );

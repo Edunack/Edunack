@@ -82,7 +82,7 @@ function Recommendations() {
           id="0"
           title="PHP beginner"
           author="TUTORIALER 3248"
-          link="google.com"
+          link="https://www.google.com/"
           rating={4.8}
           numOfRatings={30}
         />
@@ -90,7 +90,7 @@ function Recommendations() {
           id="0"
           title="PHP intermediate"
           author="TUTORIALER 3248"
-          link="google.com"
+          link="https://www.google.com/"
           rating={4.8}
           numOfRatings={30}
         />
@@ -98,7 +98,7 @@ function Recommendations() {
           id="0"
           title="PHP advanced"
           author="TUTORIALER 3248"
-          link="google.com"
+          link="https://www.google.com/"
           rating={4.8}
           numOfRatings={30}
         />
@@ -110,6 +110,7 @@ function Recommendations() {
         fontWeight={500}
         zIndex={4}
         borderRadius="2vh"
+        onClick={() => (window.location.href = "/search")}
       >
         START NOW
       </Button>

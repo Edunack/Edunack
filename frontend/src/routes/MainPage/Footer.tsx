@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
+  const navigate = useNavigate();
   return (
     <div id="footer">
       <div id="logoMotto">
@@ -18,16 +20,24 @@ function Footer() {
         <line x1="0.5" x2="0.5" y2="272" stroke="white" />
       </svg>
       <div id="FooterLists">
-        <ul className="footerLists">
-          <li>Return to top</li>
-          <li>Ranking</li>
-          <li>About</li>
+        <ul className="footerLists" id="navs">
+          <li onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            Return to top
+          </li>
+          <li onClick={() => navigate("/search")}>Ranking</li>
+          <li onClick={() => navigate("/about")}>About</li>
         </ul>
         <ul className="footerLists">
           <li>Contact us:</li>
-          <li>support@edunack.com</li>
-          <li>feedback@edunack.com</li>
-          <li>invest@edunack.com</li>
+          <li>
+            <a href="mailto:support@edunack.com">support@edunack.com</a>
+          </li>
+          <li>
+            <a href="mailto:feedback@edunack.com">feedback@edunack.com</a>
+          </li>
+          <li>
+            <a href="mailto:invest@edunack.com">invest@edunack.com</a>
+          </li>
         </ul>
       </div>
     </div>

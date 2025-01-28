@@ -32,6 +32,17 @@
   margin: 0 5vh;
 }
 
-#FooterLists > ul{
+#FooterLists > ul {
   font-size: 2.5vh;
+}
+
+#FooterLists > #navs > li,
+#FooterLists > ul > li > a {
+  cursor: pointer;
+}
+
+#FooterLists > ul > li > a,
+#FooterLists > ul > li > a:visited {
+  text-decoration: none;
+  color: white;
 }

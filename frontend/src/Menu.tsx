@@ -83,27 +83,27 @@ function Menu() {
           </div>
           <ul>
             <li className="mobileMenuItem">
-              <Link to={``} className="menuLink">
+              <Link to={``} className="menuLink" onClick={toggleMenu}>
                 HOME
               </Link>
             </li>
             <li className="mobileMenuItem">
-              <Link to={`Search`} className="menuLink">
+              <Link to={`Search`} className="menuLink" onClick={toggleMenu}>
                 RANKING
               </Link>
             </li>
             <li className="mobileMenuItem">
-              <Link to={`About`} className="menuLink">
+              <Link to={`About`} className="menuLink" onClick={toggleMenu}>
                 ABOUT
               </Link>
             </li>
             <li className="mobileMenuItem">
-              <Link to={`Login`} className="menuLink">
+              <Link to={`Login`} className="menuLink" onClick={toggleMenu}>
                 LOGIN
               </Link>
             </li>
             <li className="mobileMenuItem">
-              <Link to={`Profile`} className="menuLink">
+              <Link to={`Profile`} className="menuLink" onClick={toggleMenu}>
                 YOUR PROFILE
               </Link>
             </li>
