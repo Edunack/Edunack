@@ -71,8 +71,8 @@ function App() {
             </div>
             <div id="mobileHeaderButtons">
               <Button
-                bgColor="#90429C"
-                borderBottom="5px solid #722C7C"
+                bgColor="#90299C"
+                borderBottom="5px solid #72067C"
                 borderRadius="5px"
                 width="50%"
                 height="6vh"
@@ -85,7 +85,7 @@ function App() {
               </Button>
               <Button
                 bgColor="#773482"
-                color="#CDCDCD"
+                color="#EFEFEF"
                 borderBottom="5px solid #351C38"
                 borderRadius="5px"
                 width="50%"

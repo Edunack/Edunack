@@ -65,7 +65,7 @@ function Profile() {
           <div id="mobileUnfinishedCourseInfo">
             <span>course PHP beginner</span>
             <Button
-              bgColor="#90429C"
+              bgColor="#90299C"
               borderBottom="5px solid #5A3060"
               borderRadius="10px"
               fontSize="1.75vh"

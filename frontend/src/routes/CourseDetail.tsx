@@ -174,7 +174,7 @@ function CourseDetail() {
         </div>
         <div id="courseDetailButtons">
           <Button
-            bgColor="#90429C"
+            bgColor="#90299C"
             borderBottom="5px solid #5A3060"
             borderRadius="10px"
             fontSize="1.75vh"
@@ -187,7 +187,7 @@ function CourseDetail() {
             go to course
           </Button>
           <Button
-            bgColor="#90429C"
+            bgColor="#90299C"
             borderBottom="5px solid #5A3060"
             borderRadius="10px"
             fontSize="1.75vh"

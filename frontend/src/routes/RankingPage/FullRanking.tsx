@@ -41,7 +41,7 @@ function GenerateList({ isDataFetched }: Category) {
       let courseName = course.split("");
       if (courseName.length > 30) {
         courseName = courseName.slice(0, 30);
-        courseName.push("...");
+        courseName.push(" ...");
       }
       return courseName.join("");
     };

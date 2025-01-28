@@ -169,7 +169,7 @@
   }
 
   #mobileUnfinishedCourse > span {
-    color: #9e8db1;
+    color: #af96ca;
     text-align: left;
     width: 75%;
     font-weight: 500;
@@ -209,7 +209,7 @@
   }
 
   #mobileStartedCourses > span {
-    color: #9e8db1;
+    color: #af96ca;
     font-weight: 500;
     font-size: 110%;
   }

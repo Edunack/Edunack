@@ -35,8 +35,8 @@ function InlineCourseMobile({ id, title, rating, numOfRatings }: Props) {
               >
                 <path
                   d="M5 1L6.02564 4.05573H9L6.53846 5.97297L7.47214 9L5 6.78885L2.52786 9L3.46154 5.64865L1 4.05573H4.07692L5 1Z"
-                  fill="#AD83C3"
-                  stroke="#AD83C3"
+                  fill="#EBD2FF"
+                  stroke="#EBD2FF"
                   stroke-width="0.5"
                 />
               </svg>
@@ -44,14 +44,14 @@ function InlineCourseMobile({ id, title, rating, numOfRatings }: Props) {
               <span>({numOfRatings})</span>
             </div>
           ) : (
-            <span style={{ color: "#ad83c3" }}>no ratings</span>
+            <span style={{ color: "#EBD2FF" }}>no ratings</span>
           )}
         </span>
       </div>
       <Button
-        bgColor="#724889"
+        bgColor="#724888"
         boxShadow="0px 0px 10px 0px #B085B4"
-        color="#EBD1EB"
+        color="white"
         width="40%"
         height="80%"
         borderRadius="7px"

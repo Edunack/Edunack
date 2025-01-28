@@ -74,7 +74,7 @@ function Login() {
             {response}
           </p>
           <Button
-            bgColor="#90429C"
+            bgColor="#90299C"
             color="white"
             fontWeight={700}
             width="90vw"
@@ -117,7 +117,7 @@ function Login() {
             />
             <p id="loginResponse">{response}</p>
             <Button
-              bgColor="#90429C"
+              bgColor="#90299C"
               color="white"
               fontWeight={700}
               width="100%"
