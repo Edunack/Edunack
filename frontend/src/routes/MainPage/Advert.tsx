@@ -1,8 +1,20 @@
 import "./Advert.css";
+import { useContext } from "react";
 import Tile from "../../CommonAssets/Tile";
+import { MagnificationContext } from "../../main";
 function Advert() {
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    marginTop: `${
+      magnificationLevel > 1
+        ? -35 * (1 / (magnificationLevel * 2))
+        : -35 * (1 / magnificationLevel)
+    }%`,
+  };
+
   return (
-    <div id="advertContainer">
+    <div id="advertContainer" style={applyMagnification}>
       <svg width="0" height="0">
         <defs>
           <clipPath id="bg" clipPathUnits="objectBoundingBox">

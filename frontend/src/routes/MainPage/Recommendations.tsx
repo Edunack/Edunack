@@ -9,7 +9,7 @@ function Recommendations() {
   const { magnificationLevel } = useContext(MagnificationContext);
 
   const applyMagnification = {
-    marginTop: `${90 * magnificationLevel}vh`,
+    marginTop: `${75 * magnificationLevel}vh`,
   };
   return (
     <div id="recommendationsContainer" style={applyMagnification}>

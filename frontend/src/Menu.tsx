@@ -1,13 +1,12 @@
-//import { useContext } from "react";
 import "./Menu.css";
 import { Outlet, Link } from "react-router-dom";
-import { useState } from "react";
-//import { MagnificationContext } from "./main.tsx";
+import { useState, useContext } from "react";
+import SideMenu from "./CommonAssets/SideMenu";
+import { MagnificationContext } from "./main";
 
 function Menu() {
-  //const { setMagnificationLevel } = useContext(MagnificationContext);
+  const { magnificationLevel, setMagnificationLevel } = useContext(MagnificationContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
@@ -113,26 +112,6 @@ function Menu() {
         <div style={{ display: "none" }}></div>
       )}
       <div id="containerMenu">
-        {/*<div>
-          <button
-            className="textMagnifier"
-            onClick={() => setMagnificationLevel(1)}
-          >
-            A
-          </button>
-          <button
-            className="textMagnifier"
-            onClick={() => setMagnificationLevel(1.25)}
-          >
-            A+
-          </button>
-          <button
-            className="textMagnifier"
-            onClick={() => setMagnificationLevel(1.5)}
-          >
-            A++
-          </button>
-        </div>*/}
         <div id="mainMenu" className="menuItem" style={{ width: "25%" }}>
           <ul id="menu" className="menuList">
             <li className="menuItem">
@@ -179,6 +158,11 @@ function Menu() {
           </ul>
         </div>
       </div>
+      <MagnificationContext.Provider
+        value={{ magnificationLevel, setMagnificationLevel }}
+      >
+        <SideMenu />
+      </MagnificationContext.Provider>
       <div id="outlet">
         <Outlet />
       </div>

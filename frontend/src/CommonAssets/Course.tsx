@@ -34,10 +34,21 @@ function Course({
   }
 
   const applyMagnification = {
-    height: `${45 * magnificationLevel}vh`,
-    width: `${15 * magnificationLevel}vw`,
-    margin: `${margin * magnificationLevel}% 0`,
-    marginTop: 0,
+    height: `${
+      magnificationLevel > 1
+        ? 45 * ((magnificationLevel - 1) / 5 + 1)
+        : 45 * magnificationLevel
+    }vh`,
+    width: `${
+      magnificationLevel > 1
+        ? 15 * ((magnificationLevel - 1) / 5 + 1)
+        : 15 * magnificationLevel
+    }vw`,
+    margin: `${
+      magnificationLevel > 1
+        ? margin * magnificationLevel * 2
+        : margin * magnificationLevel
+    }% 0 5% 0`,
     zoom: `${scale * magnificationLevel}`,
   };
 

@@ -1,0 +1,45 @@
+#sideMenu {
+  position: fixed;
+  top: 47vh;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+}
+
+#sideMenuIcon {
+  width: 2vw;
+  height: 6vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0.5vh 0.5vh 0;
+  background-color: #1a1a1a;
+}
+
+#sideMenuIcon > #triangle {
+  width: 50%;
+  height: 50%;
+  background-color: white;
+}
+
+#textMagnifiers {
+  display: flex;
+  flex-direction: column;
+  padding: 1vh 3vh;
+  background-color: #1a1a1a;
+  border-radius: 0 0 0.5vh 0;
+}
+
+.textMagnifier {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 5vh;
+  font-weight: 700;
+  text-align: left;
+  color: white;
+}
