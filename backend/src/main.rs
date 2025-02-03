@@ -2,11 +2,13 @@ use std::{str::FromStr, sync::Arc};
 
 use axum::{extract::Request, http::Method, middleware, Router, ServiceExt};
 use db::{ConnectionExt, Database};
+use lettre::{
+    message::Mailbox, transport::smtp::authentication::Credentials, Address, AsyncSmtpTransport,
+    AsyncTransport, Message,
+};
 use rand::Rng;
 use rankers::Ranker;
-use routers::{
-    login::LoginRouter, rate::RateRouter, search::SearchRouter, user::UserRouter, IntoRouter,
-};
+use routers::{auth::AuthRouter, rate::RateRouter, search::SearchRouter, user::UserRouter};
 use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
@@ -17,13 +19,14 @@ use tower_http::{
 };
 mod auth;
 mod db;
-mod routers;
 mod rankers;
+mod routers;
 
 #[derive(Clone)]
 pub struct AppState {
     rankers: Vec<Arc<dyn Ranker>>,
     database: Database,
+    email_transport: Arc<lettre::AsyncSmtpTransport<lettre::Tokio1Executor>>,
 }
 
 unsafe impl Send for AppState {}
@@ -65,14 +68,33 @@ async fn main() {
         )
         .await
         .unwrap();
+    let smtp_conn = AsyncSmtpTransport::<lettre::Tokio1Executor>::relay(
+        &dotenvy::var("SMTP_HOST").unwrap_or("localhost".to_string()),
+    )
+    .unwrap()
+    .credentials(Credentials::new(
+        dotenvy::var("SMTP_USER").expect("SMTP_USER must be set"),
+        dotenvy::var("SMTP_PASS").expect("SMTP_PASS must be set"),
+    ))
+    .build();
 
+    smtp_conn.test_connection().await.unwrap();
     let state = AppState {
         rankers: vec![
             Arc::new(rankers::coursera::CourseraRanker::env()),
             Arc::new(rankers::youtube::YoutubeRanker::env()),
         ],
         database: Database::new(Arc::new(pool)),
+        email_transport: Arc::new(smtp_conn),
     };
+    //state.email_transport.clone().send(
+    //    Message::builder()
+    //    .to(Mailbox::new(None, "mail".parse().unwrap()))
+    //    .from(Mailbox::new(Some("Edunack".to_string()), "noreply@edunack.eu".parse().unwrap()))
+    //    .subject("test")
+    //    .body(String::from("test"))
+    //    .unwrap(),
+    //).await.unwrap();
 
     let app = Router::new()
         //.fallback(|uri: Uri| async move {
@@ -82,10 +104,10 @@ async fn main() {
         .nest(
             "/api",
             Router::new()
-                .nest("/auth", LoginRouter.into_router())
-                .nest("/search", SearchRouter.into_router())
-                .nest("/rating", RateRouter.into_router())
-                .nest("/user", UserRouter.into_router())
+                .nest("/auth", AuthRouter.into())
+                .nest("/search", SearchRouter.into())
+                .nest("/rating", RateRouter.into())
+                .nest("/user", UserRouter.into())
                 .layer(middleware::from_fn(auth::authorize)),
         )
         .nest_service("/example", ServeDir::new("./example"))

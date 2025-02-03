@@ -16,8 +16,9 @@ impl Table<Category> {
     pub async fn find_by_id(&self, id: Uuid, language: &str) -> Option<Category> {
         query_as(
             format!(
-                "SELECT id, name FROM categories WHERE id LIKE ?1 AND \
-            (language = ?2 OR language='en') order by language {}",
+                "SELECT id, name FROM categories JOIN category_translations ON categories.id = category_translations.category \
+                WHERE id LIKE ?1 AND \
+                (language = ?2 OR language='en') order by language {}",
                 if language > "en" { "desc" } else { "asc" }
             )
             .as_str(),
@@ -34,7 +35,8 @@ impl Table<Category> {
             // wtf is this query
             format!(
                 "SELECT *, all_index_of(?1, name) as aio from \
-                (SELECT categories.*, count(courses.id) as count FROM categories \
+                (SELECT categories.id as id, category_translations.*, count(courses.id) as count FROM categories
+                JOIN category_translations ON categories.id = category_translations.category \
                 LEFT JOIN courses ON categories.id = courses.category WHERE \
                 cimatch(?1, name) AND (language = ?2 OR language='en') \
                 group by categories.id, language order by count(courses.id) desc, language {}) \
@@ -47,6 +49,8 @@ impl Table<Category> {
         .bind(language)
         .fetch_all(&*self.0)
         .await
-        .unwrap_or_else(|_| vec![])
+        .unwrap_or_else(|e| {
+            println!("{:?}", e); vec![]
+        })
     }
 }

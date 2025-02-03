@@ -1,7 +1,6 @@
 use crate::{
     auth::Claims,
     db::user::favorites::UserFavoritesTable,
-    routers::IntoRouter,
     AppState,
 };
 
@@ -48,8 +47,8 @@ impl UserFavoritesRouter {
     }
 }
 
-impl IntoRouter for UserFavoritesRouter {
-    fn into_router(self) -> axum::Router<AppState> {
+impl Into<Router<AppState>> for UserFavoritesRouter {
+    fn into(self) -> axum::Router<AppState> {
         Router::new()
             .route("/", get(Self::favorite_get))
             .route("/", post(Self::favorite_post))

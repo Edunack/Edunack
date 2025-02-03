@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users(
     id blob(16) not null primary key,
     username text not null,
     email text not null,
-    password text not null
+    password text not null,
+    verified int not null
 );
 
 -- courses table
@@ -29,21 +30,30 @@ CREATE TABLE IF NOT EXISTS course_translations(
     FOREIGN KEY (course) REFERENCES courses(id)
 );
 
--- course medium table
-CREATE TABLE IF NOT EXISTS course_mediums(
-    id int not null,
-    language varchar(2) not null,
+-- course medium intermediate table
+CREATE TABLE IF NOT EXISTS course_mediums(id int not null primary key);
+
+-- course medium translation table
+CREATE TABLE IF NOT EXISTS course_medium_translations(
+    medium int not null,
+    language text not null,
     name text not null,
-    PRIMARY KEY (id, language)
+    PRIMARY KEY (medium, language)
+    FOREIGN KEY (medium) REFERENCES course_mediums(id)
 );
 
--- categories table
-CREATE TABLE IF NOT EXISTS categories(
-    id blob(16) not null,
+-- categories intermediate table
+CREATE TABLE IF NOT EXISTS categories(id blob(16) not null primary key);
+
+-- category translation table
+CREATE TABLE IF NOT EXISTS category_translations(
+    category blob(16) not null,
     language varchar(2) not null,
     name text not null,
-    PRIMARY KEY (id, language)
+    PRIMARY KEY (category, language)
+    FOREIGN KEY (category) REFERENCES categories(id)
 );
+
 
 CREATE TABLE IF NOT EXISTS user_ratings(
     user blob(16) not null,

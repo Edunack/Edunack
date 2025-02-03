@@ -14,6 +14,8 @@ pub struct User {
     pub email: String,
     #[query_gen(skip)]
     pub password: String,
+    #[query_gen(skip)]
+    pub verified: bool,
 }
 
 pub fn select_query(column: &str) -> String {
@@ -22,11 +24,12 @@ pub fn select_query(column: &str) -> String {
 
 impl Table<User> {
     pub async fn insert(&self, user: &User) -> Result<(), sqlx::Error> {
-        query("INSERT INTO users (id, username, email, password) VALUES (?1, ?2, ?3, ?4)")
+        query("INSERT INTO users (id, username, email, password, verified) VALUES (?1, ?2, ?3, ?4, ?5)")
             .bind(user.id.clone())
             .bind(user.username.clone())
             .bind(user.email.clone())
             .bind(user.password.clone())
+            .bind(user.verified)
             .execute(&*self.0)
             .await
             .map(|_| ())

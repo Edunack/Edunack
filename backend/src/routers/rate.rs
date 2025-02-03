@@ -11,8 +11,6 @@ use uuid::Uuid;
 
 use crate::{auth::Claims, db::{rating::Rating, rating::RatingTable, user::UserTable}, AppState};
 
-use super::IntoRouter;
-
 pub struct RateRouter;
 
 #[derive(Deserialize)]
@@ -69,8 +67,8 @@ impl RateRouter {
     }
 }
 
-impl IntoRouter for RateRouter {
-    fn into_router(self) -> axum::Router<AppState> {
+impl Into<Router<AppState>> for RateRouter {
+    fn into(self) -> axum::Router<AppState> {
         Router::new()
             .route("/{id}", post(Self::post))
             .route("/{id}", get(Self::get))

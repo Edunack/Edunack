@@ -11,7 +11,6 @@ use scraper::Selector;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::IntoRouter;
 use crate::{
     db::{
         category::{Category, CategoryTable},
@@ -244,8 +243,8 @@ impl SearchRouter {
     }
 }
 
-impl IntoRouter for SearchRouter {
-    fn into_router(self) -> Router<AppState> {
+impl Into<Router<AppState>> for SearchRouter {
+    fn into(self) -> Router<AppState> {
         Router::new()
             .route("/", post(Self::search))
             .route("/google/{category}", post(Self::google))

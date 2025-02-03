@@ -13,14 +13,13 @@ use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::IntoRouter;
 use crate::{
     auth,
     db::user::{User, UserTable},
     AppState,
 };
 
-pub struct LoginRouter;
+pub struct AuthRouter;
 
 #[derive(Serialize, Deserialize)]
 pub struct LoginParams {
@@ -43,7 +42,7 @@ pub struct RegisterParams {
     pub password: String,
 }
 
-impl LoginRouter {
+impl AuthRouter {
     pub async fn login(State(state): State<AppState>, Json(params): Json<LoginParams>) -> Response {
         let user_table = UserTable::new(state.database.get_conn());
         let user = match user_table.find_by_username(params.login.clone()).await {
@@ -100,10 +99,14 @@ impl LoginRouter {
 
     //#[axum_macros::debug_handler]
     pub async fn register(
-        State(state): State<AppState>,
+        State(AppState {
+            database,
+            email_transport,
+            ..
+        }): State<AppState>,
         Json(params): Json<RegisterParams>,
     ) -> Response {
-        let user_table = UserTable::new(state.database.get_conn());
+        let user_table = UserTable::new(database.get_conn());
         if let Some(user) = user_table
             .find_by_username_or_email(&params.username, &params.email)
             .await
@@ -130,6 +133,7 @@ impl LoginRouter {
                 username: params.username.clone(),
                 email: params.email.clone(),
                 password,
+                verified: false,
             })
             .await
         {
@@ -154,8 +158,8 @@ impl LoginRouter {
     }
 }
 
-impl IntoRouter for LoginRouter {
-    fn into_router(self) -> Router<AppState> {
+impl Into<Router<AppState>> for AuthRouter {
+    fn into(self) -> Router<AppState> {
         Router::new()
             .route("/login", post(Self::login))
             .route("/register", post(Self::register))

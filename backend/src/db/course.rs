@@ -71,9 +71,10 @@ impl Table<Course> {
     pub async fn find_medium_name(&self, medium: i32, language: &str) -> Option<String> {
         query_scalar(
             format!(
-                "SELECT name FROM course_mediums WHERE id = ?1 \
+                "SELECT name FROM course_mediums JOIN course_medium_translations WHERE course_mediums.id = ?1 \
                 AND (language = '{}' OR language = 'en') ORDER BY language {}",
-                language, if language > "en" { "desc" } else { "asc" }
+                language,
+                if language > "en" { "desc" } else { "asc" }
             )
             .as_str(),
         )
@@ -84,14 +85,6 @@ impl Table<Course> {
     }
     pub async fn insert(&self, course: Course) -> Result<(), ()> {
         let mut tx = self.0.begin().await.unwrap();
-
-        query("INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)")
-            .bind(course.id)
-            .bind("en")
-            .bind(course.name)
-            .execute(&mut *tx)
-            .await
-            .map_err(|_| ())?;
 
         query(
             "INSERT INTO courses (id, category, author, medium, url, description, image, price)\
@@ -108,6 +101,14 @@ impl Table<Course> {
         .execute(&mut *tx)
         .await
         .map_err(|_| ())?;
+
+        query("INSERT INTO course_translations (course, language, name) VALUES (?1, ?2, ?3)")
+            .bind(course.id)
+            .bind("en")
+            .bind(course.name)
+            .execute(&mut *tx)
+            .await
+            .map_err(|_| ())?;
 
         tx.commit().await.map_err(|_| ())?;
 
@@ -126,7 +127,7 @@ impl Table<Course> {
         query_as(
             // absolutely unreadable
             format!(
-               "select *, all_index_of(?1, name) as aio from \
+                "select *, all_index_of(?1, name) as aio from \
                (select courses.*, name, avg(coalesce(rating, 0)) as rating, \
                 count(rating) as rating_count from courses \
                 inner join course_translations on courses.id = course_translations.course \
@@ -135,7 +136,8 @@ impl Table<Course> {
                 group by id, language order by language {}) group by id order by aio",
                 language,
                 if language > "en" { "desc" } else { "asc" },
-            ).as_str()
+            )
+            .as_str(),
         )
         .bind(name)
         .fetch_all(&*self.0)
@@ -144,6 +146,5 @@ impl Table<Course> {
             println!("{:?}", e);
             vec![]
         })
-
     }
 }
