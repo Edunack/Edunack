@@ -13,7 +13,10 @@ function InlineCourse({ id, title, author, rating, numOfRatings }: Props) {
   const navigate = useNavigate();
   let isOpinion = true;
 
-  if (rating == 0 && numOfRatings == 0) {
+  console.log("rating: ", rating);
+  console.log("numOfRatings: ", numOfRatings);
+
+  if (rating == 0 && numOfRatings == null) {
     isOpinion = false;
   }
 

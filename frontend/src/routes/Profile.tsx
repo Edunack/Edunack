@@ -4,12 +4,19 @@ import InlineCoursePremium from "../CommonAssets/InlineCoursePremium";
 import InlineCourseContinueMobile from "../CommonAssets/InlineCourseContinueMobile";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MagnificationContext } from "../main";
 
 function Profile() {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username");
   const userId = sessionStorage.getItem("userId");
-  console.log(username, userId);
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    marginTop: `${magnificationLevel > 1 ? 2 * magnificationLevel : 0}vh`,
+  };
+
   if (
     username === null ||
     username === undefined ||
@@ -46,7 +53,7 @@ function Profile() {
               It's great to see you again
             </span>
           </div>
-          <div id="unfinishedCourse">
+          <div id="unfinishedCourse" style={applyMagnification}>
             <span>Continue where you left</span>
             <Course
               id="1"

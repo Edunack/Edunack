@@ -8,11 +8,6 @@
   justify-content: center;
 }
 
-.top3Courses {
-  display: flex;
-  flex-direction: column;
-}
-
 #top3 > .top3Courses:nth-child(1) {
   transform: translateY(20vh);
 }

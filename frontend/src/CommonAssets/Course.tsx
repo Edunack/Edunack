@@ -49,7 +49,11 @@ function Course({
         ? margin * magnificationLevel * 2
         : margin * magnificationLevel
     }% 0 5% 0`,
-    zoom: `${scale * magnificationLevel}`,
+    zoom: `${
+      magnificationLevel > 1
+        ? scale * ((magnificationLevel - 1) / 2 + 1)
+        : scale
+    }`,
   };
 
   return (

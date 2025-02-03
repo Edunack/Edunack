@@ -3,11 +3,25 @@ import { Link, useNavigate } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MagnificationContext } from "../main";
 
 function Login() {
   const [response, setResponse] = useState("");
   const navigate = useNavigate();
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    height: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 80 : 77.5) : 75
+    }vh`,
+  };
+
+  const applyMagnificationLeft = {
+    gap: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 1.5 : 1.75) : 2
+    }vh`,
+  };
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -95,8 +109,8 @@ function Login() {
         </span>
       </div>
 
-      <div id="loginPanel">
-        <div id="left">
+      <div id="loginPanel" style={applyMagnification}>
+        <div id="left" style={applyMagnificationLeft}>
           <div id="mainText">
             <p id="loginText">LOG IN</p>
             <span id="loginSubtext">

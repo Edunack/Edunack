@@ -1,6 +1,16 @@
 import "./About.css";
+import { useContext } from "react";
+import { MagnificationContext } from "../main";
 
 function About() {
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    height: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 82 : 77.5) : 75
+    }vh`,
+  };
+
   return (
     <div id="aboutPage">
       <div id="aboutPageContainer">
@@ -209,7 +219,7 @@ function About() {
           </a>
         </div>
       </div>
-      <div id="aboutContainer">
+      <div id="aboutContainer" style={applyMagnification}>
         <p id="about">About Us</p>
         <div id="aboutProject">
           <div id="ourTeamContainer">

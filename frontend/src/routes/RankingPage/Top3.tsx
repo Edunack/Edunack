@@ -1,5 +1,7 @@
 import Course from "../../CommonAssets/Course";
 import Loading from "../../CommonAssets/Loading";
+import { useContext } from "react";
+import { MagnificationContext } from "../../main";
 import "./Top3.css";
 
 interface Props {
@@ -9,6 +11,15 @@ interface Props {
 function Top3({ isDataFetched }: Props) {
   const categoryName = sessionStorage.getItem("categoryName");
   const getCourses = sessionStorage.getItem("category" + categoryName);
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    gap: `${
+      magnificationLevel > 1
+        ? 20 / (magnificationLevel * 2)
+        : 20 * magnificationLevel
+    }vw`,
+  };
 
   if (!getCourses) {
     if (isDataFetched === null) {
@@ -22,7 +33,7 @@ function Top3({ isDataFetched }: Props) {
     const courses = JSON.parse(getCourses);
 
     return (
-      <div id="top3">
+      <div id="top3" style={applyMagnification}>
         <div className="top3Courses">
           <Course
             id={courses[1].id}

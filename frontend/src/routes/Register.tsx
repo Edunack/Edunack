@@ -3,11 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 import Input from "../CommonAssets/Input";
 import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MagnificationContext } from "../main";
 
 function Register() {
   const [response, setResponse] = useState("");
   const navigate = useNavigate();
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnification = {
+    height: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 87.5 : 82.5) : 80
+    }vh`,
+    width: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 140 : 135) : 130
+    }vh`,
+  };
+
+  const applyMagnificationRight = {
+    gap: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 0.75 : 1.75) : 2
+    }vh`,
+  };
+
+  const applyMagnificationImg = {
+    bottom: `${magnificationLevel > 1.25 ? -0.5 : -2}%`,
+  };
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -128,7 +149,7 @@ function Register() {
         </span>
       </div>
 
-      <div id="registerPanel">
+      <div id="registerPanel" style={applyMagnification}>
         <div id="left">
           <p id="welcome">WE ARE SO EXCITED TO HAVE YOU!</p>
           <p id="loginText">
@@ -139,9 +160,14 @@ function Register() {
               HERE
             </Link>
           </p>
-          <img src="../../img/logo.svg" alt="" id="logo" />
+          <img
+            src="../../img/logo.svg"
+            alt=""
+            id="logo"
+            style={applyMagnificationImg}
+          />
         </div>
-        <div id="right">
+        <div id="right" style={applyMagnificationRight}>
           <div id="registerText">
             <p id="mainText">SIGN UP</p>
             <span id="registerSubtext">
