@@ -73,12 +73,17 @@ async fn main() {
     )
     .unwrap()
     .credentials(Credentials::new(
-        dotenvy::var("SMTP_USER").expect("SMTP_USER must be set"),
-        dotenvy::var("SMTP_PASS").expect("SMTP_PASS must be set"),
+        dotenvy::var("SMTP_USER").unwrap_or("".to_string()),
+        dotenvy::var("SMTP_PASS").unwrap_or("".to_string()),
     ))
     .build();
 
-    smtp_conn.test_connection().await.unwrap();
+    match smtp_conn.test_connection().await {
+        Ok(_) => {}
+        Err(_) => {
+            println!("SMTP connection failed");
+        }
+    }
     let state = AppState {
         rankers: vec![
             Arc::new(rankers::coursera::CourseraRanker::env()),
