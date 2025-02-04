@@ -30,6 +30,14 @@ function Register() {
     bottom: `${magnificationLevel > 1.25 ? -0.5 : -2}%`,
   };
 
+  const applyMobile = {
+    clipPath: `${
+      magnificationLevel > 1.25
+        ? "polygon(0 25%, 100% 0, 100% 75%, 0 100%)"
+        : "polygon(0% 30%, 100% 0%, 100% 70%, 0 100%)"
+    }`,
+  };
+
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -77,7 +85,7 @@ function Register() {
 
   return (
     <div id="register">
-      <div id="mobileRegisterPanel">
+      <div id="mobileRegisterPanel" style={applyMobile}>
         <div id="mobileRegisterTitle">
           <img src="/img/logo.svg" alt="app logo" />
           <span>

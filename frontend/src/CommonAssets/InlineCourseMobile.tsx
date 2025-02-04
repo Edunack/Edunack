@@ -1,6 +1,8 @@
 import Button from "./Button";
 import "./InlineCourseMobile.css";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MagnificationContext } from "../main";
 
 interface Props {
   id: string;
@@ -11,6 +13,7 @@ interface Props {
 
 function InlineCourseMobile({ id, title, rating, numOfRatings }: Props) {
   const navigate = useNavigate();
+  const { magnificationLevel } = useContext(MagnificationContext);
   let isOpinion = true;
 
   console.log(rating, numOfRatings);
@@ -20,7 +23,11 @@ function InlineCourseMobile({ id, title, rating, numOfRatings }: Props) {
   }
 
   return (
-    <div id="mobileInlineCourse" onClick={() => navigate(`/course/${id}`)}>
+    <div
+      id="mobileInlineCourse"
+      onClick={() => navigate(`/course/${id}`)}
+      style={{ height: `${6 * magnificationLevel}vh` }}
+    >
       <div id="mobileCourseInfo">
         <span style={{ fontWeight: "normal" }}>{title}</span>
         <span style={{ fontSize: "65%", fontWeight: "light" }}>

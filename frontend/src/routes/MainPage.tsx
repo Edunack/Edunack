@@ -6,10 +6,28 @@ import Footer from "./MainPage/Footer";
 import "./MainPage.css";
 import Button from "../CommonAssets/Button";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MagnificationContext } from "../main";
 
 function App() {
   const isMobile = window.innerWidth <= 768;
   const navigate = useNavigate();
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyMagnificationContent = {
+    height: `${50 * magnificationLevel}vh`,
+  };
+
+  const applyMagnificationChart = {
+    marginTop: `${
+      magnificationLevel > 1 ? (magnificationLevel > 1.25 ? 25 : 12.5) : 0
+    }vh`,
+  };
+
+  const applyMagnificationChartResult = {
+    width: `${27 * magnificationLevel}%`,
+  };
+
   return (
     <div id="MainPage">
       {isMobile ? (
@@ -18,7 +36,7 @@ function App() {
             <div id="mobileHeaderBigger"></div>
             <div id="mobileHeaderSmaller"></div>
           </div>
-          <div id="mobileMainPageContent">
+          <div id="mobileMainPageContent" style={applyMagnificationContent}>
             <div id="mobileHeader">
               <span>HI THERE!</span>
               <svg
@@ -100,7 +118,7 @@ function App() {
             </div>
           </div>
           <div id="mobileDecors">
-            <div id="pinkRect">
+            <div id="pinkRect" style={applyMagnificationContent}>
               <span style={{ fontWeight: 300, fontSize: "1.5vh" }}>
                 SCROLL TO READ MORE :3
               </span>
@@ -150,9 +168,9 @@ function App() {
                 </span>
               </div>
             </div>
-            <div id="purpleRect"></div>
+            <div id="purpleRect" style={applyMagnificationContent}></div>
           </div>
-          <div id="mobileDataHolder">
+          <div id="mobileDataHolder" style={applyMagnificationChart}>
             <svg
               width="213"
               height="213"
@@ -180,7 +198,7 @@ function App() {
                 />
               </g>
             </svg>
-            <div className="chartResult">
+            <div className="chartResult" style={applyMagnificationChartResult}>
               <svg
                 width="18"
                 height="18"
@@ -192,7 +210,7 @@ function App() {
               </svg>
               <span>YES (68%)</span>
             </div>
-            <div className="chartResult">
+            <div className="chartResult" style={applyMagnificationChartResult}>
               <svg
                 width="18"
                 height="18"

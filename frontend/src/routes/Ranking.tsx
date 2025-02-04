@@ -2,8 +2,9 @@ import Top3 from "./RankingPage/Top3";
 import OutsidePodium from "./RankingPage/OutsidePodium";
 import FullRanking from "./RankingPage/FullRanking";
 import "./Ranking.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { MagnificationContext } from "../main";
 
 interface Category {
   id: String;
@@ -17,6 +18,7 @@ function Ranking() {
   const [isDataFetched, setIsDataFetched] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { magnificationLevel } = useContext(MagnificationContext);
 
   const getCategoryId = (data: string) => {
     fetch(
@@ -113,7 +115,10 @@ function Ranking() {
 
   return (
     <div id="ranking">
-      <div id="categoryContainer">
+      <div
+        id="categoryContainer"
+        style={{ height: `${magnificationLevel > 1.5 ? 18 : 15}vh` }}
+      >
         <p id="category">
           BEST CHOICES FOR: <br />
           <span style={{ fontWeight: "bold" }}>

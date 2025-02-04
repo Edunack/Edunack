@@ -67,9 +67,15 @@ function Profile() {
             />
           </div>
         </div>
-        <div id="mobileUnfinishedCourse">
+        <div
+          id="mobileUnfinishedCourse"
+          style={{ height: `${25 * magnificationLevel}vh` }}
+        >
           <span>jump back to where you left off:</span>
-          <div id="mobileUnfinishedCourseInfo">
+          <div
+            id="mobileUnfinishedCourseInfo"
+            style={{ height: `${15 * magnificationLevel}vh` }}
+          >
             <span>course PHP beginner</span>
             <Button
               bgColor="#90299C"

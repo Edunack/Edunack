@@ -49,7 +49,10 @@ const applyMagnification = (
 };
 
 const AppContainer: React.FC = () => {
-  const [magnificationLevel, setMagnificationLevel] = useState(1);
+  const startingLevel = sessionStorage.getItem("magnificationLevel")
+    ? Number(sessionStorage.getItem("magnificationLevel"))
+    : 1;
+  const [magnificationLevel, setMagnificationLevel] = useState(startingLevel);
 
   useEffect(() => {
     storeOriginalFontSizes();
@@ -71,6 +74,7 @@ const AppContainer: React.FC = () => {
 
   useEffect(() => {
     applyMagnification(magnificationLevel, originalFontSizes);
+    sessionStorage.setItem("magnificationLevel", magnificationLevel.toString());
   }, [magnificationLevel]);
 
   useEffect(() => {
@@ -83,6 +87,16 @@ const AppContainer: React.FC = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("magnificationLevel")) {
+      sessionStorage.setItem("magnificationLevel", "1");
+    } else {
+      setMagnificationLevel(
+        Number(sessionStorage.getItem("magnificationLevel"))
+      );
+    }
   }, []);
 
   const router = createBrowserRouter([

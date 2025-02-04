@@ -5,7 +5,8 @@ import SideMenu from "./CommonAssets/SideMenu";
 import { MagnificationContext } from "./main";
 
 function Menu() {
-  const { magnificationLevel, setMagnificationLevel } = useContext(MagnificationContext);
+  const { magnificationLevel, setMagnificationLevel } =
+    useContext(MagnificationContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
@@ -67,7 +68,7 @@ function Menu() {
           <div
             id="logoContainer"
             className="mobileMenuItem"
-            style={{ width: "50%" }}
+            style={{ width: magnificationLevel > 1.25 ? "60%" : "50%" }}
           >
             <img src="../img/logo.svg" alt="Edunack logo" />
             <span>
@@ -105,6 +106,26 @@ function Menu() {
               <Link to={`Profile`} className="menuLink" onClick={toggleMenu}>
                 YOUR PROFILE
               </Link>
+            </li>
+            <li className="mobileMenuItem" id="magnifierOption">
+              <button
+                className="textMagnifier"
+                onClick={() => setMagnificationLevel(1)}
+              >
+                A
+              </button>
+              <button
+                className="textMagnifier"
+                onClick={() => setMagnificationLevel(1.25)}
+              >
+                A+
+              </button>
+              <button
+                className="textMagnifier"
+                onClick={() => setMagnificationLevel(1.5)}
+              >
+                A++
+              </button>
             </li>
           </ul>
         </div>

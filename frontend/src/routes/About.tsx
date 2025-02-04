@@ -11,6 +11,22 @@ function About() {
     }vh`,
   };
 
+  const applyWhoWeAre = {
+    height: `${
+      magnificationLevel > 1.25
+        ? 20 * magnificationLevel + 5
+        : 20 * magnificationLevel
+    }vh`,
+  };
+
+  const applyWhatWeBelieve = {
+    height: `${25 * magnificationLevel}vh`,
+  };
+
+  const applyCreators = {
+    width: `${50 * magnificationLevel}%`,
+  };
+
   return (
     <div id="aboutPage">
       <div id="aboutPageContainer">
@@ -20,7 +36,7 @@ function About() {
           </div>
           <div id="aboutHeaderDecor"></div>
         </div>
-        <div id="whoWeAre">
+        <div id="whoWeAre" style={applyWhoWeAre}>
           <span>
             WE ARE A <span style={{ fontWeight: 500 }}>SMALL TEAM</span>
           </span>
@@ -29,7 +45,7 @@ function About() {
             <span style={{ fontWeight: 500 }}>GREAT IMPACT</span> ON THE WORLD.
           </span>
         </div>
-        <div id="whatWeBelieve">
+        <div id="whatWeBelieve" style={applyWhatWeBelieve}>
           <span>
             WE BELIEVE THAT{" "}
             <span style={{ fontWeight: 500 }}>
@@ -85,7 +101,7 @@ function About() {
         <div id="aboutCreators">
           <div id="creators">
             <span>OUR TEAM:</span>
-            <div className="creatorsGithub">
+            <div className="creatorsGithub" style={applyCreators}>
               <svg
                 width="23"
                 height="23"
@@ -119,7 +135,7 @@ function About() {
                 NataliaPrzemyłska
               </a>
             </div>
-            <div className="creatorsGithub">
+            <div className="creatorsGithub" style={applyCreators}>
               <svg
                 width="23"
                 height="23"
@@ -153,7 +169,7 @@ function About() {
                 PiotrekB416
               </a>
             </div>
-            <div className="creatorsGithub">
+            <div className="creatorsGithub" style={applyCreators}>
               <svg
                 width="23"
                 height="23"

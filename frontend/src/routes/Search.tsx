@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../CommonAssets/Loading";
+import { MagnificationContext } from "../main";
 import "./Search.css";
 
 interface Category {
@@ -18,6 +19,15 @@ function Search() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const isMobile = window.innerWidth <= 768;
+  const { magnificationLevel } = useContext(MagnificationContext);
+
+  const applyHeader = {
+    height: `${20 * magnificationLevel}vh`,
+  };
+
+  const applySearchBar = {
+    top: `${isMobile ? 15 * magnificationLevel : "none"}%`,
+  };
 
   // Utility: Remove the hash from the URL
   function removeHash() {
@@ -314,14 +324,14 @@ function Search() {
 
   return (
     <div id="searchContainer">
-      <div id="searchTitleContainer">
+      <div id="searchTitleContainer" style={applyHeader}>
         <span id="searchTitle">FIND NEW COURSES</span>
       </div>
       {/*<script
         async
         src="https://cse.google.com/cse.js?cx=d29a9f2d99e7b465f"
       ></script>*/}
-      <div id="searchbarDiv">
+      <div id="searchbarDiv" style={applySearchBar}>
         <form id="search" onSubmit={handleSubmit} autoComplete="off">
           {/*<label htmlFor="searchBar" id="searchLabel">
             TYPE IN THE CATEGORY/AUTHOR

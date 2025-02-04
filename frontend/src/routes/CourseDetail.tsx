@@ -2,9 +2,10 @@ import Button from "../CommonAssets/Button";
 import Tile from "../CommonAssets/Tile";
 import "./CourseDetail.css";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import DisqusElement from "./Disqus";
 import Loading from "../CommonAssets/Loading";
+import { MagnificationContext } from "../main";
 
 function CourseDetail() {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,7 @@ function CourseDetail() {
   const [courseExists, setCourseExists] = useState<boolean | null>(null);
   const stars = Array(5).fill(0);
   const isMobile = window.innerWidth <= 768;
+  const { magnificationLevel } = useContext(MagnificationContext);
 
   const getCourse = () => {
     fetch(`${window.location.origin}/api/search/`, {
@@ -175,14 +177,17 @@ function CourseDetail() {
             )}
           </div>
         </div>
-        <div id="courseDetailButtons">
+        <div
+          id="courseDetailButtons"
+          style={{ height: `${22 * magnificationLevel}vh` }}
+        >
           <Button
             bgColor="#90299C"
             borderBottom="5px solid #5A3060"
             borderRadius="10px"
             fontSize="1.75vh"
             width="50%"
-            height="6vh"
+            height={`${6 * magnificationLevel}vh`}
             padding="0"
             margin="0"
             onClick={() => window.open(course.url, "_blank")}
@@ -195,7 +200,7 @@ function CourseDetail() {
             borderRadius="10px"
             fontSize="1.75vh"
             width="50%"
-            height="6vh"
+            height={`${6 * magnificationLevel}vh`}
             padding="0"
             margin="0"
           >
