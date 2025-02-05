@@ -7,41 +7,53 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Claims {
+pub struct GenericClaims<T> {
     exp: usize,
     iat: usize,
-    pub id: Uuid,
+    #[serde(flatten)]
+    pub data: T,
 }
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct ClaimsData {
+    pub id: Uuid,
+    pub purpose: String,
+}
+
+pub type Claims = GenericClaims<ClaimsData>;
 
 pub static SECRET: OnceCell<String> = OnceCell::const_new();
 
-pub fn encode_jwt(id: &Uuid) -> Result<String, ()> {
-    let now = chrono::Utc::now();
-    let delta = chrono::Duration::days(1);
-    let exp = (now + delta).timestamp() as usize;
-    let iat = now.timestamp() as usize;
-    let claims = Claims {
-        exp,
-        iat,
-        id: id.clone(),
-    };
-    encode(
-        &Header::default(),
-        &claims,
-        &EncodingKey::from_secret(SECRET.get().unwrap().as_ref()),
-    )
-    .map_err(|_| ())
-}
+impl<T> GenericClaims<T> {
+    pub fn new(data: T, delta: chrono::Duration) -> Self {
+        Self {
+            exp: (chrono::Utc::now() + delta).timestamp() as usize,
+            iat: chrono::Utc::now().timestamp() as usize,
+            data,
+        }
+    }
 
-pub fn decode_jwt(token: &str) -> Result<TokenData<Claims>, ()> {
-    let decoded = jsonwebtoken::decode::<Claims>(
-        token,
-        &DecodingKey::from_secret(SECRET.get().unwrap().as_ref()),
-        &Validation::default(),
-    )
-    .map_err(|_e| { /*println!("{:?}", _e)*/ })?;
+    pub fn encode(&self) -> Result<String, ()> where T: Serialize {
+        encode(
+            &Header::default(),
+            self,
+            &EncodingKey::from_secret(SECRET.get().unwrap().as_ref()),
+        ).map_err(|_| ())
+    }
 
-    Ok(decoded)
+    pub fn decode(token: &str) -> Result<T, ()> where T: for<'de> Deserialize<'de> {
+        let data: TokenData<Self> = jsonwebtoken::decode::<Self>(
+            token,
+            &DecodingKey::from_secret(SECRET.get().unwrap().as_ref()),
+            &Validation::default(),
+        )
+        .map_err(|_e| { /*println!("{:?}", _e)*/ })?;
+
+        if data.claims.exp < chrono::Utc::now().timestamp() as usize {
+            return Err(());
+        }
+        Ok(data.claims.data)
+    }
 }
 
 pub async fn authorize(
@@ -52,17 +64,14 @@ pub async fn authorize(
     println!("{}", request.uri());
 
     let get_auth = |jar: CookieJar| -> Option<Claims> {
-        Some(decode_jwt(jar.get("Authorization")?.value()).ok()?.claims)
+        Some(GenericClaims::decode(jar.get("Authorization")?.value()).ok()?)
     };
     request.extensions_mut().insert(get_auth(jar));
 
     Ok(next.run(request).await)
 }
 
-pub async fn force_authorize(
-    mut request: Request,
-    next: Next,
-) -> Result<Response, StatusCode> {
+pub async fn force_authorize(mut request: Request, next: Next) -> Result<Response, StatusCode> {
     let ext: Option<Claims> = request.extensions_mut().remove::<Option<Claims>>().unwrap();
     match ext {
         Some(ext) => {

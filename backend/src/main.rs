@@ -69,12 +69,30 @@ async fn main() {
         .await
         .unwrap();
     let smtp_conn = AsyncSmtpTransport::<lettre::Tokio1Executor>::relay(
-        &dotenvy::var("SMTP_HOST").unwrap_or("localhost".to_string()),
+        &dotenvy::var("SMTP_HOST").unwrap_or_else(|e| {
+            if cfg!(debug_assertions) {
+                "localhost".to_string()
+            } else {
+                panic!("{e}");
+            }
+        }),
     )
     .unwrap()
     .credentials(Credentials::new(
-        dotenvy::var("SMTP_USER").unwrap_or("".to_string()),
-        dotenvy::var("SMTP_PASS").unwrap_or("".to_string()),
+        dotenvy::var("SMTP_USER").unwrap_or_else(|e| {
+            if cfg!(debug_assertions) {
+                "".to_string()
+            } else {
+                panic!("{e}");
+            }
+        }),
+        dotenvy::var("SMTP_PASS").unwrap_or_else(|e| {
+            if cfg!(debug_assertions) {
+                "".to_string()
+            } else {
+                panic!("{e}");
+            }
+        }),
     ))
     .build();
 

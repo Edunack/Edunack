@@ -23,7 +23,7 @@ impl UserFavoritesRouter {
 
         return Json(
             favorites_table
-                .find_all_by_user(ext.id)
+                .find_all_by_user(ext.data.id)
                 .await
                 .into_iter()
                 .map(|c| c.course)

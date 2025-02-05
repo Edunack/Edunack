@@ -43,4 +43,16 @@ impl Table<User> {
             .await
             .ok()
     }
+
+    pub async fn update(&self, user: &User) -> Result<(), sqlx::Error> {
+        query("UPDATE users SET username = ?1, email = ?2, password = ?3, verified = ?4 WHERE id = ?5")
+            .bind(user.username.clone())
+            .bind(user.email.clone())
+            .bind(user.password.clone())
+            .bind(user.verified)
+            .bind(user.id.clone())
+            .execute(&*self.0)
+            .await
+            .map(|_| ())
+    }
 }
