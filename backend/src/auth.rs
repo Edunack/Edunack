@@ -17,7 +17,15 @@ pub struct GenericClaims<T> {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ClaimsData {
     pub id: Uuid,
-    pub purpose: String,
+    pub purpose: ClaimsDataPurpose,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub enum ClaimsDataPurpose {
+    Auth,
+    Refresh,
+    Verify,
+    ResetPassword,
 }
 
 pub type Claims = GenericClaims<ClaimsData>;

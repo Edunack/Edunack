@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::{
-    auth::{Claims, ClaimsData},
+    auth::{Claims, ClaimsData, ClaimsDataPurpose},
     db::user::{User, UserTable},
     AppState,
 };
@@ -66,7 +66,7 @@ impl AuthRouter {
 
         let res = match Claims::new(ClaimsData {
             id: user.id,
-            purpose: "auth".to_string(),
+            purpose: ClaimsDataPurpose::Auth,
         }, chrono::Duration::days(30)).encode() {
             Ok(res) => res,
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -157,7 +157,7 @@ impl AuthRouter {
 
         let token = match Claims::new(ClaimsData {
             id,
-            purpose: "verify".to_string(),
+            purpose: ClaimsDataPurpose::Verify,
         }, chrono::Duration::days(1)).encode() {
             Ok(token) => token,
             Err(error) => {
@@ -217,7 +217,7 @@ impl AuthRouter {
             Err(_) => return StatusCode::BAD_REQUEST.into_response(),
         };
 
-        if claims.purpose != "verify" {
+        if claims.purpose != ClaimsDataPurpose::Verify {
             return StatusCode::BAD_REQUEST.into_response();
         }
 
