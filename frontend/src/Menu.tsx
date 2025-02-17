@@ -9,6 +9,17 @@ function Menu() {
     useContext(MagnificationContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const logout = () => {
+    fetch("/api/auth/logout", { method: "POST" }).then((data) => {
+      if (data.status === 200) {
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("userId");
+        window.location.reload();
+      } else {
+        alert("Error logging out");
+      }
+    });
+  };
 
   return (
     <div style={{ width: "100%" }}>
@@ -98,9 +109,13 @@ function Menu() {
               </Link>
             </li>
             <li className="mobileMenuItem">
-              <Link to={`Login`} className="menuLink" onClick={toggleMenu}>
-                LOGIN
-              </Link>
+              {sessionStorage.getItem("userId") ? (
+                <span onClick={logout}>LOG OUT</span>
+              ) : (
+                <Link to={`Login`} className="menuLink">
+                  LOGIN
+                </Link>
+              )}
             </li>
             <li className="mobileMenuItem">
               <Link to={`Profile`} className="menuLink" onClick={toggleMenu}>
@@ -167,9 +182,13 @@ function Menu() {
         <div className="menuItem" style={{ width: "25%" }}>
           <ul id="loginMenu" className="menuList">
             <li className="menuItem">
-              <Link to={`Login`} className="menuLink">
-                LOGIN
-              </Link>
+              {sessionStorage.getItem("userId") ? (
+                <span onClick={logout}>LOG OUT</span>
+              ) : (
+                <Link to={`Login`} className="menuLink">
+                  LOGIN
+                </Link>
+              )}
             </li>
             <li className="menuItem">
               <Link to={`Profile`} className="menuLink">

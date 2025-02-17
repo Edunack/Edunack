@@ -47,6 +47,7 @@ function Login() {
           sessionStorage.setItem("userId", data.id);
         });
         navigate("/", { replace: true });
+        window.location.reload();
       }
     });
   }
