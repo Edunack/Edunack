@@ -12,6 +12,8 @@ import CourseDetail from "./routes/CourseDetail.tsx";
 import About from "./routes/About.tsx";
 import Profile from "./routes/Profile.tsx";
 import "./main.css";
+import MailConfirmation from "./routes/MailConfimation.tsx";
+import PasswordChange from "./routes/passwordChange.tsx";
 
 const originalFontSizes = new Map<Element, string>();
 
@@ -144,6 +146,14 @@ const AppContainer: React.FC = () => {
           element: <Profile />,
         },
       ],
+    },
+    {
+      path: "mail",
+      element: <MailConfirmation />,
+    },
+    {
+      path: "passwordChange",
+      element: <PasswordChange />,
     },
   ]);
 

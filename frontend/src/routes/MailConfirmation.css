@@ -1,0 +1,29 @@
+#mailConfirmation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#mailConfirmationPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 75vh;
+  width: 60vw;
+  background-color: #202020;
+  border-radius: 1.5vh;
+  gap: 3vh;
+}
+
+#mailConfirmationPanel > p{
+  margin: 0;
+  font-size: 5vh;
+  width: 80%;
+  text-align: center;
+}
+
+#mailConfirmationPanel > svg{
+  height: 8vh;
+}
